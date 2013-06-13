@@ -1,0 +1,28 @@
+{
+    "name": "jquery-axzoomer",
+    "version": "1.5.0",
+    "root": "#",
+    "description": "jquery-axzoomer是一个简便的jQuery插件，提供鼠标滚轮图片缩放操作",
+    "keywords":["jquery插件","图片","放大"],
+    "homepage": "http://www.albanx.com/?pid=1&subid=13",
+    "author": "Alban Xhaferllari <albanx@gmail.com>",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": ""
+    },
+    "license": "",
+    "dependencies": {
+        "jquery": "1.7.2",
+        "jquery-mousewheel":"3.0.6"
+    },
+    "tests": ["jquery-axzoomer"],
+    "output": {
+        "jquery-axzoomer.js": "."
+    },
+    "assets":null,
+    "options": null,
+    "optionalDependencies": null
+}

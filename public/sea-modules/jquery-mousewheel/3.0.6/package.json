@@ -1,0 +1,27 @@
+{
+    "name": "jquery-mousewheel",
+    "version": "3.0.6",
+    "root": "#",
+    "description": "A jQuery plugin that adds cross-browser mouse wheel support.",
+    "keywords":["第三方","jquery插件","鼠标滚轮"],
+    "homepage": "https://github.com/brandonaaron/jquery-mousewheel",
+    "author": "Brandon Aaron",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": ""
+    },
+    "license": "",
+    "dependencies": {
+        "jquery":"1.7.2"
+    },
+    "tests": ["jquery-mousewheel"],
+    "output": {
+        "jquery-mousewheel.js": "."
+    },
+    "assets":null,
+    "options": null,
+    "optionalDependencies": null
+}
