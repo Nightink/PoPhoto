@@ -1,0 +1,2 @@
+#Pophoto
+#install gm，Mongodb
