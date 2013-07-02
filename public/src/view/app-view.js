@@ -112,24 +112,5 @@ define(function (require, exports, module) {
         }
     });
 
-    (function() {           //“返回顶部”标签函数
-        var $backToTopEle = $('.backToTop');
-
-        $backToTopEle.click(function(e) {
-            $('html,body').animate({ scrollTop: 0 }, 120);
-        });
-
-        $(window).bind("scroll", function() {
-            var st = $(document).scrollTop()
-                , winh = $(window).height();
-
-            (st > 0) ? $backToTopEle.show(): $backToTopEle.hide();
-            //IE6下的定位
-            if (!window.XMLHttpRequest) {
-                $backToTopEle.css("top", st + winh - 166);
-            }
-        });
-    })();
-
     module.exports = AppView;
 });
