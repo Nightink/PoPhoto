@@ -9,8 +9,8 @@ var attachmentControllers = require('../controllers/attachment');
 
 module.exports = function(app) {
 
-    app.post('/upload', attachmentControllers.upload);
-    app.get('/attachment/:id', attachmentControllers.download);
-    app.get('/delete/:id', attachmentControllers.delete);
+  app.post('/upload', attachmentControllers.upload);
+  app.get('/attachment/:id', attachmentControllers.download);
+  app.get('/delete/:id', attachmentControllers.delete);
 
 };

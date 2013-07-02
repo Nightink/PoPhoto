@@ -8,7 +8,6 @@
 define(function(require, exports, module) {
 
     var $ = require('jquery');
-
     require('bootstrap');
     require("../util/cookie")($);
     require('wookmark')($);
@@ -16,6 +15,7 @@ define(function(require, exports, module) {
     require('imagesloaded')($);
     require('fancybox')($);
     require('axzoomer')($);
+    require('../../css/style.css');
 
     var _ = require('underscore')
         , AppView = require('../view/app-view');

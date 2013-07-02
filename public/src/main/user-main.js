@@ -12,6 +12,7 @@ define(function(require, exports, module) {
 
     require('bootstrap');
     require("../util/cookie")($);
+    require('../../css/style.css');
 
     var UserPhotoView = require('../view/user-photos')
         , TopView = require('../view/top-view')

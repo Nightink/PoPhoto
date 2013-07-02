@@ -32,4 +32,4 @@ seajs.config({
     }
 });
 
-seajs.use('/js/main/user-main');
+seajs.use('/src/main/user-main');
