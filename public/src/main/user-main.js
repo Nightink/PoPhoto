@@ -8,7 +8,8 @@
 define(function(require, exports, module) {
 
     var $ = require('jquery')
-        , _ = require('underscore');
+        , _ = require('underscore')
+      , backbone = require('backbone');
 
     require('bootstrap');
     require("../util/cookie")($);
@@ -30,20 +31,24 @@ define(function(require, exports, module) {
 
     });
 
-    $(window).on('hashchange', function(){
-        var hash = location.hash;
-        hash = hash.substring(1);
-        switch(hash) {
-            case 'user':
-                $.get('/user', function(data) {
-                    var userInfoView = new UserInfoView({ el: '#photo-list', model: data });
-                    userInfoView.render();
-                }, 'json');
-                break;
-            case 'photos':
-                var userPhotoView = new UserPhotoView({ el: '#photo-list' });
-                break;
-        }
+    var UserRouter = backbone.Router.extend({
+      routes: {
+        'user': 'userHash',
+        'photos': 'photosHash'
+      },
+      
+      userHash: function() {
+        $.get('/user', function(data) {
+          var userInfoView = new UserInfoView({ el: '#photo-list', model: data });
+          userInfoView.render();
+        }, 'json');
+      },
+
+      photosHash: function() {
+        var userPhotoView = new UserPhotoView({ el: '#photo-list' });
+      }
     });
 
+    var router = new UserRouter();
+    backbone.history.start();
 });
