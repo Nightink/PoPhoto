@@ -79,7 +79,8 @@ exports.photosJson = function(req, res) {
       backDoc.push(doc._doc);
     });
 
-    utils.sendJson(req, res, backDoc);
+    //utils.sendJson(req, res, backDoc);
+    res.json(backDoc);
   });
 };
 
@@ -90,7 +91,8 @@ exports.getPhotoById = function(req, res) {
   Photo.findOne({ '_id': photoId }, function(err, doc) {
     if(err) return utils.sendStatus(req, res, 500, '获取图片信息错误');
 
-    utils.sendJson(req, res, doc);
+    //utils.sendJson(req, res, doc);
+    res.json(doc);
   });
 };
 
@@ -109,7 +111,7 @@ exports.addCommentsPhoto = function(req, res) {
   Photo.update({_id: photoId}, update, function(err, num){
     if(err) return utils.sendStatus(req, res, 500, '添加图片评论错误');;
     if(num === 0) return utils.sendStatus(req, res, 403, '图片信息错误');
-    return utils.sendStatus(req, res, 200, '添加评论成功');
+    return res.json(200, '添加评论成功');//utils.sendStatus(req, res, 200, '添加评论成功');
   })
 };
 
