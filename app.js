@@ -86,13 +86,31 @@ require('./conf/' + config.env + '.js')(app, function(err) {
   //路由调度加载
   require('./routes')(app);
 
-  app.listen(app.get('port'), function(err) {     //启动服务器,监听端口
-    if(err) {
-      console.log(err.message);
-      return;
-    }
-    console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
-  });
+  function startServer() {
+    app.listen(app.get('port'), function(err) {     //启动服务器,监听端口
+      if(err) {
+        console.log(err.message);
+        return;
+      }
+      console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
+    });
+    console.log("Debug: Express server listening on port %s", app.get('port'));
+  }
 
-  console.log("Debug: Express server listening on port %s", app.get('port'));
+  app.on('error', function(e) {
+    console.log(e);
+    if (e.code === 'EADDRINUSE') {
+      console.warn('Port %d in use', app.get('port'));
+      app.set('port', randomPort());
+      startServer();
+    } else {
+        throw e;
+    }
+  });
+  
+  startServer();
 });
+
+function randomPort() {
+   return Math.floor(Math.random() * 1000) + 7000
+}
