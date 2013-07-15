@@ -5,11 +5,6 @@
  * 服务器运行
  */
 
-//捕获所有未处理异常
-process.on('uncaughtException', function(err) {
-  console.log('Sys ' + err.stack);
-});
-
 var express = require('express')
   , fs = require('fs')
   , path = require('path')
@@ -17,9 +12,49 @@ var express = require('express')
   , config = require('./config')
   , app = express();
 
+//捕获所有未处理异常
+process.on('uncaughtException', function(err) {
+  if (err.code === 'EADDRINUSE') {
+    console.warn('Debug: Port %d in use', app.get('port'));
+    app.set('port', randomPort());
+    startServer();
+  } else {
+    console.log('Sys ' + err.stack);
+    //throw e;
+  }
+});
+
 require('./lib/registerTemplate');        //加载视图注册模版
-require('./models');              //加载实体对象
-require('./lib/fileClean');           //缓存文件定期处理
+require('./models');                      //加载实体对象
+require('./lib/fileClean');               //缓存文件定期处理
+
+function startServer() {
+  app.listen(app.get('port'), function(err) {     //启动服务器,监听端口
+    if(err) {
+      console.log(err.message);
+      return;
+    }
+    console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
+  });
+  console.log("Debug: Express server listening on port %s", app.get('port'));
+}
+
+function randomPort() {   //随机端口轮询
+  return Math.floor(Math.random() * 1000) + 7000
+}
+
+/*
+app.on('error', function(e) {
+  console.log(e);
+  if (e.code === 'EADDRINUSE') {
+    console.warn('Port %d in use', app.get('port'));
+    app.set('port', randomPort());
+    startServer();
+  } else {
+    throw e;
+  }
+});
+*/
 
 require('./conf/' + config.env + '.js')(app, function(err) {
   if(err) return;
@@ -85,32 +120,6 @@ require('./conf/' + config.env + '.js')(app, function(err) {
 
   //路由调度加载
   require('./routes')(app);
-
-  function startServer() {
-    app.listen(app.get('port'), function(err) {     //启动服务器,监听端口
-      if(err) {
-        console.log(err.message);
-        return;
-      }
-      console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
-    });
-    console.log("Debug: Express server listening on port %s", app.get('port'));
-  }
-
-  app.on('error', function(e) {
-    console.log(e);
-    if (e.code === 'EADDRINUSE') {
-      console.warn('Port %d in use', app.get('port'));
-      app.set('port', randomPort());
-      startServer();
-    } else {
-        throw e;
-    }
-  });
   
   startServer();
 });
-
-function randomPort() {
-   return Math.floor(Math.random() * 1000) + 7000
-}
