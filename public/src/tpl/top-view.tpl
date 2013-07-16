@@ -1,9 +1,3 @@
-<!-- 顶部导航栏 -->
-<div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="/">{{title}}</a>
-            <div class="login-button pull-right">
                 {{#user}}
                 <span class="canceled">[<a href="/login-out">注销</a>]</span>
                 <span class="loginName"> 欢迎您<span><a href="/user/{{_id}}">{{username}}</a></span>！</span>
@@ -15,9 +9,3 @@
                 <button class="btn btn-success" id="user-login" data-loading-text="登录中..." data-complete-text="登录" style=" margin-top: -7px;">登录</button>
                 <button class="btn btn-warning" id="user-register" style=" margin-top: -7px;">注册</button>
                 {{/user}}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal hide fade newPhoto" id="new-pin"></div>

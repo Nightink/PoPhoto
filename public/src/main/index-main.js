@@ -6,13 +6,21 @@
  * Photo主页面调度入口
  */
 define(function(require, exports, module) {
+  require('bootstrap');
+  require("../util/cookie");
+  require('wookmark');
+  require('json');
+  require('imagesloaded');
+  require('fancybox');
+  require('axzoomer');
+  require('../../css/style.css');
 
   var $ = require('jquery');
 
   var AppView = require('../view/app-view');
 
   var appView = new AppView();
-  appView.render();
+  appView.initFolw();
 
   (function() {       //“返回顶部”标签函数
     var $backToTopEle = $('.backToTop');

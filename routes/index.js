@@ -10,9 +10,9 @@ var user = require('./user')
 
 module.exports = function(app) {
 
-    /*app.get('/', function(req, res) {
+    app.get('/', function(req, res) {
         res.redirect('/photos');
-    });*/
+    });
 
     require('./attachment')(app);
     require('./user')(app);

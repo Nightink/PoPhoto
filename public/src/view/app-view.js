@@ -7,14 +7,7 @@
  */
 
 define(function (require, exports, module) {
-  require('bootstrap');
-  require("../util/cookie");
-  require('wookmark');
-  require('json');
-  require('imagesloaded');
-  require('fancybox');
-  require('axzoomer');
-  require('../../css/style.css');
+
   var $ = require('jquery')
     , _ = require('underscore')
     , Backbone = require('backbone')
@@ -35,6 +28,7 @@ define(function (require, exports, module) {
     },
 
     render: function() {
+      //this.topView.render();
       this.photoFlowView.render();
     },
 
