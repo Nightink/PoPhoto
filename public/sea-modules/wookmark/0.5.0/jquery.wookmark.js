@@ -9,7 +9,8 @@
   @license Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) license.
 */
 define(function (require, exports, modules) {
-    modules.exports = function($){
+    //modules.exports = function(){
+        var $ = require('jquery');
         $.fn.wookmark = function(options) {
 
             if(!this.wookmarkOptions) {
@@ -169,5 +170,5 @@ define(function (require, exports, modules) {
             // Display items (if hidden).
             this.show();
         };
-    }
+    //}
 });

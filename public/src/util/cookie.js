@@ -7,7 +7,8 @@
  */
 
 define(function (require, exports, modules) {
-    modules.exports = function($){
+    //modules.exports = function($){
+        var $ = require('jquery');
         $.cookie = function(name, value, options) {
             if (typeof value != 'undefined') { // name and value given, set cookie
                 options = options || {};
@@ -46,5 +47,5 @@ define(function (require, exports, modules) {
                 return cookieValue;
             }
         };
-    }
+    //}
 });

@@ -16,6 +16,7 @@
 define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-buttons-debug", [], function(require, exports, module) {
     seajs.importStyle('#fancybox-buttons{position:fixed;left:0;width:100%;z-index:8050}#fancybox-buttons.top{top:10px}#fancybox-buttons.bottom{bottom:10px}#fancybox-buttons ul{display:block;width:166px;height:30px;margin:0 auto;padding:0;list-style:none;border:1px solid #111;border-radius:3px;-webkit-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);-moz-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);background:#323232;background:-moz-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%, #444),color-stop(50%, #343434),color-stop(50%, #292929),color-stop(100%, #333));background:-webkit-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-o-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-ms-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="#444444", endColorstr="#222222", GradientType=0 )}#fancybox-buttons ul li{float:left;margin:0;padding:0}#fancybox-buttons a{display:block;width:30px;height:30px;text-indent:-9999px;background-image:url("../assets/images/fancybox_buttons.png");background-repeat:no-repeat;outline:0;opacity:.8}#fancybox-buttons a:hover{opacity:1}#fancybox-buttons a.btnPrev{background-position:5px 0}#fancybox-buttons a.btnNext{background-position:-33px 0;border-right:1px solid #3e3e3e}#fancybox-buttons a.btnPlay{background-position:0 -30px}#fancybox-buttons a.btnPlayOn{background-position:-30px -30px}#fancybox-buttons a.btnToggle{background-position:3px -60px;border-left:1px solid #111;border-right:1px solid #3e3e3e;width:35px}#fancybox-buttons a.btnToggleOn{background-position:-27px -60px}#fancybox-buttons a.btnClose{border-left:1px solid #111;width:35px;background-position:-56px 0}#fancybox-buttons a.btnDisabled{opacity:.4;cursor:default}', "#jquery-fancybox/2.1.4/../css/jquery-fancybox-buttons.css", module);
     module.exports = function($) {
+        //var $ = require('jquery');
         //(function ($) {
         //Shortcut for fancyBox object
         var F = $.fancybox;
@@ -415,12 +416,13 @@ define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs-debug", [], functi
 
 define("#jquery-fancybox/2.1.4/jquery-fancybox-debug", [ "./helpers/jquery-fancybox-buttons-debug", "./helpers/jquery-fancybox-media-debug", "./helpers/jquery-fancybox-thumbs-debug", "#/jquery/1.7.2/jquery-debug", "#/jquery-mousewheel/3.0.6/jquery-mousewheel-debug" ], function(require, exports, module) {
     var $, jQuery;
-    module.exports = function(externalJQuery) {
+    /*module.exports = function(externalJQuery) {
         if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
             $ = jQuery = externalJQuery;
         } else if (!$) {
             $ = jQuery = require("#/jquery/1.7.2/jquery-debug").sub();
-        }
+        }*/
+    $ = jQuery = require("jquery");
         /*!
  * fancyBox - jQuery Plugin
  * version: 2.1.4 (Thu, 17 Jan 2013)
@@ -1895,5 +1897,5 @@ define("#jquery-fancybox/2.1.4/jquery-fancybox-debug", [ "./helpers/jquery-fancy
         require("./helpers/jquery-fancybox-media-debug")(jQuery);
         require("./helpers/jquery-fancybox-thumbs-debug")(jQuery);
         return jQuery;
-    };
+    //};
 });

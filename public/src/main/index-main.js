@@ -7,39 +7,30 @@
  */
 define(function(require, exports, module) {
 
-    var $ = require('jquery');
-    require('bootstrap');
-    require("../util/cookie")($);
-    require('wookmark')($);
-    require('json');
-    require('imagesloaded')($);
-    require('fancybox')($);
-    require('axzoomer')($);
-    require('../../css/style.css');
+  var $ = require('jquery');
 
-    var _ = require('underscore')
-        , AppView = require('../view/app-view');
+  var AppView = require('../view/app-view');
 
-    var appView = new AppView();
-    appView.initFolw();
+  var appView = new AppView();
+  appView.render();
 
-    (function() {           //“返回顶部”标签函数
-        var $backToTopEle = $('.backToTop');
+  (function() {       //“返回顶部”标签函数
+    var $backToTopEle = $('.backToTop');
 
-        $backToTopEle.click(function(e) {
-            $('html,body').animate({ scrollTop: 0 }, 120);
-        });
+    $backToTopEle.click(function(e) {
+      $('html,body').animate({ scrollTop: 0 }, 120);
+    });
 
-        $(window).bind("scroll", function() {
-            var st = $(document).scrollTop()
-                , winh = $(window).height();
+    $(window).bind("scroll", function() {
+      var st = $(document).scrollTop()
+        , winh = $(window).height();
 
-            (st > 0) ? $backToTopEle.show(): $backToTopEle.hide();
-            //IE6下的定位
-            if (!window.XMLHttpRequest) {
-                $backToTopEle.css("top", st + winh - 166);
-            }
-        });
-    })();
+      (st > 0) ? $backToTopEle.show(): $backToTopEle.hide();
+      //IE6下的定位
+      if (!window.XMLHttpRequest) {
+        $backToTopEle.css("top", st + winh - 166);
+      }
+    });
+  })();
 
 });

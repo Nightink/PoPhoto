@@ -6,7 +6,8 @@
  */
 
 define(function (require, exports, modules) {
-    modules.exports = function(jQuery){
+    //modules.exports = function(jQuery){
+        var jQuery = require('jquery');
         (function($, undefined) {
             'use strict';
 // blank image data-uri bypasses webkit log warning (thx doug jones)
@@ -108,5 +109,5 @@ define(function (require, exports, modules) {
             };
 
         })(jQuery);
-    }
+    //}
 });

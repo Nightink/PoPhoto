@@ -1,12 +1,13 @@
-define("#jquery-axzoomer/1.5.0/jquery-axzoomer-debug", [ "#/jquery/1.7.2/jquery-debug", "#/jquery-mousewheel/3.0.6/jquery-mousewheel-debug" ], function(require, exports, module) {
+define(function(require, exports, module) {
     // add your code
     var $, jQuery;
-    module.exports = function(externalJQuery) {
-        if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
+    //module.exports = function(externalJQuery) {
+        /*if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
             $ = jQuery = externalJQuery;
         } else if (!$) {
             $ = jQuery = require("#/jquery/1.7.2/jquery-debug").sub();
-        }
+        }*/
+        $ = jQuery = require('jquery');
         /*!
  * jQuery axzoomer
  * Alban Xhaferllari
@@ -374,5 +375,5 @@ define("#jquery-axzoomer/1.5.0/jquery-axzoomer-debug", [ "#/jquery/1.7.2/jquery-
             };
         })(jQuery);
         return jQuery;
-    };
+    //};
 });
