@@ -68,4 +68,4 @@ exports.delete = function(req, res) {
   utils.delete(attachmentID, function() {
     res.send('删除成功');
   });
-}
+};
