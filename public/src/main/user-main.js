@@ -12,7 +12,7 @@ define(function(require, exports, module) {
       , backbone = require('backbone');
 
     require('bootstrap');
-    require("../util/cookie")($);
+    require("../util/cookie");
     require('../../css/style.css');
 
     var UserPhotoView = require('../view/user-photos')
