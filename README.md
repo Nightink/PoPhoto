@@ -4,6 +4,8 @@
 * brew install GraphicsMagick
 * brew install mongodb
 
+### win GraphicsMagick mongodb 官网
+
 ### 后期规划
 * 后端采用纯RESTFul api接口
 * 前端组件化构建开发
