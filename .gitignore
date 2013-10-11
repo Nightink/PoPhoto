@@ -6,13 +6,12 @@ lib-cov
 *.out
 *.pid
 *.gz
+.svn
 .idea
 node_modules
 .bin
 log.txt
-
 pids
 logs
 results
-
 npm-debug.log
