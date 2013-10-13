@@ -17,7 +17,7 @@ exports.userInfo = function(req, res){
 
   User.findOne({ '_id': _id }, function(err, doc) {
     if(err) {
-      console.log(err);
+        utils.log(err);
       return utils.sendStatus(req, res, 500, '服务器错误');
     } else {
 
@@ -53,7 +53,7 @@ exports.updateUser = function(req, res) {
   var userModel = req.body;
   var userId = userModel._id;
 
-  console.log(userModel);
+    utils.log(userModel);
 
   if(_.isNull(userModel.username)) utils.sendStatus(req, res, 403, '用户昵称不能为空');
 
@@ -89,12 +89,12 @@ exports.userCorrect = function(req, res, next) {
 
   if(!req.session.user) {
     User.findOne({ "_id": _id }, function(err, doc) {
-      if(err) console.log(err);
+      if(err) utils.log(err);
       if(!doc) return next(false);
 
       req.session.user = doc;
       req.session.save(function(err) {
-        if(err) console.log(err);
+        if(err) utils.log(err);
         next(true, req.session.user);
       });
     });
@@ -115,11 +115,11 @@ exports.getUserById = function(req, res) {
   userId = utils.decipherHelper(userId);
 
   User.findOne({_id: userId}, function(err, doc) {
-    console.log(doc);
+      utils.log(doc);
     if(err) return utils.sendStatus(req, res, 500, '查询失败');
 
     doc.password = utils.decipherHelper(doc.password);
-    console.log(doc);
+      utils.log(doc);
     utils.sendJson(req, res, doc);
   });
 };

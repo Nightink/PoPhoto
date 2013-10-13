@@ -144,7 +144,6 @@ define(function (require, exports, module) {
         photoModel.fetch({
             'url': '/photos/' + this.imgId,
             success: function(data) {
-                console.log(this);
                 var commentsView = new CommentsView({ el: '.fancybox-overlay', model: data });
                 commentsView.render();
             }

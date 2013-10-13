@@ -8,35 +8,40 @@
 var utils = require('../lib/utils')
   , config = require('../config');
 
-//POST /upload 上传图片
+// POST --> /upload 上传图片
 exports.upload = function(req, res) {
+
   var file = req.files.file
     , tempPath = file.path;
 
   var tempImagePath = __dirname + '/../' + tempPath;
-  var thumbImagePath = tempImagePath + '_t';      //缩略图缓存
-  var attachmentImagePath = tempImagePath + '_s';   //原生图缓存
+  // 缩略图缓存
+  var thumbImagePath = tempImagePath + '_t';
+  // 原生图缓存
+  var attachmentImagePath = tempImagePath + '_s';
 
   utils.imageSize(tempPath, function(err, size) {
     utils.thumb(tempImagePath, attachmentImagePath, size.width, size.height, function() {
-      //图片原尺寸入库
+      // 图片原尺寸入库
       utils.upload(file.name, file.type, attachmentImagePath, function(err, docFileS) {
-        if(err) console.log(err);
+        if(err) utils.log(err);
 
         var thumbWidth = config.thumb.width
           , thumbHeight = size.height * (thumbWidth / size.width);
 
         utils.thumb(tempImagePath, thumbImagePath, thumbWidth, thumbHeight, function(err) {
-          //图片缩略入库
+          // 图片缩略入库
           utils.upload('s_' + file.name, file.type, thumbImagePath, function(err, docFileT) {
             if(err) {
-              console.log(err);
+                utils.log(err);
               return res.send(500);
             }
 
+            // 原图url
             var data = {
-              url: docFileS._id.toString() || '',       //原图url
-              url_small: docFileT._id.toString() || '',     //缩略图url
+              url: docFileS._id.toString() || '',
+              // 缩略图url
+              url_small: docFileT._id.toString() || '',
               size: size
             };
             utils.sendJson(req, res, data);
@@ -47,17 +52,20 @@ exports.upload = function(req, res) {
   });
 };
 
-// GET attachment/:id
+// GET --> attachment/:id
 exports.download = function(req, res) {
+
   var attachmentID = req.params.id;
 
   utils.download(attachmentID, function(err, contentType, file) {
+
     if(err) {
-      console.log('Debug: 获取文件失败,Error:%s', err);
+        utils.log(err);
       return res.send(400, '找不到该文件');
     }
 
-    res.set('Content-Type', contentType);   //设置响应头 文件格式
+    // 设置响应头 文件格式
+    res.set('Content-Type', contentType);
     res.send(file);
   });
 };

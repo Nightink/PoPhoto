@@ -19,7 +19,7 @@ process.on('uncaughtException', function(err) {
     app.set('port', randomPort());
     startServer();
   } else {
-    console.log('Sys ' + err.stack);
+    console.log('Sys %s', err.stack);
     //throw e;
   }
 });

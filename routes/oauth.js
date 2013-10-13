@@ -15,10 +15,13 @@ module.exports = function(app) {
 
   //用户登出操作
   app.get('/login-out', function(req, res) {
+
     var redirect = req.query.redirect ?  req.query.redirect : "/photos";
-    if(req.session && req.session.user){
+    if(req.session && req.session.user) {
+
       var userId = req.session.user.username;
-      console.log("用户%s登出", userId);
+      // console.log('Debug-info:\n  filename: %s\n  message: 用户"%s"登出', __filename, userId);
+      utils.log('用户"' + userId + '"登出');
     }
 
     res.clearCookie('_id', { path:'/' });
@@ -29,6 +32,7 @@ module.exports = function(app) {
 
   //用户登陆操作
   app.post('/login', function(req, res) {
+
     var reqBody = req.body
       , email = reqBody.email
       , password = reqBody.password;
@@ -38,6 +42,7 @@ module.exports = function(app) {
     password = utils.encryptHelper(password);
 
     User.findOne({ "email": email, "password": password }, function(err, doc) {
+
       if(err) return res.sendStatus(req, res, 500, err);
 
       if(_.isNull(doc)) return utils.sendStatus(req, res, 400, '登陆失败');
@@ -49,6 +54,7 @@ module.exports = function(app) {
 
       req.session.user = result;
       req.session.save(function(err){
+
         res.cookie('_id', utils.encryptHelper(result._id), { path:'/', maxAge: config.cookie_maxage });
         res.cookie('username', result.username, { path:'/', maxAge: config.cookie_maxage });
 
@@ -57,5 +63,4 @@ module.exports = function(app) {
 
     });
   });
-
 };
