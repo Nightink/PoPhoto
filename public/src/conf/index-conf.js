@@ -23,7 +23,7 @@ seajs.config({
         'transport': 'iframe-transport/1.6.1/iframe-transport',
         'fileupload': 'fileupload/5.2.1/fileupload',
         'uiwidget': 'jquery-ui-widget/1.10.0/jquery.ui.widget',
-        'observer' : 'observer/0.0.1/observer',
+        'observer' : 'observer/1.0.0/observer',
         "wookmark": 'wookmark/0.5.0/jquery.wookmark',
         "imagesloaded": 'imagesloaded/2.0.1/imagesloaded',
         "axzoomer": 'jquery-axzoomer/1.5.0/jquery-axzoomer-debug',
