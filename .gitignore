@@ -1,4 +1,6 @@
-lib-cov
+.svn
+.bin
+.idea
 *.seed
 *.log
 *.csv
@@ -6,13 +8,11 @@ lib-cov
 *.out
 *.pid
 *.gz
-.svn
-.idea
-node_modules
-.bin
-log.txt
 pids
 logs
-results
-npm-debug.log
 temp
+lib-cov
+results
+node_modules
+log.txt
+npm-debug.log

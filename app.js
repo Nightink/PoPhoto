@@ -9,17 +9,20 @@ var express = require('express')
   , fs = require('fs')
   , path = require('path')
   , hbs = require('hbs')
-  , config = require('./config')
+  , config = require('./conf/config')
   , app = express();
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
 
   if (err.code === 'EADDRINUSE') {
-    console.warn('Debug: Port %d in use', app.get('port'));
+
+    console.warn('Port %d in use', app.get('port'));
     app.set('port', randomPort());
     startServer();
+
   } else {
+
     console.log('Sys %s', err.stack);
   }
 });
@@ -50,26 +53,13 @@ function randomPort() {
   return Math.floor(Math.random() * 1000) + 7000
 }
 
-/*
-app.on('error', function(e) {
-  console.log(e);
-  if (e.code === 'EADDRINUSE') {
-    console.warn('Port %d in use', app.get('port'));
-    app.set('port', randomPort());
-    startServer();
-  } else {
-    throw e;
-  }
-});
-*/
-
 require('./conf/' + config.env + '.js')(app, function(err) {
   if(err) return;
 
   // 全环境下配置
   app.configure(function() {
     // 配置日志记录
-    var stream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+    var stream = fs.createWriteStream(path.join(__dirname, 'info.log'), {flags: 'a'});
     // app.use 内置中间件队列  依次执行队列的中间件
     app.use(express.logger({stream: stream}));
 
@@ -113,7 +103,7 @@ require('./conf/' + config.env + '.js')(app, function(err) {
     // 设置静态文件路径
     app.use(express.static(path.join(__dirname, 'public')));
     // 设置站点图标
-    app.use(express.favicon(path.join(__dirname, 'public/favicon.jpg')));
+    // app.use(express.favicon(path.join(__dirname, 'public/favicon.jpg')));
 
     // 显示请求错误路由
     app.use(function(req, res, next) {
@@ -129,7 +119,7 @@ require('./conf/' + config.env + '.js')(app, function(err) {
 
   // 配置服务器端口
   app.set('port', config.sys_port || 3000);
-  // 设置页面渲染类型html
+  // 设置页面渲染类型*.html
   app.set('view engine', 'html');
   // 设置视图模板路径
   app.set('views', path.join(__dirname, 'views'));

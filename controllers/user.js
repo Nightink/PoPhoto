@@ -8,7 +8,7 @@
 var mongoose = require('mongoose')
   , User = mongoose.model('User')
   , _ = require('underscore')
-  , config = require('../config')
+  , config = require('../conf/config')
   , utils = require('../lib/utils');
 
 //  GET --> /user/:id  个人用户管理界面

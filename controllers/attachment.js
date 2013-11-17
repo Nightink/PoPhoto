@@ -6,7 +6,7 @@
  */
 
 var utils = require('../lib/utils')
-  , config = require('../config');
+  , config = require('../conf/config');
 
 // POST --> /upload 上传图片
 exports.upload = function(req, res) {

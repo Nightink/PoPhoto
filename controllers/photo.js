@@ -6,7 +6,7 @@
  */
 
 var utils = require('../lib/utils')
-  , config = require('../config')
+  , config = require('../conf/config')
   , mongoose = require('mongoose')
   , Photo = mongoose.model('Photo')
   , _ = require('underscore');

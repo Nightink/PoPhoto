@@ -5,7 +5,7 @@
  * 数据库配置文件
  */
 var mongoose = require('mongoose')
-  , config = require('../config');
+  , config = require('./config');
 
 module.exports = function(app, next) {      //连接数据库操作
   console.log('Debug: loader db config');
