@@ -50,11 +50,12 @@ define(function (require, exports, module) {
 
             self.photoModel.save(null, {
                 url: '/photo-update',
-                success: function(model, str) {     //success事件监听回调函数
+                // success事件监听回调函数
+                success: function(model, str) {
                     alert(str);
                     self.$el.modal('hide');
                     self.photoModel = new PhotoModel;
-                    //Observer.trigger('po-photo:success', model);
+                    // Observer.trigger('po-photo:success', model);
                 },
                 error: function(model, str) {
                     console.log(model, str);
@@ -98,7 +99,7 @@ define(function (require, exports, module) {
             opt.author = $.cookie('username');
 
             this.photoCollection.fetch({
-                url: '/photos.json',
+                url: '/photo',
                 data: opt
             });
         },

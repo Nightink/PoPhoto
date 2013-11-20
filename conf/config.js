@@ -5,7 +5,7 @@
  * pophoto配置文件，mongo数据库配置
  */
 
-exports.env = 'default';
+exports.db_env = 'mongo_config';
 
 // 数据库连接路由
 exports.dbAdd = 'mongodb://127.0.0.1:27017/Pophoto';

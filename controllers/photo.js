@@ -9,44 +9,11 @@ var utils = require('../lib/utils')
   , config = require('../conf/config')
   , mongoose = require('mongoose')
   , Photo = mongoose.model('Photo')
-  , _ = require('underscore');
+  , _ = require('underscore')
+  , moment = require('moment');
 
-// GET --> /photos
-exports.photos = function(req, res) {
-  var user = req.session.user || req.cookies;
-
-  if(_.isNull(user)) return utils.sendJson(req, res, '用户请登陆');
-
-  var _params = { 
-    limit: 15, 
-    skip: 0, 
-    sort: { updated: -1 } 
-  };
-
-  Photo.find(null, null, _params, function(err, docs) {
-
-    if(err) {
-        utils.log(err);
-      return res.send(500);
-    }
-    var backDoc = [];
-    _.each(docs, function(doc){
-
-      var reviews = doc.reviews;
-      doc._doc.reviews = ((reviews && reviews instanceof Array) ? reviews.length : 0);
-      backDoc.push(doc._doc);
-    });
-
-    if(user && user.username) {
-      res.render('index', { title: 'PoPhoto', time: Date.now(), user: user, items: backDoc });
-    } else {
-      res.render('index', { title: 'PoPhoto', time: Date.now(), items: backDoc });
-    }
-  });
-};
-
-// GET --> /photos.json    无关键字模式为：下拉瀑布流 有关键字模式为：搜索功能
-exports.photosJson = function(req, res) {
+// GET --> /photo
+exports.photo = function(req, res) {
 
   var query = {};
   var fields = '';
@@ -60,30 +27,37 @@ exports.photosJson = function(req, res) {
 
   query.updated = { '$lte': time };
   if(q) {
-    query.$or = [{description: new RegExp(q)}, {author: new RegExp(q)}];
+    query.$or = [{
+      description: new RegExp(q)
+    }, {
+      author: new RegExp(q)
+    }];
   }
   if (keywords) {
-    query.keywords = { '$in': keywords };
+    query.keywords = { 
+      '$in': keywords 
+    };
   }
-  var limit = req.query.limit ? req.query.limit : 15;
-  var skip = req.query.skip ? req.query.skip : 0;
+
   var _params = { 
-    limit: limit, 
-    skip: skip, 
-    sort: { updated: -1 }
+    limit: (req.query.limit ? req.query.limit : 15), 
+    skip: (req.query.skip ? req.query.skip : 0), 
+    sort: { 
+      updated: -1 
+    }
   };
 
-  utils.log(req.query);
-
-  Photo.find(query, null, _params, function(err, docs){
+  Photo.find(query, null, _params, function(err, docs) {
     if(err) {
         utils.log(err);
       return res.send(500);
     }
     var backDoc = [];
-    _.each(docs, function(doc){
+    _.each(docs, function(doc) {
       var reviews = doc.reviews;
-      doc._doc.reviews = ((reviews && reviews instanceof Array) ? reviews.length : 0);
+      doc._doc.reviews = _.isArray(reviews) ? reviews.length : 0;
+      doc._doc.created = moment(doc.created).format('YYYY-MM-DDTHH:mm:ss');
+      doc._doc.updated = moment(doc.updated).format('YYYY-MM-DDTHH:mm:ss');
       if(doc.type === 'video'){
         doc._doc.isVideo = true;
       }
@@ -94,7 +68,7 @@ exports.photosJson = function(req, res) {
   });
 };
 
-// GET --> /photos/:id
+// GET --> /photo/:id
 exports.getPhotoById = function(req, res) {
 
   var photoId = req.params.id;
@@ -107,7 +81,7 @@ exports.getPhotoById = function(req, res) {
   });
 };
 
-// PUT --> /photos
+// PUT --> /photo
 exports.addCommentsPhoto = function(req, res) {
 
   // var photoId = req.params.id;
@@ -120,15 +94,24 @@ exports.addCommentsPhoto = function(req, res) {
     created: new Date()
   };
 
-  var update =  {
-    '$push': { reviews: pushObj }, 
-    '$set': { update: new Date() }
+  var update = {
+    '$push': {
+      reviews: pushObj
+    }, 
+    '$set': {
+      update: new Date()
+    }
   };
 
   Photo.update({ _id: photoId }, update, function(err, num){
 
-    if(err) return utils.sendStatus(req, res, 500, '添加图片评论错误');;
-    if(num === 0) return utils.sendStatus(req, res, 403, '图片信息错误');
+    if(err) {
+      return utils.sendStatus(req, res, 500, '添加图片评论错误');
+    }
+
+    if(num === 0) {
+      return utils.sendStatus(req, res, 403, '图片信息错误');
+    }
     // utils.sendStatus(req, res, 200, '添加评论成功');
     return res.json(200, '添加评论成功');
   })
@@ -141,8 +124,13 @@ exports.poPhoto  = function(req, res) {
     , author = req.session.user.username || req.cookies.username
     , title = reqPost.title;
 
-  if(!author) return utils.sendJson(req, res, '请重新登陆');
-  if(_.isEmpty(reqPost.keywords)) return res.send(400, '关键字不能为空');
+  if(!author) {
+    return utils.sendJson(req, res, '请重新登陆');
+  }
+
+  if(_.isEmpty(reqPost.keywords)) {
+    return res.send(400, '关键字不能为空');
+  }
 
   reqPost.author = author;
   // 过滤文件后缀名
@@ -181,7 +169,10 @@ exports.updatePhoto = function(req, res) {
     }
 
     doc.save(function(err, doc) {
-      if(err) return utils.sendStatus(req, res, 500, '服务器更新失败');
+
+      if(err) {
+        return utils.sendStatus(req, res, 500, '服务器更新失败');
+      }
 
       utils.sendStatus(req, res, 200, '图片信息更新成功');
     });

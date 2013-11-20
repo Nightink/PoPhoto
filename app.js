@@ -53,7 +53,7 @@ function randomPort() {
   return Math.floor(Math.random() * 1000) + 7000
 }
 
-require('./conf/' + config.env + '.js')(app, function(err) {
+require('./conf/' + config.db_env + '.js')(app, function(err) {
   if(err) return;
 
   // 全环境下配置

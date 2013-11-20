@@ -93,7 +93,7 @@ define(function (require, exports, module) {
           self.currentPhoto += self.limit;
 
           self.photoFlowView.photoCollection.fetch({
-            url: '/photos.json',
+            url: '/photo',
             data: formData
           });
         }
