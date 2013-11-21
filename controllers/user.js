@@ -30,7 +30,8 @@ exports.userInfo = function(req, res){
 // POST --> /add-user  添加用户控制器处理方法
 exports.addUser = function(req, res) {
 
-  var reqBody = req.body;   //获取用户提交数据
+  // 获取用户提交数据
+  var reqBody = req.body;
 
   _.each(reqBody, function(val, key) {
     if( (val == null) || (val == '') ) delete reqBody[key];
@@ -58,11 +59,11 @@ exports.updateUser = function(req, res) {
   if(_.isNull(userModel.username)) utils.sendStatus(req, res, 403, '用户昵称不能为空');
 
   var opt = {
-    username: userModel.username,
-    password: utils.encryptHelper(userModel.password),
-    gender: userModel.gender,
-    discipline: userModel.discipline || '',
-    update: Date.now
+    username   : userModel.username,
+    password   : utils.encryptHelper(userModel.password),
+    gender     : userModel.gender,
+    discipline : userModel.discipline || '',
+    update     : Date.now
   };
   var update =  { "$set": opt/*, "$addToSet": { update: Date.now }*/ };
 

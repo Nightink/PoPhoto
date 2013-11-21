@@ -5,12 +5,14 @@
  * photo 控制器
  */
 
-var utils = require('../lib/utils')
-  , config = require('../conf/config')
-  , mongoose = require('mongoose')
-  , Photo = mongoose.model('Photo')
-  , _ = require('underscore')
-  , moment = require('moment');
+// 第三方依赖组件
+var moment   = require('moment');
+var mongoose = require('mongoose');
+var _        = require('underscore');
+// 自身模块
+var utils    = require('../lib/utils');
+var config   = require('../conf/config');
+var Photo    = mongoose.model('Photo');
 
 // GET --> /photo
 exports.photo = function(req, res) {
@@ -23,9 +25,15 @@ exports.photo = function(req, res) {
   var time = req.query.time ? req.query.time : Date.now();
   var author = req.query.author;
 
-  if(author) query.author = author;
+  if(author) {
 
-  query.updated = { '$lte': time };
+    query.author = author;
+  }
+
+  query.updated = {
+    '$lte': time 
+  };
+
   if(q) {
     query.$or = [{
       description: new RegExp(q)
@@ -48,22 +56,30 @@ exports.photo = function(req, res) {
   };
 
   Photo.find(query, null, _params, function(err, docs) {
+
     if(err) {
-        utils.log(err);
+
+      utils.log(err);
       return res.send(500);
     }
+
     var backDoc = [];
     _.each(docs, function(doc) {
+
       var reviews = doc.reviews;
+
       doc._doc.reviews = _.isArray(reviews) ? reviews.length : 0;
       doc._doc.created = moment(doc.created).format('YYYY-MM-DDTHH:mm:ss');
       doc._doc.updated = moment(doc.updated).format('YYYY-MM-DDTHH:mm:ss');
+
       if(doc.type === 'video'){
+
         doc._doc.isVideo = true;
       }
+
       backDoc.push(doc._doc);
     });
-    // utils.sendJson(req, res, backDoc);
+
     res.json(backDoc);
   });
 };
@@ -71,39 +87,47 @@ exports.photo = function(req, res) {
 // GET --> /photo/:id
 exports.getPhotoById = function(req, res) {
 
-  var photoId = req.params.id;
-  var review = req.query.review;
-  Photo.findOne({ '_id': photoId }, function(err, doc) {
+  // var review = req.query.review;
+  var params = {
+    '_id': req.params.id
+  };
 
-    if(err) return utils.sendStatus(req, res, 500, '获取图片信息错误');
-    // utils.sendJson(req, res, doc);
+  Photo.findOne(params, function(err, doc) {
+
+    if(err) {
+
+      return utils.sendStatus(req, res, 500, '获取图片信息错误');
+    }
+
     res.json(doc);
+
   });
+
 };
 
 // PUT --> /photo
 exports.addCommentsPhoto = function(req, res) {
 
-  // var photoId = req.params.id;
-  var photoId = req.body._id;
   var reviews = req.body.reviews.pop();
-
-  var pushObj = {
-    author: req.session.user.username || req.cookies.username,
-    content: reviews.content,
-    created: new Date()
-  };
 
   var update = {
     '$push': {
-      reviews: pushObj
+      reviews: {
+        author: req.session.user.username || req.cookies.username,
+        content: reviews.content,
+        created: new Date()
+      }
     }, 
     '$set': {
       update: new Date()
     }
   };
 
-  Photo.update({ _id: photoId }, update, function(err, num){
+  var params = {
+    '_id': req.body._id
+  };
+
+  Photo.update(params, update, function(err, num){
 
     if(err) {
       return utils.sendStatus(req, res, 500, '添加图片评论错误');
@@ -114,7 +138,8 @@ exports.addCommentsPhoto = function(req, res) {
     }
     // utils.sendStatus(req, res, 200, '添加评论成功');
     return res.json(200, '添加评论成功');
-  })
+
+  });
 };
 
 // POST --> /po-photo 处理用户提交图片信息入库操作
@@ -145,8 +170,7 @@ exports.poPhoto  = function(req, res) {
     if(!err) {
       utils.sendStatus(req, res, 200, '图片保存成功');
     } else {
-      // utils.sendJson(req, res, '失败');
-      res.sendStatus(req, res, 500, '服务器设置失败');
+      utils.sendStatus(req, res, 500, '服务器设置失败');
     }
   });
 
@@ -158,12 +182,16 @@ exports.updatePhoto = function(req, res) {
   var reqBody = req.body;
 
   Photo.findOne({_id: reqBody._id }, function(err, doc) {
-    if(err) return utils.sendStatus(req, res, 500, '服务器查询失败');
+    
+    if(err) {
+      return utils.sendStatus(req, res, 500, '服务器查询失败');
+    }
 
-    doc.title = reqBody.title;
+    doc.title       = reqBody.title;
     doc.description = reqBody.description;
 
     if(!_.isArray(reqBody.keywords)) {
+
       // 关键字处理
       doc.keywords = reqBody.keywords.split(/;|；|\s|,|，/);
     }
@@ -176,6 +204,7 @@ exports.updatePhoto = function(req, res) {
 
       utils.sendStatus(req, res, 200, '图片信息更新成功');
     });
+
   });
 
 };
@@ -183,10 +212,15 @@ exports.updatePhoto = function(req, res) {
 // DELETE -> /photo-delete 图片删除操作
 exports.deletePhoto = function(req, res) {
 
-  var _id = req.query._id;
+  var params = {
+    '_id': req.query._id
+  };
 
-  Photo.remove({ '_id': _id }, function(err) {
-    if(err) return utils.sendStatus(req, res, 500, err);
+  Photo.remove(params, function(err) {
+
+    if(err) {
+      return utils.sendStatus(req, res, 500, err);
+    }
 
     utils.sendStatus(req, res, 200, '删除成功');
   });

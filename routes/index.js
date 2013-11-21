@@ -11,7 +11,7 @@ var user = require('./user')
 module.exports = function(app) {
 
     app.get('/', function(req, res) {
-        res.redirect('/photo');
+        res.redirect('/index.html');
     });
 
     require('./attachment')(app);
