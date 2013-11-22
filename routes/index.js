@@ -5,19 +5,20 @@
  * PoPhoto index 路由调度接口
  */
 
-var user = require('./user')
-    , photo = require('./photo');
+var user  = require('./user');
+var photo = require('./photo');
 
 module.exports = function(app) {
 
-    app.get('/', function(req, res) {
-        res.redirect('/index.html');
-    });
+  app.get('/', function(req, res) {
 
-    require('./attachment')(app);
-    require('./user')(app);
-    require('./photo')(app);
-    require('./oauth')(app);
+    res.redirect('/index.html');
+  });
 
-    //return app.router;
+  require('./attachment')(app);
+  require('./user')(app);
+  require('./photo')(app);
+  require('./oauth')(app);
+
+  //return app.router;
 }

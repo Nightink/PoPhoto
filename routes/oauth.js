@@ -5,11 +5,13 @@
  *
  * 用户验证路由处理、验证业务逻辑处理
  */
-var mongoose = require('mongoose')
-  , User = mongoose.model('User')
-  , config = require('../conf/config')
-  , utils = require('../lib/utils')
-  , _ = require('underscore');
+
+var mongoose = require('mongoose');
+var _        = require('underscore');
+
+var User     = mongoose.model('User');
+var config   = require('../conf/config');
+var utils    = require('../lib/utils');
 
 module.exports = function(app) {
 

@@ -5,12 +5,13 @@
  * 服务器运行
  */
 
-var express = require('express')
-  , fs = require('fs')
-  , path = require('path')
-  , hbs = require('hbs')
-  , config = require('./conf/config')
-  , app = express();
+var express = require('express');
+var fs      = require('fs');
+var path    = require('path');
+var hbs     = require('hbs');
+
+var config  = require('./conf/config');
+var app     = express();
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {

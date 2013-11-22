@@ -5,8 +5,8 @@
  * 负责图片上传、返回显示
  */
 
-var utils = require('../lib/utils')
-  , config = require('../conf/config');
+var utils  = require('../lib/utils');
+var config = require('../conf/config');
 
 // POST --> /upload 上传图片
 exports.upload = function(req, res) {
@@ -60,7 +60,7 @@ exports.download = function(req, res) {
   utils.download(attachmentID, function(err, contentType, file) {
 
     if(err) {
-        utils.log(err);
+      utils.log(err);
       return res.send(400, '找不到该文件');
     }
 

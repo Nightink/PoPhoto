@@ -5,11 +5,12 @@
  * User控制器
  */
 
-var mongoose = require('mongoose')
-  , User = mongoose.model('User')
-  , _ = require('underscore')
-  , config = require('../conf/config')
-  , utils = require('../lib/utils');
+var mongoose = require('mongoose');
+var _        = require('underscore');
+
+var User     = mongoose.model('User');
+var config   = require('../conf/config');
+var utils    = require('../lib/utils');
 
 //  GET --> /user/:id  个人用户管理界面
 exports.userInfo = function(req, res){
