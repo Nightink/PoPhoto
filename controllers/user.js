@@ -35,7 +35,10 @@ exports.addUser = function(req, res) {
   var reqBody = req.body;
 
   _.each(reqBody, function(val, key) {
-    if( (val == null) || (val == '') ) delete reqBody[key];
+
+    if( (val == null) || (val == '') ) {
+      delete reqBody[key];
+    }
   });
 
   reqBody.password = utils.encryptHelper(reqBody.password);
