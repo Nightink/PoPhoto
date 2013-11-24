@@ -12,10 +12,14 @@ var Photo = mongoose.model('Photo');
 
 module.exports = function(app) {
 
+  app.get('/index.html', function(req, res) {
+
+    res.redirect('/');
+  });
+
   app.get('/', function(req, res) {
 
     var user = req.session.user || req.cookies;
-    console.log('welcome')
 
     if(_.isNull(user)) {
 

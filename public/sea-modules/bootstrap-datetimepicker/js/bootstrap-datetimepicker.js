@@ -24,6 +24,8 @@
  * =========================================================
  */
 define(function(require, exports, module) {
+
+    require('../css/bootstrap-datepicker.css');
     var $ = jQuery = require('jquery');
 
 (function($) {

@@ -18,11 +18,10 @@ module.exports = function(app) {
   //用户登出操作
   app.get('/login-out', function(req, res) {
 
-    var redirect = req.query.redirect ?  req.query.redirect : "/photos";
+    var redirect = req.query.redirect ?  req.query.redirect : '/';
     if(req.session && req.session.user) {
 
       var userId = req.session.user.username;
-      // console.log('Debug-info:\n  filename: %s\n  message: 用户"%s"登出', __filename, userId);
       utils.log('用户"' + userId + '"登出');
     }
 
@@ -35,19 +34,25 @@ module.exports = function(app) {
   //用户登陆操作
   app.post('/login', function(req, res) {
 
-    var reqBody = req.body
-      , email = reqBody.email
-      , password = reqBody.password;
+    var reqBody = req.body;
+    var email = reqBody.email;
+    var password = reqBody.password;
 
-    if(_.isEmpty(email) || _.isEmpty(password)) return utils.sendStatus(req, res, 400, '请填写正确信息');
+    if(_.isEmpty(email) || _.isEmpty(password)) {
+      return res.json(400, '请填写正确信息');
+    }
 
     password = utils.encryptHelper(password);
 
     User.findOne({ "email": email, "password": password }, function(err, doc) {
 
-      if(err) return res.sendStatus(req, res, 500, err);
+      if(err) {
+        return res.json(500, err);
+      }
 
-      if(_.isNull(doc)) return utils.sendStatus(req, res, 400, '登陆失败');
+      if(_.isNull(doc)) {
+        return res.json(400, '登陆失败');
+      }
 
       var result = {
         username: doc.username,

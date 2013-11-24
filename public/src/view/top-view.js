@@ -14,8 +14,6 @@ define(function (require, exports, module) {
         , UserModel = require('../model/user-model')
         , UserView = require('./user-view');
 
-    var userView = new UserView({ el: '#register-user' });
-
     var TopView = Backbone.View.extend({
         el: '.pull-right',
         template: Handlebars.compile(require('../tpl/top-view.tpl')),   //载入模版文件
@@ -28,8 +26,12 @@ define(function (require, exports, module) {
         },
 
         initialize: function() {
+
             this.poPhotoView = new PoPhotoView();
             this.userModel = new UserModel();
+            this.userView = new UserView({ 
+                el: '#register-user' 
+            });
         },
 
         valueSet: function(e) {
@@ -50,12 +52,11 @@ define(function (require, exports, module) {
 
         uploadFn: function(e) {
             this.poPhotoView.render();
-            //this.$el.modal();
         },
 
         userRegister: function(e) {
-            userView.render();
-            userView.$el.modal();
+            this.userView.render();
+            this.userView.$el.modal();
         },
 
         userLogin: function(e) {
@@ -63,7 +64,8 @@ define(function (require, exports, module) {
 
             self.userModel.save(null, {
                 url: '/login',
-                success: function(model, str) {     //success事件监听回调函数
+                // success事件监听回调函数
+                success: function(model, str) {
                     self.userModel = new UserModel;
                     self.data = { user: str };
                     self.render();

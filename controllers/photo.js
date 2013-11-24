@@ -199,10 +199,10 @@ exports.updatePhoto = function(req, res) {
     doc.save(function(err, doc) {
 
       if(err) {
-        return utils.sendStatus(req, res, 500, '服务器更新失败');
+        return res.json(500, '服务器更新失败');
       }
 
-      utils.sendStatus(req, res, 200, '图片信息更新成功');
+      res.json(200, '图片信息更新成功');
     });
 
   });
@@ -211,6 +211,16 @@ exports.updatePhoto = function(req, res) {
 
 // DELETE -> /photo-delete 图片删除操作
 exports.deletePhoto = function(req, res) {
+
+  // console.log(req.cookies, req.session.user);
+  var userId = utils.decipherHelper(req.cookies._id);
+
+  if(userId !== req.session.user._id) {
+
+    return res.json(400, '无权限删除此照片');
+  }
+
+  console.log(userId);
 
   var params = {
     '_id': req.query._id

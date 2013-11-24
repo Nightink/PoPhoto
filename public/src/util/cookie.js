@@ -1,11 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: ysj
- * Date: 12-3-26
- * Time: 上午10:56
- * cookie插件
- */
-
 define(function (require, exports, modules) {
     //modules.exports = function($){
         var $ = require('jquery');

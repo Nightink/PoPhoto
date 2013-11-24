@@ -8,7 +8,9 @@
 seajs.config({
     preload: [
         'jquery',
-        'seajs/plugin-text'
+        'bootstrap',
+        'plugin-base',
+        'plugin-text'
     ],
 
     base: '/sea-modules/',
