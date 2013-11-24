@@ -9,7 +9,7 @@ define(function (require, exports, module) {
     var $ = require('jquery')
         , _ = require('underscore')
         , Backbone = require('backbone')
-        , Observer = require('observer')
+        , observer = require('observer')
         , Handlebars = require('handlebars')
         , PhotoCollection = require('../model/photo-collection')
         , PhotoModel = require('../model/photo-model')
@@ -35,7 +35,7 @@ define(function (require, exports, module) {
             var model = this.model
             model.get('reviews').push({ content: content });
             model.save(null, {
-                url: '/photos',
+                url: '/photo',
                 success: function(model, str) {
                     alert(str);
                 }
@@ -43,7 +43,7 @@ define(function (require, exports, module) {
         },
 
         refreshComments: function(e) {
-            Observer.trigger('refresh:comments');
+            observer.trigger('refresh:comments');
         },
 
         showBox: function(e) {
@@ -84,10 +84,10 @@ define(function (require, exports, module) {
         initialize: function() {
             this.photoCollection = new PhotoCollection();
             this.photoCollection.on('sync', this.render, this);
-            Observer.on('po-photo:success', this.addPhotoRender, this);
-            //Observer.on('login:success', this.render, this);
-            Observer.on('init:work', this.initFancy, this);
-            Observer.on('refresh:comments', this.requestComments, this);
+            observer.on('po-photo:success', this.addPhotoRender, this);
+            //observer.on('login:success', this.render, this);
+            observer.on('init:work', this.initFancy, this);
+            observer.on('refresh:comments', this.requestComments, this);
         },
 
         events: {
@@ -98,7 +98,7 @@ define(function (require, exports, module) {
             var content = this.template({ 'items': this.photoCollection.toJSON() });
             this.$el.append(content);
             this.$el.attr("ontimeupdate", Date.now());
-            Observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
+            observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
         },
 
         addPhotoRender: function(model) {
@@ -107,7 +107,7 @@ define(function (require, exports, module) {
             var content = this.template({ 'items': data });
             this.$el.prepend(content);
             this.$el.attr("ontimeupdate", Date.now());
-            Observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
+            observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
         },
 
         initFancy: function() {
@@ -142,7 +142,7 @@ define(function (require, exports, module) {
     PhotoFlowView.prototype.requestComments = function() {
         var photoModel = new PhotoModel;
         photoModel.fetch({
-            'url': '/photos/' + this.imgId,
+            'url': '/photo/' + this.imgId,
             success: function(data) {
                 var commentsView = new CommentsView({ el: '.fancybox-overlay', model: data });
                 commentsView.render();

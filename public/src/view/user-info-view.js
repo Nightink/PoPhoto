@@ -11,7 +11,7 @@ define(function(require, exports, module) {
         , $ = require('jquery')
         , Handlebars = require('handlebars')
         , Backbone = require('backbone')
-        , Observer = require('observer')
+        , observer = require('observer')
         , UserModel = require('../model/user-model');
 
     var UserInfoView = Backbone.View.extend({
@@ -20,7 +20,7 @@ define(function(require, exports, module) {
         template: Handlebars.compile(require('../tpl/user-info.tpl')),
 
         initialize: function(option) {
-            Observer.on('verify:user-msg', this.tipMsg, this);
+            observer.on('verify:user-msg', this.tipMsg, this);
 
             this.userModel = new UserModel(option.model || {});
         },
@@ -64,7 +64,8 @@ define(function(require, exports, module) {
             this.userModel.set({ discipline: str });
         },
 
-        genderSet: function(e) {    //设置性别
+        // 设置性别
+        genderSet: function(e) {
             var gender = this.$("input[name=gender]:checked").val();
             this.userModel.set({gender: gender});
         },
@@ -84,8 +85,8 @@ define(function(require, exports, module) {
             var data = this.userModel.toJSON();
             var contents = this.template(data);
             this.$el.html(contents);
-
-            this.$("input[name=gender][value='"+ data.gender +"']").attr("checked", true);   //渲染站点类型
+            // 渲染站点类型
+            this.$("input[name=gender][value='"+ data.gender +"']").attr("checked", true);
         }
     });
 

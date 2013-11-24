@@ -11,9 +11,11 @@ define(function (require, exports, module) {
     var $ = require('jquery')
         , Backbone = require('backbone')
         , Handlebars = require('handlebars')
-        , Observer = require('observer')
+        , observer = require('observer')
         , PhotoCollection = require('../model/photo-collection')
         , PhotoModel = require('../model/photo-model');
+
+    var console = window.console || function() {};
 
     var PhotoUpdateView = Backbone.View.extend({
         el: 'body',
@@ -52,12 +54,14 @@ define(function (require, exports, module) {
                 url: '/photo-update',
                 // success事件监听回调函数
                 success: function(model, str) {
-                    alert(str);
+
                     self.$el.modal('hide');
                     self.photoModel = new PhotoModel;
-                    // Observer.trigger('po-photo:success', model);
+                    // observer.trigger('po-photo:success', model);
                 },
                 error: function(model, str) {
+
+                    alert(str);
                     console.log(model, str);
                 }
             });
@@ -89,7 +93,7 @@ define(function (require, exports, module) {
         initialize: function(option) {
             this.photoCollection = new PhotoCollection(null, { view: this });
             this.photoCollection.on('sync', this.render, this);
-            Observer.on('add', this.render, this);
+            observer.on('add', this.render, this);
 
             this.getPhotos();
         },
@@ -114,7 +118,7 @@ define(function (require, exports, module) {
         editPhoto: function(e) {
             var index = $(e.target).closest('.module-con').index();
             var model = this.photoCollection.at(index);
-            Observer.trigger('model:edit', model);
+            observer.trigger('model:edit', model);
             var photoUpdateView = new PhotoUpdateView({ el: '#photo-update', model: model });
             photoUpdateView.render();
         },

@@ -11,7 +11,7 @@ define(function (require, exports, module) {
   var $ = require('jquery')
     , _ = require('underscore')
     , Backbone = require('backbone')
-    , Observer = require('observer')
+    , observer = require('observer')
     , PhotoFlowView = require('../view/photo-flow-view')
     , TopView = require('../view/top-view');
 
@@ -19,7 +19,7 @@ define(function (require, exports, module) {
     el: 'body',
 
     initialize: function() {
-      Observer.on('photoLoad:end', this.initFolw, this);
+      observer.on('photoLoad:end', this.initFolw, this);
       this.loadFlow();
       this.topView = new TopView;
       this.photoFlowView = new PhotoFlowView({ el: '#photo-flow' });
@@ -67,7 +67,7 @@ define(function (require, exports, module) {
 
       $("#loader").hide();
       this.loadFlow();
-      Observer.trigger('init:work');
+      observer.trigger('init:work');
     },
 
     loadFlow: function() {

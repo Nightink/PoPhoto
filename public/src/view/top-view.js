@@ -8,7 +8,7 @@ define(function (require, exports, module) {
 
     var Backbone = require('backbone')
         , $ = require('jquery')
-        , Observer = require('observer')
+        , observer = require('observer')
         , Handlebars = require('handlebars')
         , PoPhotoView = require('./pophoto-view')
         , UserModel = require('../model/user-model')
@@ -67,7 +67,7 @@ define(function (require, exports, module) {
                     self.userModel = new UserModel;
                     self.data = { user: str };
                     self.render();
-                    Observer.trigger('login:success');
+                    observer.trigger('login:success');
                 }
             });
         },

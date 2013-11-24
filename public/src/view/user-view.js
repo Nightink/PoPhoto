@@ -8,17 +8,18 @@
 define(function (require, exports, module) {
     var $ = require('jquery')
         , _ = require('underscore')
-        , Observer = require('observer')
+        , observer = require('observer')
         , UserModel = require('../model/user-model')
         , Backbone = require('backbone');
 
     var UserView = Backbone.View.extend({
         el: '#register-user',
-        template: require('../tpl/user-view.tpl'),   //载入模版文件
+        // 载入模版文件
+        template: require('../tpl/user-view.tpl'),
         initialize: function() {
             this.userModel = new UserModel;
 
-            Observer.on('verify:user-msg', this.tipMsg, this);
+            observer.on('verify:user-msg', this.tipMsg, this);
         },
         events: {
             'blur #user-email': 'valueSet',
@@ -29,9 +30,9 @@ define(function (require, exports, module) {
             'click .register-cancel': 'registerCancel'
         },
         valueSet: function(e) {
-            var $dom = $(e.target)
-                , str = $.trim($dom.val())
-                , name = $dom.attr('name');
+            var $dom = $(e.target);
+            var str = $.trim($dom.val());
+            var name = $dom.attr('name');
 
             this[name + 'Set'](str);
         },
@@ -47,15 +48,17 @@ define(function (require, exports, module) {
         usernameSet: function(str) {
             this.userModel.set({ username: str }, {validate: true});
         },
-        tipMsg: function(data) {		//验证信息DOM显示
+        //验证信息DOM显示
+        tipMsg: function(data) {
             if(data.flag) {
                 this.$('#' + data.tagName + '-tips').html(data.tipStr).attr('class', 'self-ok');
             } else {
                 this.$('#' + data.tagName + '-tips').html(data.tipStr).attr('class', 'self-error');
             }
         },
-        success: function(model, str) {		//sync success 事件监听回调函数
-            //Observer.trigger('add');
+        //sync success 事件监听回调函数
+        success: function(model, str) {
+            //observer.trigger('add');
             alert(str);
             this.userModel = new UserModel;
             this.userModel.on('sync', this.success, this);
@@ -63,11 +66,13 @@ define(function (require, exports, module) {
             this.$el.modal('hide');
         },
         registerUser: function(e) {
-            var self = this;    //success回调 所以必须使用self来缓存当前视图对象
+            // success回调 所以必须使用self来缓存当前视图对象
+            var self = this;
 
             self.userModel.save(null, {
                 url: '/add-user',
-                success: function(model, str) {     //success事件监听回调函数
+                // success事件监听回调函数
+                success: function(model, str) {
                     alert(str);
                     self.$el.modal('hide');
                     self.userModel = new UserModel;

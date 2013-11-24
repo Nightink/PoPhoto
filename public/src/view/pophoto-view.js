@@ -8,7 +8,7 @@
 define(function (require, exports, module) {
     var $ = require('jquery')
         , _ = require('underscore')
-        , Observer = require('observer')
+        , observer = require('observer')
         , PhotoModel = require('../model/photo-model')
         , Backbone = require('backbone')
         , fileUpload = require('../util/fileUpload');
@@ -19,8 +19,8 @@ define(function (require, exports, module) {
         initialize: function() {
             this.photoModel = new PhotoModel;
 
-            Observer.on('verify:photo-msg', this.tipMsg, this);
-            Observer.on('upload:success', this.imgInfo, this);
+            observer.on('verify:photo-msg', this.tipMsg, this);
+            observer.on('upload:success', this.imgInfo, this);
             this.$el.html(this.template);
 
             var self = this;
@@ -35,7 +35,7 @@ define(function (require, exports, module) {
                     "z-index": 111111
                 },
                 callback: function() {
-                    Observer.trigger('upload:success');
+                    observer.trigger('upload:success');
                 }
             };
             fileUpload.init(fileJson);
@@ -103,7 +103,7 @@ define(function (require, exports, module) {
                     alert(str);
                     self.$el.modal('hide');
                     self.photoModel = new PhotoModel;
-                    Observer.trigger('po-photo:success', model);
+                    observer.trigger('po-photo:success', model);
                 },
                 error: function(model, str) {
                     console.log(model, str);
