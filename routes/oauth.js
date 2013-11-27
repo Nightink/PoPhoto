@@ -27,24 +27,27 @@ module.exports = function(app) {
 
     res.clearCookie('_id', { path:'/' });
     res.clearCookie('username', { path:'/' });
+    // 移除session存储信息
     req.session.destroy();
-    res.redirect(redirect);
+    return res.redirect(redirect);
   });
 
   //用户登陆操作
   app.post('/login', function(req, res) {
 
-    var reqBody = req.body;
-    var email = reqBody.email;
-    var password = reqBody.password;
+    var email = req.body.email;
+    var password = req.body.password;
 
     if(_.isEmpty(email) || _.isEmpty(password)) {
       return res.json(400, '请填写正确信息');
     }
 
-    password = utils.encryptHelper(password);
+    var params = {
+      email: email,
+      password: utils.encryptHelper(password)
+    };
 
-    User.findOne({ "email": email, "password": password }, function(err, doc) {
+    User.findOne(params, function(err, doc) {
 
       if(err) {
         return res.json(500, err);

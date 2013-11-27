@@ -67,12 +67,13 @@ exports.download = function(req, res) {
     if(err) {
 
       utils.log(err);
-      return res.send(400, '找不到该文件');
+      return res.json(400, '找不到该文件');
     }
 
     // 设置响应头 文件格式
     res.set('Content-Type', contentType);
     res.send(file);
+    // res.sendfile(file);
   });
 };
 
