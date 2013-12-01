@@ -15,6 +15,9 @@ define(function (require, exports, module) {
     , PhotoFlowView = require('../view/photo-flow-view')
     , TopView = require('../view/top-view');
 
+  require('../../css/style.css');
+  require('wookmark');
+
   var AppView = Backbone.View.extend({
     el: 'body',
 

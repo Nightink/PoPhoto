@@ -1,10 +1,3 @@
-/**
- * Created by JetBrains WebStorm.
- * User: ysj
- * Date: 12-4-10
- * Time: 上午9:35
- * jquery表单提交插件
- */
 /*!
  * jQuery Form Plugin
  * version: 3.08 (07-APR-2012)

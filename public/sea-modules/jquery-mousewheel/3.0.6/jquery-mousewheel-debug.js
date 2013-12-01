@@ -1,10 +1,10 @@
-define("#jquery-mousewheel/3.0.6/jquery-mousewheel-debug", [ "#/jquery/1.7.2/jquery-debug" ], function(require, exports, module) {
+define("#jquery-mousewheel/3.0.6/jquery-mousewheel-debug", function(require, exports, module) {
     var $, jQuery, $$;
     module.exports = function(externalJQuery) {
         if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
             $ = jQuery = externalJQuery;
         } else if (!$) {
-            $$ = require("#/jquery/1.7.2/jquery-debug");
+            $$ = require("jquery");
             $ = jQuery = $$.sub();
         }
         /*! Copyright (c) 2011 Brandon Aaron (http://brandonaaron.net)

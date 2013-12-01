@@ -15,6 +15,9 @@ define(function (require, exports, module) {
         , PhotoModel = require('../model/photo-model')
         , fileUpload = require('../util/fileUpload');
 
+    require('fancybox');
+    require('axzoomer');
+
     var CommentsView = Backbone.View.extend({
         el: 'body',
 

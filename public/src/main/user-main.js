@@ -5,19 +5,9 @@
  *
  * User用户管理页面主控
  */
-define(function(require, exports, module) {
 
-    var $ = require('jquery')
-        , _ = require('underscore')
-      , backbone = require('backbone');
-
-    require('bootstrap');
-    require("../util/cookie");
-    require('../../css/style.css');
-
-    var UserPhotoView = require('../view/user-photos')
-        , TopView = require('../view/top-view')
-        , UserInfoView = require('../view/user-info-view');
+seajs.use(['jquery', 'underscore', 'backbone', './src/view/user-photos', './src/view/top-view', './src/view/user-info-view', './css/style.css'], 
+  function($, _, backbone, UserPhotoView, TopView, UserInfoView) {
 
     var userPhotoView = new UserPhotoView({ el: '#photo-list' });
     var topView = new TopView;
@@ -51,4 +41,5 @@ define(function(require, exports, module) {
 
     var router = new UserRouter();
     backbone.history.start();
-});
+
+  });

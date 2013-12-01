@@ -414,7 +414,7 @@ define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs-debug", [], functi
     };
 });
 
-define("#jquery-fancybox/2.1.4/jquery-fancybox-debug", [ "./helpers/jquery-fancybox-buttons-debug", "./helpers/jquery-fancybox-media-debug", "./helpers/jquery-fancybox-thumbs-debug", "#/jquery/1.7.2/jquery-debug", "#/jquery-mousewheel/3.0.6/jquery-mousewheel-debug" ], function(require, exports, module) {
+define("#jquery-fancybox/2.1.4/jquery-fancybox-debug", [ "./helpers/jquery-fancybox-buttons-debug", "./helpers/jquery-fancybox-media-debug", "./helpers/jquery-fancybox-thumbs-debug", "#/jquery-mousewheel/3.0.6/jquery-mousewheel-debug" ], function(require, exports, module) {
     var $, jQuery;
     /*module.exports = function(externalJQuery) {
         if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {

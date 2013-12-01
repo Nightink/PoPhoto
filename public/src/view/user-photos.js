@@ -15,6 +15,8 @@ define(function (require, exports, module) {
         , PhotoCollection = require('../model/photo-collection')
         , PhotoModel = require('../model/photo-model');
 
+    require("../util/cookie");
+
     var console = window.console || function() {};
 
     var PhotoUpdateView = Backbone.View.extend({

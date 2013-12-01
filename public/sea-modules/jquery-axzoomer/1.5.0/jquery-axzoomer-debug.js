@@ -17,7 +17,7 @@ define(function(require, exports, module) {
  * Please preserve this heading always
  * http://jquery.org/license
  */
-        require("#/jquery-mousewheel/3.0.6/jquery-mousewheel-debug")(jQuery);
+        require("jquery-mousewheel")(jQuery);
         (function($) {
             var methods = {
                 init: function(options) {

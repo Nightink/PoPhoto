@@ -1,4 +1,4 @@
-define("#jsonform/1.0.0/jsonform-debug", [ "#/jsv/4.0.2/jsv-debug", "#/underscore/1.4.3/underscore-debug" ], function(require, exports, module) {
+define("#jsonform/1.0.0/jsonform-debug", [ "#/jsv/4.0.2/jsv-debug", "#/underscore/1.4.4/underscore-debug" ], function(require, exports, module) {
     module.exports = function(jQuery) {
         exports.JSONFormValidator = require("#/jsv/4.0.2/jsv-debug").JSV;
         /* Copyright (c) 2012 Joshfire - MIT license */

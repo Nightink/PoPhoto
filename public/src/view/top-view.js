@@ -6,17 +6,22 @@
 
 define(function (require, exports, module) {
 
-    var Backbone = require('backbone')
-        , $ = require('jquery')
-        , observer = require('observer')
-        , Handlebars = require('handlebars')
-        , PoPhotoView = require('./pophoto-view')
-        , UserModel = require('../model/user-model')
-        , UserView = require('./user-view');
+    var Backbone    = require('backbone');
+    var $           = require('jquery');
+    var observer    = require('observer');
+    var handlebars  = require('handlebars');
+
+    var PoPhotoView = require('./pophoto-view');
+    var UserModel   = require('../model/user-model');
+    var UserView    = require('./user-view');
 
     var TopView = Backbone.View.extend({
+
         el: '.pull-right',
-        template: Handlebars.compile(require('../tpl/top-view.tpl')),   //载入模版文件
+
+        // 载入模版文件
+        template: handlebars.compile(require('../tpl/top-view.tpl')),
+        
         events: {
             'click .uploadBtn': 'uploadFn',
             'click #user-register': 'userRegister',

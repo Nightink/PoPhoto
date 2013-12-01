@@ -20,8 +20,8 @@
     } 
   ],
   "dependencies" : {
-    "jquery": "1.7.2",
-    "underscore": "1.4.3",
+    "jquery": "1.8.2",
+    "underscore": "1.4.4",
     "jsv":"4.0.2"
   },
   "output":{"jsonform.js":"."},

@@ -2,7 +2,7 @@
 
 /*jshint eqnull:true*/
 
-define('#handlebars/1.1.1/handlebars', [], function(require, exports, module) {
+define('#handlebars/1.0.1/handlebars-debug', [], function(require, exports, module) {
 this.Handlebars = {};
 
 (function(Handlebars) {
