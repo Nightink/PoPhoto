@@ -71,7 +71,7 @@ define(function (require, exports, module) {
         },
 
         descriptionTips: function(e) {
-            $('#description-tips').html('照片中的人在干什么呢？').attr('class', 'tips');
+            $('#description-tips').html('說說圖中事。').attr('class', 'tips');
         },
 
         keywordsTips: function(e) {
@@ -94,7 +94,7 @@ define(function (require, exports, module) {
             }
         },
 
-        poPhoto:  function(e) {
+        poPhoto: function(e) {
             console.log(this.photoModel);
             var self = this;
             self.photoModel.save(null, {

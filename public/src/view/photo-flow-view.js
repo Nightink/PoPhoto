@@ -82,8 +82,10 @@ define(function (require, exports, module) {
         template: Handlebars.compile(require('../tpl/photo-flow-view.tpl')),   //载入模版文件
 
         initialize: function() {
+
             this.photoCollection = new PhotoCollection();
             this.photoCollection.on('sync', this.render, this);
+
             observer.on('po-photo:success', this.addPhotoRender, this);
             //observer.on('login:success', this.render, this);
             observer.on('init:work', this.initFancy, this);
@@ -102,6 +104,7 @@ define(function (require, exports, module) {
         },
 
         addPhotoRender: function(model) {
+
             var data = model.toJSON();
             data.keywords = data.keywords.split(/;|；|\s|,|，/);   //关键字处理
             var content = this.template({ 'items': data });
