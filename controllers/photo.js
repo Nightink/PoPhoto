@@ -168,9 +168,11 @@ exports.poPhoto  = function(req, res) {
 
   photo.save(function(err, doc) {
     if(!err) {
-      utils.sendStatus(req, res, 200, '图片保存成功');
+
+      res.json(200, doc);
     } else {
-      utils.sendStatus(req, res, 500, '服务器设置失败');
+
+      res.json(500, '服务器设置失败');
     }
   });
 

@@ -98,15 +98,17 @@ define(function (require, exports, module) {
             console.log(this.photoModel);
             var self = this;
             self.photoModel.save(null, {
+
                 url: '/po-photo',
-                success: function(model, str) {     //success事件监听回调函数
-                    alert(str);
+                success: function(model, doc) {     //success事件监听回调函数
+
                     self.$el.modal('hide');
                     self.photoModel = new PhotoModel;
-                    observer.trigger('po-photo:success', model);
+                    observer.trigger('po-photo:success', new PhotoModel(doc));
                 },
                 error: function(model, str) {
-                    console.log(model, str);
+
+                    alert(str);
                 }
             });
         },

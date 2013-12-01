@@ -106,7 +106,6 @@ define(function (require, exports, module) {
         addPhotoRender: function(model) {
 
             var data = model.toJSON();
-            data.keywords = data.keywords.split(/;|；|\s|,|，/);   //关键字处理
             var content = this.template({ 'items': data });
             this.$el.prepend(content);
             this.$el.attr("ontimeupdate", Date.now());
