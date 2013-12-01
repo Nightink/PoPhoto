@@ -32,20 +32,24 @@ process.on('uncaughtException', function(err) {
 require('./lib/registerTemplate');
 // 加载实体对象
 require('./models');
-// 缓存文件定期处理
-require('./lib/fileClean');
 
 function startServer() {
 
   // 启动服务器,监听端口
   app.listen(app.get('port'), function(err) {
+
     if(err) {
       console.log(err.message);
       return;
     }
     console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
+
+    // 缓存文件定期处理
+    require('./lib/fileClean');
+
   });
   console.log("Debug: Express server listening on port %s", app.get('port'));
+
 }
 
 // 随机端口轮询
@@ -103,11 +107,13 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
 
     // 设置静态文件路径
     app.use(express.static(path.join(__dirname, 'public')));
+
     // 设置站点图标
     // app.use(express.favicon(path.join(__dirname, 'public/favicon.jpg')));
 
     // 显示请求错误路由
     app.use(function(req, res, next) {
+
       console.log('Debug: Error routes %s --> %s', req.method, req.url);
       next();
     });
