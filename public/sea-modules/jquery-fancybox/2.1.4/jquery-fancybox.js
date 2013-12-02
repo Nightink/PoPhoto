@@ -1,2 +1,1901 @@
-define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-buttons",[],function(a,b,c){seajs.importStyle('#fancybox-buttons{position:fixed;left:0;width:100%;z-index:8050}#fancybox-buttons.top{top:10px}#fancybox-buttons.bottom{bottom:10px}#fancybox-buttons ul{display:block;width:166px;height:30px;margin:0 auto;padding:0;list-style:none;border:1px solid #111;border-radius:3px;-webkit-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);-moz-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);background:#323232;background:-moz-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%, #444),color-stop(50%, #343434),color-stop(50%, #292929),color-stop(100%, #333));background:-webkit-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-o-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-ms-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="#444444", endColorstr="#222222", GradientType=0 )}#fancybox-buttons ul li{float:left;margin:0;padding:0}#fancybox-buttons a{display:block;width:30px;height:30px;text-indent:-9999px;background-image:url("../assets/images/fancybox_buttons.png");background-repeat:no-repeat;outline:0;opacity:.8}#fancybox-buttons a:hover{opacity:1}#fancybox-buttons a.btnPrev{background-position:5px 0}#fancybox-buttons a.btnNext{background-position:-33px 0;border-right:1px solid #3e3e3e}#fancybox-buttons a.btnPlay{background-position:0 -30px}#fancybox-buttons a.btnPlayOn{background-position:-30px -30px}#fancybox-buttons a.btnToggle{background-position:3px -60px;border-left:1px solid #111;border-right:1px solid #3e3e3e;width:35px}#fancybox-buttons a.btnToggleOn{background-position:-27px -60px}#fancybox-buttons a.btnClose{border-left:1px solid #111;width:35px;background-position:-56px 0}#fancybox-buttons a.btnDisabled{opacity:.4;cursor:default}',"#jquery-fancybox/2.1.4/../css/jquery-fancybox-buttons.css",c),c.exports=function(a){var b=a.fancybox;b.helpers.buttons={defaults:{skipSingle:!1,position:"top",tpl:'<div id="fancybox-buttons"><ul><li><a class="btnPrev" title="Previous" href="javascript:;"></a></li><li><a class="btnPlay" title="Start slideshow" href="javascript:;"></a></li><li><a class="btnNext" title="Next" href="javascript:;"></a></li><li><a class="btnToggle" title="Toggle size" href="javascript:;"></a></li><li><a class="btnClose" title="Close" href="javascript:jQuery.fancybox.close();"></a></li></ul></div>'},list:null,buttons:null,beforeLoad:function(a,b){return a.skipSingle&&2>b.group.length?(b.helpers.buttons=!1,b.closeBtn=!0,void 0):(b.margin["bottom"===a.position?2:0]+=30,void 0)},onPlayStart:function(){this.buttons&&this.buttons.play.attr("title","Pause slideshow").addClass("btnPlayOn")},onPlayEnd:function(){this.buttons&&this.buttons.play.attr("title","Start slideshow").removeClass("btnPlayOn")},afterShow:function(c,d){var e=this.buttons;e||(this.list=a(c.tpl).addClass(c.position).appendTo("body"),e={prev:this.list.find(".btnPrev").click(b.prev),next:this.list.find(".btnNext").click(b.next),play:this.list.find(".btnPlay").click(b.play),toggle:this.list.find(".btnToggle").click(b.toggle)}),d.index>0||d.loop?e.prev.removeClass("btnDisabled"):e.prev.addClass("btnDisabled"),d.loop||d.index<d.group.length-1?(e.next.removeClass("btnDisabled"),e.play.removeClass("btnDisabled")):(e.next.addClass("btnDisabled"),e.play.addClass("btnDisabled")),this.buttons=e,this.onUpdate(c,d)},onUpdate:function(a,b){var c;this.buttons&&(c=this.buttons.toggle.removeClass("btnDisabled btnToggleOn"),b.canShrink?c.addClass("btnToggleOn"):b.canExpand||c.addClass("btnDisabled"))},beforeClose:function(){this.list&&this.list.remove(),this.list=null,this.buttons=null}}}}),define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-media",[],function(a,b,c){c.exports=function(a){"use strict";var b=a.fancybox,c=function(b,c,d){return d=d||"","object"===a.type(d)&&(d=a.param(d,!0)),a.each(c,function(a,c){b=b.replace("$"+a,c||"")}),d.length&&(b+=(b.indexOf("?")>0?"&":"?")+d),b};b.helpers.media={defaults:{youtube:{matcher:/(youtube\.com|youtu\.be)\/(watch\?v=|v\/|u\/|embed\/?)?(videoseries\?list=(.*)|[\w-]{11}|\?listType=(.*)&list=(.*)).*/i,params:{autoplay:1,autohide:1,fs:1,rel:0,hd:1,wmode:"opaque",enablejsapi:1},type:"iframe",url:"//www.youtube.com/embed/$3"},vimeo:{matcher:/(?:vimeo(?:pro)?.com)\/(?:[^\d]+)?(\d+)(?:.*)/,params:{autoplay:1,hd:1,show_title:1,show_byline:1,show_portrait:0,fullscreen:1},type:"iframe",url:"//player.vimeo.com/video/$1"},metacafe:{matcher:/metacafe.com\/(?:watch|fplayer)\/([\w\-]{1,10})/,params:{autoPlay:"yes"},type:"swf",url:function(b,c,d){return d.swf.flashVars="playerVars="+a.param(c,!0),"//www.metacafe.com/fplayer/"+b[1]+"/.swf"}},dailymotion:{matcher:/dailymotion.com\/video\/(.*)\/?(.*)/,params:{additionalInfos:0,autoStart:1},type:"swf",url:"//www.dailymotion.com/swf/video/$1"},twitvid:{matcher:/twitvid\.com\/([a-zA-Z0-9_\-\?\=]+)/i,params:{autoplay:0},type:"iframe",url:"//www.twitvid.com/embed.php?guid=$1"},twitpic:{matcher:/twitpic\.com\/(?!(?:place|photos|events)\/)([a-zA-Z0-9\?\=\-]+)/i,type:"image",url:"//twitpic.com/show/full/$1/"},instagram:{matcher:/(instagr\.am|instagram\.com)\/p\/([a-zA-Z0-9_\-]+)\/?/i,type:"image",url:"//$1/p/$2/media/"},google_maps:{matcher:/maps\.google\.([a-z]{2,3}(\.[a-z]{2})?)\/(\?ll=|maps\?)(.*)/i,type:"iframe",url:function(a){return"//maps.google."+a[1]+"/"+a[3]+a[4]+"&output="+(a[4].indexOf("layer=c")>0?"svembed":"embed")}}},beforeLoad:function(b,d){var g,h,i,j,e=d.href||"",f=!1;for(g in b)if(h=b[g],i=e.match(h.matcher)){f=h.type,j=a.extend(!0,{},h.params,d[g]||(a.isPlainObject(b[g])?b[g].params:null)),e="function"===a.type(h.url)?h.url.call(this,i,j,d):c(h.url,i,j);break}f&&(d.href=e,d.type=f,d.autoHeight=!1)}}}}),define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs",[],function(a,b,c){seajs.importStyle("#fancybox-thumbs{position:fixed;left:0;width:100%;overflow:hidden;z-index:8050}#fancybox-thumbs.bottom{bottom:2px}#fancybox-thumbs.top{top:2px}#fancybox-thumbs ul{position:relative;list-style:none;margin:0;padding:0}#fancybox-thumbs ul li{float:left;padding:1px;opacity:.5}#fancybox-thumbs ul li.active{opacity:.75;padding:0;border:1px solid #fff}#fancybox-thumbs ul li:hover{opacity:1}#fancybox-thumbs ul li a{display:block;position:relative;overflow:hidden;border:1px solid #222;background:#111;outline:0}#fancybox-thumbs ul li img{display:block;position:relative;border:0;padding:0}","#jquery-fancybox/2.1.4/../css/jquery-fancybox-thumbs.css",c),c.exports=function(a){var b=a.fancybox;b.helpers.thumbs={defaults:{width:50,height:50,position:"bottom",source:function(b){var c;return b.element&&(c=a(b.element).find("img").attr("src")),!c&&"image"===b.type&&b.href&&(c=b.href),c}},wrap:null,list:null,width:0,init:function(b,c){var e,d=this,f=b.width,g=b.height,h=b.source;e="";for(var i=0;c.group.length>i;i++)e+='<li><a style="width:'+f+"px;height:"+g+'px;" href="javascript:jQuery.fancybox.jumpto('+i+');"></a></li>';this.wrap=a('<div id="fancybox-thumbs"></div>').addClass(b.position).appendTo("body"),this.list=a("<ul>"+e+"</ul>").appendTo(this.wrap),a.each(c.group,function(b){var e=h(c.group[b]);e&&a("<img />").load(function(){var h,i,j,c=this.width,e=this.height;d.list&&c&&e&&(h=c/f,i=e/g,j=d.list.children().eq(b).find("a"),h>=1&&i>=1&&(h>i?(c=Math.floor(c/i),e=g):(c=f,e=Math.floor(e/h))),a(this).css({width:c,height:e,top:Math.floor(g/2-e/2),left:Math.floor(f/2-c/2)}),j.width(f).height(g),a(this).hide().appendTo(j).fadeIn(300))}).attr("src",e)}),this.width=this.list.children().eq(0).outerWidth(!0),this.list.width(this.width*(c.group.length+1)).css("left",Math.floor(.5*a(window).width()-(c.index*this.width+.5*this.width)))},beforeLoad:function(a,b){return 2>b.group.length?(b.helpers.thumbs=!1,void 0):(b.margin["top"===a.position?0:2]+=a.height+15,void 0)},afterShow:function(a,b){this.list?this.onUpdate(a,b):this.init(a,b),this.list.children().removeClass("active").eq(b.index).addClass("active")},onUpdate:function(b,c){this.list&&this.list.stop(!0).animate({left:Math.floor(.5*a(window).width()-(c.index*this.width+.5*this.width))},150)},beforeClose:function(){this.wrap&&this.wrap.remove(),this.wrap=null,this.list=null,this.width=0}}}}),define("#jquery-fancybox/2.1.4/jquery-fancybox",["./helpers/jquery-fancybox-buttons","./helpers/jquery-fancybox-media","./helpers/jquery-fancybox-thumbs","#/jquery/1.7.2/jquery","#/jquery-mousewheel/3.0.6/jquery-mousewheel"],function(a,b,c){var d,e;c.exports=function(b){return b&&b.fn&&b.fn.jquery?d=e=b:d||(d=e=a("#/jquery/1.7.2/jquery").sub()),a("#/jquery-mousewheel/3.0.6/jquery-mousewheel")(e),seajs.importStyle('/*! fancyBox v2.1.4 fancyapps.com | fancyapps.com/fancybox/#license */.fancybox-wrap,.fancybox-skin,.fancybox-outer,.fancybox-inner,.fancybox-image,.fancybox-wrap iframe,.fancybox-wrap object,.fancybox-nav,.fancybox-nav span,.fancybox-tmp{padding:0;margin:0;border:0;outline:0;vertical-align:top}.fancybox-wrap{position:absolute;top:0;left:0;z-index:8020}.fancybox-skin{position:relative;background:#f9f9f9;color:#444;text-shadow:none;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}.fancybox-opened{z-index:8030}.fancybox-opened .fancybox-skin{-webkit-box-shadow:0 10px 25px rgba(0,0,0,.5);-moz-box-shadow:0 10px 25px rgba(0,0,0,.5);box-shadow:0 10px 25px rgba(0,0,0,.5)}.fancybox-outer,.fancybox-inner{position:relative}.fancybox-inner{overflow:hidden}.fancybox-type-iframe .fancybox-inner{-webkit-overflow-scrolling:touch}.fancybox-error{color:#444;font:14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;padding:15px;white-space:nowrap}.fancybox-image,.fancybox-iframe{display:block;width:100%;height:100%}#fancybox-loading,.fancybox-close,.fancybox-prev span,.fancybox-next span{background-image:url("../assets/images/fancybox_sprite.png")}#fancybox-loading{position:fixed;top:50%;left:50%;margin-top:-22px;margin-left:-22px;background-position:0 -108px;opacity:.8;cursor:pointer;z-index:8060}#fancybox-loading div{width:44px;height:44px;background:url("../assets/images/fancybox_loading.gif") center center no-repeat}.fancybox-close{position:absolute;top:-18px;right:-18px;width:36px;height:36px;cursor:pointer;z-index:8040}.fancybox-nav{position:absolute;top:0;width:40%;height:100%;cursor:pointer;text-decoration:none;background:transparent url("../assets/images/blank.gif");-webkit-tap-highlight-color:rgba(0,0,0,0);z-index:8040}.fancybox-prev{left:0}.fancybox-next{right:0}.fancybox-nav span{position:absolute;top:50%;width:36px;height:34px;margin-top:-18px;cursor:pointer;z-index:8040;visibility:hidden}.fancybox-prev span{left:10px;background-position:0 -36px}.fancybox-next span{right:10px;background-position:0 -72px}.fancybox-nav:hover span{visibility:visible}.fancybox-tmp{position:absolute;top:-99999px;left:-99999px;visibility:hidden;max-width:99999px;max-height:99999px;overflow:visible!important}.fancybox-lock{overflow:hidden}.fancybox-overlay{position:absolute;top:0;left:0;overflow:hidden;display:none;z-index:8010;background:url("../assets/images/fancybox_overlay.png")}.fancybox-overlay-fixed{position:fixed;bottom:0;right:0}.fancybox-lock .fancybox-overlay{overflow:auto;overflow-y:scroll}.fancybox-title{visibility:hidden;font:normal 13px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;position:relative;text-shadow:none;z-index:8050}.fancybox-opened .fancybox-title{visibility:visible}.fancybox-title-float-wrap{position:absolute;bottom:0;right:50%;margin-bottom:-35px;z-index:8050;text-align:center}.fancybox-title-float-wrap .child{display:inline-block;margin-right:-100%;padding:2px 20px;background:transparent;background:rgba(0,0,0,.8);-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;text-shadow:0 1px 2px #222;color:#FFF;font-weight:700;line-height:24px;white-space:nowrap}.fancybox-title-outside-wrap{position:relative;margin-top:10px;color:#fff}.fancybox-title-inside-wrap{padding-top:10px}.fancybox-title-over-wrap{position:absolute;bottom:0;left:0;color:#fff;padding:10px;background:#000;background:rgba(0,0,0,.8)}',"#jquery-fancybox/2.1.4/../css/jquery-fancybox.css",c),function(a,b,c,d){"use strict";var e=c(a),f=c(b),g=c.fancybox=function(){g.open.apply(this,arguments)},h=navigator.userAgent.match(/msie/i),i=null,j=b.createTouch!==d,k=function(a){return a&&a.hasOwnProperty&&a instanceof c},l=function(a){return a&&"string"===c.type(a)},m=function(a){return l(a)&&a.indexOf("%")>0},n=function(a){return a&&!(a.style.overflow&&"hidden"===a.style.overflow)&&(a.clientWidth&&a.scrollWidth>a.clientWidth||a.clientHeight&&a.scrollHeight>a.clientHeight)},o=function(a,b){var c=parseInt(a,10)||0;return b&&m(a)&&(c=g.getViewport()[b]/100*c),Math.ceil(c)},p=function(a,b){return o(a,b)+"px"};c.extend(g,{version:"2.1.4",defaults:{padding:15,margin:20,width:800,height:600,minWidth:100,minHeight:100,maxWidth:9999,maxHeight:9999,autoSize:!0,autoHeight:!1,autoWidth:!1,autoResize:!0,autoCenter:!j,fitToView:!0,aspectRatio:!1,topRatio:.5,leftRatio:.5,scrolling:"auto",wrapCSS:"",arrows:!0,closeBtn:!0,closeClick:!1,nextClick:!1,mouseWheel:!0,autoPlay:!1,playSpeed:3e3,preload:3,modal:!1,loop:!0,ajax:{dataType:"html",headers:{"X-fancyBox":!0}},iframe:{scrolling:"auto",preload:!0},swf:{wmode:"transparent",allowfullscreen:"true",allowscriptaccess:"always"},keys:{next:{13:"left",34:"up",39:"left",40:"up"},prev:{8:"right",33:"down",37:"right",38:"down"},close:[27],play:[32],toggle:[70]},direction:{next:"left",prev:"right"},scrollOutside:!0,index:0,type:null,href:null,content:null,title:null,tpl:{wrap:'<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',image:'<img class="fancybox-image" src="{href}" alt="" />',iframe:'<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen'+(h?' allowtransparency="true"':"")+"></iframe>",error:'<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',closeBtn:'<a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>',next:'<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',prev:'<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>'},openEffect:"fade",openSpeed:250,openEasing:"swing",openOpacity:!0,openMethod:"zoomIn",closeEffect:"fade",closeSpeed:250,closeEasing:"swing",closeOpacity:!0,closeMethod:"zoomOut",nextEffect:"elastic",nextSpeed:250,nextEasing:"swing",nextMethod:"changeIn",prevEffect:"elastic",prevSpeed:250,prevEasing:"swing",prevMethod:"changeOut",helpers:{overlay:!0,title:!0},onCancel:c.noop,beforeLoad:c.noop,afterLoad:c.noop,beforeShow:c.noop,afterShow:c.noop,beforeChange:c.noop,beforeClose:c.noop,afterClose:c.noop},group:{},opts:{},previous:null,coming:null,current:null,isActive:!1,isOpen:!1,isOpened:!1,wrap:null,skin:null,outer:null,inner:null,player:{timer:null,isActive:!1},ajaxLoad:null,imgPreload:null,transitions:{},helpers:{},open:function(a,b){return a&&(c.isPlainObject(b)||(b={}),!1!==g.close(!0))?(c.isArray(a)||(a=k(a)?c(a).get():[a]),c.each(a,function(e,f){var i,j,m,n,o,p,q,h={};"object"===c.type(f)&&(f.nodeType&&(f=c(f)),k(f)?(h={href:f.data("fancybox-href")||f.attr("href"),title:f.data("fancybox-title")||f.attr("title"),isDom:!0,element:f},c.metadata&&c.extend(!0,h,f.metadata())):h=f),i=b.href||h.href||(l(f)?f:null),j=b.title!==d?b.title:h.title||"",m=b.content||h.content,n=m?"html":b.type||h.type,!n&&h.isDom&&(n=f.data("fancybox-type"),n||(o=f.prop("class").match(/fancybox\.(\w+)/),n=o?o[1]:null)),l(i)&&(n||(g.isImage(i)?n="image":g.isSWF(i)?n="swf":"#"===i.charAt(0)?n="inline":l(f)&&(n="html",m=f)),"ajax"===n&&(p=i.split(/\s+/,2),i=p.shift(),q=p.shift())),m||("inline"===n?i?m=c(l(i)?i.replace(/.*(?=#[^\s]+$)/,""):i):h.isDom&&(m=f):"html"===n?m=i:n||i||!h.isDom||(n="inline",m=f)),c.extend(h,{href:i,type:n,content:m,title:j,selector:q}),a[e]=h}),g.opts=c.extend(!0,{},g.defaults,b),b.keys!==d&&(g.opts.keys=b.keys?c.extend({},g.defaults.keys,b.keys):!1),g.group=a,g._start(g.opts.index)):d},cancel:function(){var a=g.coming;a&&!1!==g.trigger("onCancel")&&(g.hideLoading(),g.ajaxLoad&&g.ajaxLoad.abort(),g.ajaxLoad=null,g.imgPreload&&(g.imgPreload.onload=g.imgPreload.onerror=null),a.wrap&&a.wrap.stop(!0,!0).trigger("onReset").remove(),g.coming=null,g.current||g._afterZoomOut(a))},close:function(a){g.cancel(),!1!==g.trigger("beforeClose")&&(g.unbindEvents(),g.isActive&&(g.isOpen&&a!==!0?(g.isOpen=g.isOpened=!1,g.isClosing=!0,c(".fancybox-item, .fancybox-nav").remove(),g.wrap.stop(!0,!0).removeClass("fancybox-opened"),g.transitions[g.current.closeMethod]()):(c(".fancybox-wrap").stop(!0).trigger("onReset").remove(),g._afterZoomOut())))},play:function(a){var b=function(){clearTimeout(g.player.timer)},c=function(){b(),g.current&&g.player.isActive&&(g.player.timer=setTimeout(g.next,g.current.playSpeed))},d=function(){b(),f.unbind(".player"),g.player.isActive=!1,g.trigger("onPlayEnd")},e=function(){g.current&&(g.current.loop||g.current.index<g.group.length-1)&&(g.player.isActive=!0,f.bind({"onCancel.player beforeClose.player":d,"onUpdate.player":c,"beforeLoad.player":b}),c(),g.trigger("onPlayStart"))};a===!0||!g.player.isActive&&a!==!1?e():d()},next:function(a){var b=g.current;b&&(l(a)||(a=b.direction.next),g.jumpto(b.index+1,a,"next"))},prev:function(a){var b=g.current;b&&(l(a)||(a=b.direction.prev),g.jumpto(b.index-1,a,"prev"))},jumpto:function(a,b,c){var e=g.current;e&&(a=o(a),g.direction=b||e.direction[a>=e.index?"next":"prev"],g.router=c||"jumpto",e.loop&&(0>a&&(a=e.group.length+a%e.group.length),a%=e.group.length),e.group[a]!==d&&(g.cancel(),g._start(a)))},reposition:function(a,b){var f,d=g.current,e=d?d.wrap:null;e&&(f=g._getPosition(b),a&&"scroll"===a.type?(delete f.position,e.stop(!0,!0).animate(f,200)):(e.css(f),d.pos=c.extend({},d.dim,f)))},update:function(a){var b=a&&a.type,c=!b||"orientationchange"===b;c&&(clearTimeout(i),i=null),g.isOpen&&!i&&(i=setTimeout(function(){var d=g.current;d&&!g.isClosing&&(g.wrap.removeClass("fancybox-tmp"),(c||"load"===b||"resize"===b&&d.autoResize)&&g._setDimension(),"scroll"===b&&d.canShrink||g.reposition(a),g.trigger("onUpdate"),i=null)},c&&!j?0:300))},toggle:function(a){g.isOpen&&(g.current.fitToView="boolean"===c.type(a)?a:!g.current.fitToView,j&&(g.wrap.removeAttr("style").addClass("fancybox-tmp"),g.trigger("onUpdate")),g.update())},hideLoading:function(){f.unbind(".loading"),c("#fancybox-loading").remove()},showLoading:function(){var a,b;g.hideLoading(),a=c('<div id="fancybox-loading"><div></div></div>').click(g.cancel).appendTo("body"),f.bind("keydown.loading",function(a){27===(a.which||a.keyCode)&&(a.preventDefault(),g.cancel())}),g.defaults.fixed||(b=g.getViewport(),a.css({position:"absolute",top:.5*b.h+b.y,left:.5*b.w+b.x}))},getViewport:function(){var b=g.current&&g.current.locked||!1,c={x:e.scrollLeft(),y:e.scrollTop()};return b?(c.w=b[0].clientWidth,c.h=b[0].clientHeight):(c.w=j&&a.innerWidth?a.innerWidth:e.width(),c.h=j&&a.innerHeight?a.innerHeight:e.height()),c},unbindEvents:function(){g.wrap&&k(g.wrap)&&g.wrap.unbind(".fb"),f.unbind(".fb"),e.unbind(".fb")},bindEvents:function(){var b,a=g.current;a&&(e.bind("orientationchange.fb"+(j?"":" resize.fb")+(a.autoCenter&&!a.locked?" scroll.fb":""),g.update),b=a.keys,b&&f.bind("keydown.fb",function(e){var f=e.which||e.keyCode,h=e.target||e.srcElement;return 27===f&&g.coming?!1:(e.ctrlKey||e.altKey||e.shiftKey||e.metaKey||h&&(h.type||c(h).is("[contenteditable]"))||c.each(b,function(b,h){return a.group.length>1&&h[f]!==d?(g[b](h[f]),e.preventDefault(),!1):c.inArray(f,h)>-1?(g[b](),e.preventDefault(),!1):d}),d)}),c.fn.mousewheel&&a.mouseWheel&&g.wrap.bind("mousewheel.fb",function(b,d,e,f){for(var h=b.target||null,i=c(h),j=!1;i.length&&!(j||i.is(".fancybox-skin")||i.is(".fancybox-wrap"));)j=n(i[0]),i=c(i).parent();0===d||j||g.group.length>1&&!a.canShrink&&(f>0||e>0?g.prev(f>0?"down":"left"):(0>f||0>e)&&g.next(0>f?"up":"right"),b.preventDefault())}))},trigger:function(a,b){var d,e=b||g.coming||g.current;if(e){if(c.isFunction(e[a])&&(d=e[a].apply(e,Array.prototype.slice.call(arguments,1))),d===!1)return!1;e.helpers&&c.each(e.helpers,function(b,d){d&&g.helpers[b]&&c.isFunction(g.helpers[b][a])&&(d=c.extend(!0,{},g.helpers[b].defaults,d),g.helpers[b][a](d,e))}),f.trigger(a)}},isImage:function(a){return l(a)&&a.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|png|bmp|webp)((\?|#).*)?$)/i)},isSWF:function(a){return l(a)&&a.match(/\.(swf)((\?|#).*)?$/i)},_start:function(a){var d,e,f,h,i,b={};if(a=o(a),d=g.group[a]||null,!d)return!1;if(b=c.extend(!0,{},g.opts,d),h=b.margin,i=b.padding,"number"===c.type(h)&&(b.margin=[h,h,h,h]),"number"===c.type(i)&&(b.padding=[i,i,i,i]),b.modal&&c.extend(!0,b,{closeBtn:!1,closeClick:!1,nextClick:!1,arrows:!1,mouseWheel:!1,keys:null,helpers:{overlay:{closeClick:!1}}}),b.autoSize&&(b.autoWidth=b.autoHeight=!0),"auto"===b.width&&(b.autoWidth=!0),"auto"===b.height&&(b.autoHeight=!0),b.group=g.group,b.index=a,g.coming=b,!1===g.trigger("beforeLoad"))return g.coming=null,d;if(f=b.type,e=b.href,!f)return g.coming=null,g.current&&g.router&&"jumpto"!==g.router?(g.current.index=a,g[g.router](g.direction)):!1;if(g.isActive=!0,("image"===f||"swf"===f)&&(b.autoHeight=b.autoWidth=!1,b.scrolling="visible"),"image"===f&&(b.aspectRatio=!0),"iframe"===f&&j&&(b.scrolling="scroll"),b.wrap=c(b.tpl.wrap).addClass("fancybox-"+(j?"mobile":"desktop")+" fancybox-type-"+f+" fancybox-tmp "+b.wrapCSS).appendTo(b.parent||"body"),c.extend(b,{skin:c(".fancybox-skin",b.wrap),outer:c(".fancybox-outer",b.wrap),inner:c(".fancybox-inner",b.wrap)}),c.each(["Top","Right","Bottom","Left"],function(a,c){b.skin.css("padding"+c,p(b.padding[a]))}),g.trigger("onReady"),"inline"===f||"html"===f){if(!b.content||!b.content.length)return g._error("content")}else if(!e)return g._error("href");"image"===f?g._loadImage():"ajax"===f?g._loadAjax():"iframe"===f?g._loadIframe():g._afterLoad()},_error:function(a){c.extend(g.coming,{type:"html",autoWidth:!0,autoHeight:!0,minWidth:0,minHeight:0,scrolling:"no",hasError:a,content:g.coming.tpl.error}),g._afterLoad()},_loadImage:function(){var a=g.imgPreload=new Image;a.onload=function(){this.onload=this.onerror=null,g.coming.width=this.width,g.coming.height=this.height,g._afterLoad()},a.onerror=function(){this.onload=this.onerror=null,g._error("image")},a.src=g.coming.href,a.complete!==!0&&g.showLoading()},_loadAjax:function(){var a=g.coming;g.showLoading(),g.ajaxLoad=c.ajax(c.extend({},a.ajax,{url:a.href,error:function(a,b){g.coming&&"abort"!==b?g._error("ajax",a):g.hideLoading()},success:function(b,c){"success"===c&&(a.content=b,g._afterLoad())}}))},_loadIframe:function(){var a=g.coming,b=c(a.tpl.iframe.replace(/\{rnd\}/g,(new Date).getTime())).attr("scrolling",j?"auto":a.iframe.scrolling).attr("src",a.href);c(a.wrap).bind("onReset",function(){try{c(this).find("iframe").hide().attr("src","//about:blank").end().empty()}catch(a){}}),a.iframe.preload&&(g.showLoading(),b.one("load",function(){c(this).data("ready",1),j||c(this).bind("load.fb",g.update),c(this).parents(".fancybox-wrap").width("100%").removeClass("fancybox-tmp").show(),g._afterLoad()})),a.content=b.appendTo(a.inner),a.iframe.preload||g._afterLoad()},_preloadImages:function(){var e,f,a=g.group,b=g.current,c=a.length,d=b.preload?Math.min(b.preload,c-1):0;for(f=1;d>=f;f+=1)e=a[(b.index+f)%c],"image"===e.type&&e.href&&((new Image).src=e.href)},_afterLoad:function(){var e,f,h,i,j,l,a=g.coming,b=g.current,d="fancybox-placeholder";if(g.hideLoading(),a&&g.isActive!==!1){if(!1===g.trigger("afterLoad",a,b))return a.wrap.stop(!0).trigger("onReset").remove(),g.coming=null,d;switch(b&&(g.trigger("beforeChange",b),b.wrap.stop(!0).removeClass("fancybox-opened").find(".fancybox-item, .fancybox-nav").remove()),g.unbindEvents(),e=a,f=a.content,h=a.type,i=a.scrolling,c.extend(g,{wrap:e.wrap,skin:e.skin,outer:e.outer,inner:e.inner,current:e,previous:b}),j=e.href,h){case"inline":case"ajax":case"html":e.selector?f=c("<div>").html(f).find(e.selector):k(f)&&(f.data(d)||f.data(d,c('<div class="'+d+'"></div>').insertAfter(f).hide()),f=f.show().detach(),e.wrap.bind("onReset",function(){c(this).find(f).length&&f.hide().replaceAll(f.data(d)).data(d,!1)}));break;case"image":f=e.tpl.image.replace("{href}",j);break;case"swf":f='<object id="fancybox-swf" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%"><param name="movie" value="'+j+'"></param>',l="",c.each(e.swf,function(a,b){f+='<param name="'+a+'" value="'+b+'"></param>',l+=" "+a+'="'+b+'"'}),f+='<embed src="'+j+'" type="application/x-shockwave-flash" width="100%" height="100%"'+l+"></embed></object>"}k(f)&&f.parent().is(e.inner)||e.inner.append(f),g.trigger("beforeShow"),e.inner.css("overflow","yes"===i?"scroll":"no"===i?"hidden":i),g._setDimension(),g.reposition(),g.isOpen=!1,g.coming=null,g.bindEvents(),g.isOpened?b.prevMethod&&g.transitions[b.prevMethod]():c(".fancybox-wrap").not(e.wrap).stop(!0).trigger("onReset").remove(),g.transitions[g.isOpened?e.nextMethod:e.openMethod](),g._preloadImages()}},_setDimension:function(){var y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,a=g.getViewport(),b=0,d=!1,e=!1,f=g.wrap,h=g.skin,i=g.inner,j=g.current,k=j.width,l=j.height,n=j.minWidth,q=j.minHeight,r=j.maxWidth,s=j.maxHeight,t=j.scrolling,u=j.scrollOutside?j.scrollbarWidth:0,v=j.margin,w=o(v[1]+v[3]),x=o(v[0]+v[2]);if(f.add(h).add(i).width("auto").height("auto").removeClass("fancybox-tmp"),y=o(h.outerWidth(!0)-h.width()),z=o(h.outerHeight(!0)-h.height()),A=w+y,B=x+z,C=m(k)?(a.w-A)*o(k)/100:k,D=m(l)?(a.h-B)*o(l)/100:l,"iframe"===j.type){if(L=j.content,j.autoHeight&&1===L.data("ready"))try{L[0].contentWindow.document.location&&(i.width(C).height(9999),M=L.contents().find("body"),u&&M.css("overflow-x","hidden"),D=M.height())}catch(N){}}else(j.autoWidth||j.autoHeight)&&(i.addClass("fancybox-tmp"),j.autoWidth||i.width(C),j.autoHeight||i.height(D),j.autoWidth&&(C=i.width()),j.autoHeight&&(D=i.height()),i.removeClass("fancybox-tmp"));if(k=o(C),l=o(D),G=C/D,n=o(m(n)?o(n,"w")-A:n),r=o(m(r)?o(r,"w")-A:r),q=o(m(q)?o(q,"h")-B:q),s=o(m(s)?o(s,"h")-B:s),E=r,F=s,j.fitToView&&(r=Math.min(a.w-A,r),s=Math.min(a.h-B,s)),J=a.w-w,K=a.h-x,j.aspectRatio?(k>r&&(k=r,l=o(k/G)),l>s&&(l=s,k=o(l*G)),n>k&&(k=n,l=o(k/G)),q>l&&(l=q,k=o(l*G))):(k=Math.max(n,Math.min(k,r)),j.autoHeight&&"iframe"!==j.type&&(i.width(k),l=i.height()),l=Math.max(q,Math.min(l,s))),j.fitToView)if(i.width(k).height(l),f.width(k+y),H=f.width(),I=f.height(),j.aspectRatio)for(;(H>J||I>K)&&k>n&&l>q&&!(b++>19);)l=Math.max(q,Math.min(s,l-10)),k=o(l*G),n>k&&(k=n,l=o(k/G)),k>r&&(k=r,l=o(k/G)),i.width(k).height(l),f.width(k+y),H=f.width(),I=f.height();else k=Math.max(n,Math.min(k,k-(H-J))),l=Math.max(q,Math.min(l,l-(I-K)));u&&"auto"===t&&D>l&&J>k+y+u&&(k+=u),i.width(k).height(l),f.width(k+y),H=f.width(),I=f.height(),d=(H>J||I>K)&&k>n&&l>q,e=j.aspectRatio?E>k&&F>l&&C>k&&D>l:(E>k||F>l)&&(C>k||D>l),c.extend(j,{dim:{width:p(H),height:p(I)},origWidth:C,origHeight:D,canShrink:d,canExpand:e,wPadding:y,hPadding:z,wrapSpace:I-h.outerHeight(!0),skinSpace:h.height()-l}),!L&&j.autoHeight&&l>q&&s>l&&!e&&i.height("auto")},_getPosition:function(a){var b=g.current,c=g.getViewport(),d=b.margin,e=g.wrap.width()+d[1]+d[3],f=g.wrap.height()+d[0]+d[2],h={position:"absolute",top:d[0],left:d[3]};return b.autoCenter&&b.fixed&&!a&&c.h>=f&&c.w>=e?h.position="fixed":b.locked||(h.top+=c.y,h.left+=c.x),h.top=p(Math.max(h.top,h.top+(c.h-f)*b.topRatio)),h.left=p(Math.max(h.left,h.left+(c.w-e)*b.leftRatio)),h},_afterZoomIn:function(){var a=g.current;a&&(g.isOpen=g.isOpened=!0,g.wrap.css("overflow","visible").addClass("fancybox-opened"),g.update(),(a.closeClick||a.nextClick&&g.group.length>1)&&g.inner.css("cursor","pointer").bind("click.fb",function(b){c(b.target).is("a")||c(b.target).parent().is("a")||(b.preventDefault(),g[a.closeClick?"close":"next"]())}),a.closeBtn&&c(a.tpl.closeBtn).appendTo(g.skin).bind("click.fb",function(a){a.preventDefault(),g.close()}),a.arrows&&g.group.length>1&&((a.loop||a.index>0)&&c(a.tpl.prev).appendTo(g.outer).bind("click.fb",g.prev),(a.loop||a.index<g.group.length-1)&&c(a.tpl.next).appendTo(g.outer).bind("click.fb",g.next)),g.trigger("afterShow"),a.loop||a.index!==a.group.length-1?g.opts.autoPlay&&!g.player.isActive&&(g.opts.autoPlay=!1,g.play()):g.play(!1))},_afterZoomOut:function(a){a=a||g.current,c(".fancybox-wrap").trigger("onReset").remove(),c.extend(g,{group:{},opts:{},router:!1,current:null,isActive:!1,isOpened:!1,isOpen:!1,isClosing:!1,wrap:null,skin:null,outer:null,inner:null}),g.trigger("afterClose",a)}}),g.transitions={getOrigPosition:function(){var a=g.current,b=a.element,c=a.orig,d={},e=50,f=50,h=a.hPadding,i=a.wPadding,j=g.getViewport();return!c&&a.isDom&&b.is(":visible")&&(c=b.find("img:first"),c.length||(c=b)),k(c)?(d=c.offset(),c.is("img")&&(e=c.outerWidth(),f=c.outerHeight())):(d.top=j.y+(j.h-f)*a.topRatio,d.left=j.x+(j.w-e)*a.leftRatio),("fixed"===g.wrap.css("position")||a.locked)&&(d.top-=j.y,d.left-=j.x),d={top:p(d.top-h*a.topRatio),left:p(d.left-i*a.leftRatio),width:p(e+i),height:p(f+h)}},step:function(a,b){var c,d,e,f=b.prop,h=g.current,i=h.wrapSpace,j=h.skinSpace;("width"===f||"height"===f)&&(c=b.end===b.start?1:(a-b.start)/(b.end-b.start),g.isClosing&&(c=1-c),d="width"===f?h.wPadding:h.hPadding,e=a-d,g.skin[f](o("width"===f?e:e-i*c)),g.inner[f](o("width"===f?e:e-i*c-j*c)))},zoomIn:function(){var a=g.current,b=a.pos,d=a.openEffect,e="elastic"===d,f=c.extend({opacity:1},b);delete f.position,e?(b=this.getOrigPosition(),a.openOpacity&&(b.opacity=.1)):"fade"===d&&(b.opacity=.1),g.wrap.css(b).animate(f,{duration:"none"===d?0:a.openSpeed,easing:a.openEasing,step:e?this.step:null,complete:g._afterZoomIn})},zoomOut:function(){var a=g.current,b=a.closeEffect,c="elastic"===b,d={opacity:.1};c&&(d=this.getOrigPosition(),a.closeOpacity&&(d.opacity=.1)),g.wrap.animate(d,{duration:"none"===b?0:a.closeSpeed,easing:a.closeEasing,step:c?this.step:null,complete:g._afterZoomOut})},changeIn:function(){var h,a=g.current,b=a.nextEffect,c=a.pos,d={opacity:1},e=g.direction,f=200;c.opacity=.1,"elastic"===b&&(h="down"===e||"up"===e?"top":"left","down"===e||"right"===e?(c[h]=p(o(c[h])-f),d[h]="+="+f+"px"):(c[h]=p(o(c[h])+f),d[h]="-="+f+"px")),"none"===b?g._afterZoomIn():g.wrap.css(c).animate(d,{duration:a.nextSpeed,easing:a.nextEasing,complete:g._afterZoomIn})},changeOut:function(){var a=g.previous,b=a.prevEffect,d={opacity:.1},e=g.direction,f=200;"elastic"===b&&(d["down"===e||"up"===e?"top":"left"]=("up"===e||"left"===e?"-":"+")+"="+f+"px"),a.wrap.animate(d,{duration:"none"===b?0:a.prevSpeed,easing:a.prevEasing,complete:function(){c(this).trigger("onReset").remove()}})}},g.helpers.overlay={defaults:{closeClick:!0,speedOut:200,showEarly:!0,css:{},locked:!j,fixed:!0},overlay:null,fixed:!1,create:function(a){a=c.extend({},this.defaults,a),this.overlay&&this.close(),this.overlay=c('<div class="fancybox-overlay"></div>').appendTo("body"),this.fixed=!1,a.fixed&&g.defaults.fixed&&(this.overlay.addClass("fancybox-overlay-fixed"),this.fixed=!0)},open:function(a){var b=this;a=c.extend({},this.defaults,a),this.overlay?this.overlay.unbind(".overlay").width("auto").height("auto"):this.create(a),this.fixed||(e.bind("resize.overlay",c.proxy(this.update,this)),this.update()),a.closeClick&&this.overlay.bind("click.overlay",function(a){c(a.target).hasClass("fancybox-overlay")&&(g.isActive?g.close():b.close())}),this.overlay.css(a.css).show()},close:function(){c(".fancybox-overlay").remove(),e.unbind("resize.overlay"),this.overlay=null,this.margin!==!1&&(c("body").css("margin-right",this.margin),this.margin=!1),this.el&&this.el.removeClass("fancybox-lock")},update:function(){var c,a="100%";
-this.overlay.width(a).height("100%"),h?(c=Math.max(b.documentElement.offsetWidth,b.body.offsetWidth),f.width()>c&&(a=f.width())):f.width()>e.width()&&(a=f.width()),this.overlay.width(a).height(f.height())},onReady:function(a,d){c(".fancybox-overlay").stop(!0,!0),this.overlay||(this.margin=f.height()>e.height()||"scroll"===c("body").css("overflow-y")?c("body").css("margin-right"):!1,this.el=b.all&&!b.querySelector?c("html"):c("body"),this.create(a)),a.locked&&this.fixed&&(d.locked=this.overlay.append(d.wrap),d.fixed=!1),a.showEarly===!0&&this.beforeShow.apply(this,arguments)},beforeShow:function(a,b){b.locked&&(this.el.addClass("fancybox-lock"),this.margin!==!1&&c("body").css("margin-right",o(this.margin)+b.scrollbarWidth)),this.open(a)},onUpdate:function(){this.fixed||this.update()},afterClose:function(a){this.overlay&&!g.isActive&&this.overlay.fadeOut(a.speedOut,c.proxy(this.close,this))}},g.helpers.title={defaults:{type:"float",position:"bottom"},beforeShow:function(a){var f,i,b=g.current,d=b.title,e=a.type;if(c.isFunction(d)&&(d=d.call(b.element,b)),l(d)&&""!==c.trim(d)){switch(f=c('<div class="fancybox-title fancybox-title-'+e+'-wrap">'+d+"</div>"),e){case"inside":i=g.skin;break;case"outside":i=g.wrap;break;case"over":i=g.inner;break;default:i=g.skin,f.appendTo("body"),h&&f.width(f.width()),f.wrapInner('<span class="child"></span>'),g.current.margin[2]+=Math.abs(o(f.css("margin-bottom")))}f["top"===a.position?"prependTo":"appendTo"](i)}}},c.fn.fancybox=function(a){var b,d=c(this),e=this.selector||"",h=function(f){var j,k,h=c(this).blur(),i=b;f.ctrlKey||f.altKey||f.shiftKey||f.metaKey||h.is(".fancybox-wrap")||(j=a.groupAttr||"data-fancybox-group",k=h.attr(j),k||(j="rel",k=h.get(0)[j]),k&&""!==k&&"nofollow"!==k&&(h=e.length?c(e):d,h=h.filter("["+j+'="'+k+'"]'),i=h.index(this)),a.index=i,g.open(h,a)!==!1&&f.preventDefault())};return a=a||{},b=a.index||0,e&&a.live!==!1?f.undelegate(e,"click.fb-start").delegate(e+":not('.fancybox-item, .fancybox-nav')","click.fb-start",h):d.unbind("click.fb-start").bind("click.fb-start",h),this.filter("[data-fancybox-start=1]").trigger("click"),this},f.ready(function(){c.scrollbarWidth===d&&(c.scrollbarWidth=function(){var a=c('<div style="width:50px;height:50px;overflow:auto"><div/></div>').appendTo("body"),b=a.children(),d=b.innerWidth()-b.height(99).innerWidth();return a.remove(),d}),c.support.fixedPosition===d&&(c.support.fixedPosition=function(){var a=c('<div style="position:fixed;top:20px;"></div>').appendTo("body"),b=20===a[0].offsetTop||15===a[0].offsetTop;return a.remove(),b}()),c.extend(g.defaults,{scrollbarWidth:c.scrollbarWidth(),fixed:c.support.fixedPosition,parent:c("body")})})}(window,document,e),a("./helpers/jquery-fancybox-buttons")(e),a("./helpers/jquery-fancybox-media")(e),a("./helpers/jquery-fancybox-thumbs")(e),e}});
+/*!
+ * Buttons helper for fancyBox
+ * version: 1.0.5 (Mon, 15 Oct 2012)
+ * @requires fancyBox v2.0 or later
+ *
+ * Usage:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             buttons: {
+ *                 position : 'top'
+ *             }
+ *         }
+ *     });
+ *
+ */
+define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-buttons", [], function(require, exports, module) {
+    seajs.importStyle('#fancybox-buttons{position:fixed;left:0;width:100%;z-index:8050}#fancybox-buttons.top{top:10px}#fancybox-buttons.bottom{bottom:10px}#fancybox-buttons ul{display:block;width:166px;height:30px;margin:0 auto;padding:0;list-style:none;border:1px solid #111;border-radius:3px;-webkit-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);-moz-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);background:#323232;background:-moz-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%, #444),color-stop(50%, #343434),color-stop(50%, #292929),color-stop(100%, #333));background:-webkit-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-o-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-ms-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="#444444", endColorstr="#222222", GradientType=0 )}#fancybox-buttons ul li{float:left;margin:0;padding:0}#fancybox-buttons a{display:block;width:30px;height:30px;text-indent:-9999px;background-image:url("../assets/images/fancybox_buttons.png");background-repeat:no-repeat;outline:0;opacity:.8}#fancybox-buttons a:hover{opacity:1}#fancybox-buttons a.btnPrev{background-position:5px 0}#fancybox-buttons a.btnNext{background-position:-33px 0;border-right:1px solid #3e3e3e}#fancybox-buttons a.btnPlay{background-position:0 -30px}#fancybox-buttons a.btnPlayOn{background-position:-30px -30px}#fancybox-buttons a.btnToggle{background-position:3px -60px;border-left:1px solid #111;border-right:1px solid #3e3e3e;width:35px}#fancybox-buttons a.btnToggleOn{background-position:-27px -60px}#fancybox-buttons a.btnClose{border-left:1px solid #111;width:35px;background-position:-56px 0}#fancybox-buttons a.btnDisabled{opacity:.4;cursor:default}', "#jquery-fancybox/2.1.4/../css/jquery-fancybox-buttons.css", module);
+    module.exports = function($) {
+        //var $ = require('jquery');
+        //(function ($) {
+        //Shortcut for fancyBox object
+        var F = $.fancybox;
+        //Add helper object
+        F.helpers.buttons = {
+            defaults: {
+                skipSingle: false,
+                // disables if gallery contains single image
+                position: "top",
+                // 'top' or 'bottom'
+                tpl: '<div id="fancybox-buttons"><ul><li><a class="btnPrev" title="Previous" href="javascript:;"></a></li><li><a class="btnPlay" title="Start slideshow" href="javascript:;"></a></li><li><a class="btnNext" title="Next" href="javascript:;"></a></li><li><a class="btnToggle" title="Toggle size" href="javascript:;"></a></li><li><a class="btnClose" title="Close" href="javascript:jQuery.fancybox.close();"></a></li></ul></div>'
+            },
+            list: null,
+            buttons: null,
+            beforeLoad: function(opts, obj) {
+                //Remove self if gallery do not have at least two items
+                if (opts.skipSingle && obj.group.length < 2) {
+                    obj.helpers.buttons = false;
+                    obj.closeBtn = true;
+                    return;
+                }
+                //Increase top margin to give space for buttons
+                obj.margin[opts.position === "bottom" ? 2 : 0] += 30;
+            },
+            onPlayStart: function() {
+                if (this.buttons) {
+                    this.buttons.play.attr("title", "Pause slideshow").addClass("btnPlayOn");
+                }
+            },
+            onPlayEnd: function() {
+                if (this.buttons) {
+                    this.buttons.play.attr("title", "Start slideshow").removeClass("btnPlayOn");
+                }
+            },
+            afterShow: function(opts, obj) {
+                var buttons = this.buttons;
+                if (!buttons) {
+                    this.list = $(opts.tpl).addClass(opts.position).appendTo("body");
+                    buttons = {
+                        prev: this.list.find(".btnPrev").click(F.prev),
+                        next: this.list.find(".btnNext").click(F.next),
+                        play: this.list.find(".btnPlay").click(F.play),
+                        toggle: this.list.find(".btnToggle").click(F.toggle)
+                    };
+                }
+                //Prev
+                if (obj.index > 0 || obj.loop) {
+                    buttons.prev.removeClass("btnDisabled");
+                } else {
+                    buttons.prev.addClass("btnDisabled");
+                }
+                //Next / Play
+                if (obj.loop || obj.index < obj.group.length - 1) {
+                    buttons.next.removeClass("btnDisabled");
+                    buttons.play.removeClass("btnDisabled");
+                } else {
+                    buttons.next.addClass("btnDisabled");
+                    buttons.play.addClass("btnDisabled");
+                }
+                this.buttons = buttons;
+                this.onUpdate(opts, obj);
+            },
+            onUpdate: function(opts, obj) {
+                var toggle;
+                if (!this.buttons) {
+                    return;
+                }
+                toggle = this.buttons.toggle.removeClass("btnDisabled btnToggleOn");
+                //Size toggle button
+                if (obj.canShrink) {
+                    toggle.addClass("btnToggleOn");
+                } else if (!obj.canExpand) {
+                    toggle.addClass("btnDisabled");
+                }
+            },
+            beforeClose: function() {
+                if (this.list) {
+                    this.list.remove();
+                }
+                this.list = null;
+                this.buttons = null;
+            }
+        };
+    };
+});
+
+/*!
+ * Media helper for fancyBox
+ * version: 1.0.5 (Tue, 23 Oct 2012)
+ * @requires fancyBox v2.0 or later
+ *
+ * Usage:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             media: true
+ *         }
+ *     });
+ *
+ * Set custom URL parameters:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             media: {
+ *                 youtube : {
+ *                     params : {
+ *                         autoplay : 0
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     });
+ *
+ * Or:
+ *     $(".fancybox").fancybox({,
+ *         helpers : {
+ *             media: true
+ *         },
+ *         youtube : {
+ *             autoplay: 0
+ *         }
+ *     });
+ *
+ *  Supports:
+ *
+ *      Youtube
+ *          http://www.youtube.com/watch?v=opj24KnzrWo
+ *          http://www.youtube.com/embed/opj24KnzrWo
+ *          http://youtu.be/opj24KnzrWo
+ *      Vimeo
+ *          http://vimeo.com/40648169
+ *          http://vimeo.com/channels/staffpicks/38843628
+ *          http://vimeo.com/groups/surrealism/videos/36516384
+ *          http://player.vimeo.com/video/45074303
+ *      Metacafe
+ *          http://www.metacafe.com/watch/7635964/dr_seuss_the_lorax_movie_trailer/
+ *          http://www.metacafe.com/watch/7635964/
+ *      Dailymotion
+ *          http://www.dailymotion.com/video/xoytqh_dr-seuss-the-lorax-premiere_people
+ *      Twitvid
+ *          http://twitvid.com/QY7MD
+ *      Twitpic
+ *          http://twitpic.com/7p93st
+ *      Instagram
+ *          http://instagr.am/p/IejkuUGxQn/
+ *          http://instagram.com/p/IejkuUGxQn/
+ *      Google maps
+ *          http://maps.google.com/maps?q=Eiffel+Tower,+Avenue+Gustave+Eiffel,+Paris,+France&t=h&z=17
+ *          http://maps.google.com/?ll=48.857995,2.294297&spn=0.007666,0.021136&t=m&z=16
+ *          http://maps.google.com/?ll=48.859463,2.292626&spn=0.000965,0.002642&t=m&z=19&layer=c&cbll=48.859524,2.292532&panoid=YJ0lq28OOy3VT2IqIuVY0g&cbp=12,151.58,,0,-15.56
+ */
+define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-media", [], function(require, exports, module) {
+    module.exports = function($) {
+        //(function ($) {
+        "use strict";
+        //Shortcut for fancyBox object
+        var F = $.fancybox, format = function(url, rez, params) {
+            params = params || "";
+            if ($.type(params) === "object") {
+                params = $.param(params, true);
+            }
+            $.each(rez, function(key, value) {
+                url = url.replace("$" + key, value || "");
+            });
+            if (params.length) {
+                url += (url.indexOf("?") > 0 ? "&" : "?") + params;
+            }
+            return url;
+        };
+        //Add helper object
+        F.helpers.media = {
+            defaults: {
+                youtube: {
+                    matcher: /(youtube\.com|youtu\.be)\/(watch\?v=|v\/|u\/|embed\/?)?(videoseries\?list=(.*)|[\w-]{11}|\?listType=(.*)&list=(.*)).*/i,
+                    params: {
+                        autoplay: 1,
+                        autohide: 1,
+                        fs: 1,
+                        rel: 0,
+                        hd: 1,
+                        wmode: "opaque",
+                        enablejsapi: 1
+                    },
+                    type: "iframe",
+                    url: "//www.youtube.com/embed/$3"
+                },
+                vimeo: {
+                    matcher: /(?:vimeo(?:pro)?.com)\/(?:[^\d]+)?(\d+)(?:.*)/,
+                    params: {
+                        autoplay: 1,
+                        hd: 1,
+                        show_title: 1,
+                        show_byline: 1,
+                        show_portrait: 0,
+                        fullscreen: 1
+                    },
+                    type: "iframe",
+                    url: "//player.vimeo.com/video/$1"
+                },
+                metacafe: {
+                    matcher: /metacafe.com\/(?:watch|fplayer)\/([\w\-]{1,10})/,
+                    params: {
+                        autoPlay: "yes"
+                    },
+                    type: "swf",
+                    url: function(rez, params, obj) {
+                        obj.swf.flashVars = "playerVars=" + $.param(params, true);
+                        return "//www.metacafe.com/fplayer/" + rez[1] + "/.swf";
+                    }
+                },
+                dailymotion: {
+                    matcher: /dailymotion.com\/video\/(.*)\/?(.*)/,
+                    params: {
+                        additionalInfos: 0,
+                        autoStart: 1
+                    },
+                    type: "swf",
+                    url: "//www.dailymotion.com/swf/video/$1"
+                },
+                twitvid: {
+                    matcher: /twitvid\.com\/([a-zA-Z0-9_\-\?\=]+)/i,
+                    params: {
+                        autoplay: 0
+                    },
+                    type: "iframe",
+                    url: "//www.twitvid.com/embed.php?guid=$1"
+                },
+                twitpic: {
+                    matcher: /twitpic\.com\/(?!(?:place|photos|events)\/)([a-zA-Z0-9\?\=\-]+)/i,
+                    type: "image",
+                    url: "//twitpic.com/show/full/$1/"
+                },
+                instagram: {
+                    matcher: /(instagr\.am|instagram\.com)\/p\/([a-zA-Z0-9_\-]+)\/?/i,
+                    type: "image",
+                    url: "//$1/p/$2/media/"
+                },
+                google_maps: {
+                    matcher: /maps\.google\.([a-z]{2,3}(\.[a-z]{2})?)\/(\?ll=|maps\?)(.*)/i,
+                    type: "iframe",
+                    url: function(rez) {
+                        return "//maps.google." + rez[1] + "/" + rez[3] + "" + rez[4] + "&output=" + (rez[4].indexOf("layer=c") > 0 ? "svembed" : "embed");
+                    }
+                }
+            },
+            beforeLoad: function(opts, obj) {
+                var url = obj.href || "", type = false, what, item, rez, params;
+                for (what in opts) {
+                    item = opts[what];
+                    rez = url.match(item.matcher);
+                    if (rez) {
+                        type = item.type;
+                        params = $.extend(true, {}, item.params, obj[what] || ($.isPlainObject(opts[what]) ? opts[what].params : null));
+                        url = $.type(item.url) === "function" ? item.url.call(this, rez, params, obj) : format(item.url, rez, params);
+                        break;
+                    }
+                }
+                if (type) {
+                    obj.href = url;
+                    obj.type = type;
+                    obj.autoHeight = false;
+                }
+            }
+        };
+    };
+});
+
+/*!
+ * Thumbnail helper for fancyBox
+ * version: 1.0.7 (Mon, 01 Oct 2012)
+ * @requires fancyBox v2.0 or later
+ *
+ * Usage:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             thumbs: {
+ *                 width  : 50,
+ *                 height : 50
+ *             }
+ *         }
+ *     });
+ *
+ */
+define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs", [], function(require, exports, module) {
+    seajs.importStyle("#fancybox-thumbs{position:fixed;left:0;width:100%;overflow:hidden;z-index:8050}#fancybox-thumbs.bottom{bottom:2px}#fancybox-thumbs.top{top:2px}#fancybox-thumbs ul{position:relative;list-style:none;margin:0;padding:0}#fancybox-thumbs ul li{float:left;padding:1px;opacity:.5}#fancybox-thumbs ul li.active{opacity:.75;padding:0;border:1px solid #fff}#fancybox-thumbs ul li:hover{opacity:1}#fancybox-thumbs ul li a{display:block;position:relative;overflow:hidden;border:1px solid #222;background:#111;outline:0}#fancybox-thumbs ul li img{display:block;position:relative;border:0;padding:0}", "#jquery-fancybox/2.1.4/../css/jquery-fancybox-thumbs.css", module);
+    module.exports = function($) {
+        //(function ($) {
+        //Shortcut for fancyBox object
+        var F = $.fancybox;
+        //Add helper object
+        F.helpers.thumbs = {
+            defaults: {
+                width: 50,
+                // thumbnail width
+                height: 50,
+                // thumbnail height
+                position: "bottom",
+                // 'top' or 'bottom'
+                source: function(item) {
+                    // function to obtain the URL of the thumbnail image
+                    var href;
+                    if (item.element) {
+                        href = $(item.element).find("img").attr("src");
+                    }
+                    if (!href && item.type === "image" && item.href) {
+                        href = item.href;
+                    }
+                    return href;
+                }
+            },
+            wrap: null,
+            list: null,
+            width: 0,
+            init: function(opts, obj) {
+                var that = this, list, thumbWidth = opts.width, thumbHeight = opts.height, thumbSource = opts.source;
+                //Build list structure
+                list = "";
+                for (var n = 0; n < obj.group.length; n++) {
+                    list += '<li><a style="width:' + thumbWidth + "px;height:" + thumbHeight + 'px;" href="javascript:jQuery.fancybox.jumpto(' + n + ');"></a></li>';
+                }
+                this.wrap = $('<div id="fancybox-thumbs"></div>').addClass(opts.position).appendTo("body");
+                this.list = $("<ul>" + list + "</ul>").appendTo(this.wrap);
+                //Load each thumbnail
+                $.each(obj.group, function(i) {
+                    var href = thumbSource(obj.group[i]);
+                    if (!href) {
+                        return;
+                    }
+                    $("<img />").load(function() {
+                        var width = this.width, height = this.height, widthRatio, heightRatio, parent;
+                        if (!that.list || !width || !height) {
+                            return;
+                        }
+                        //Calculate thumbnail width/height and center it
+                        widthRatio = width / thumbWidth;
+                        heightRatio = height / thumbHeight;
+                        parent = that.list.children().eq(i).find("a");
+                        if (widthRatio >= 1 && heightRatio >= 1) {
+                            if (widthRatio > heightRatio) {
+                                width = Math.floor(width / heightRatio);
+                                height = thumbHeight;
+                            } else {
+                                width = thumbWidth;
+                                height = Math.floor(height / widthRatio);
+                            }
+                        }
+                        $(this).css({
+                            width: width,
+                            height: height,
+                            top: Math.floor(thumbHeight / 2 - height / 2),
+                            left: Math.floor(thumbWidth / 2 - width / 2)
+                        });
+                        parent.width(thumbWidth).height(thumbHeight);
+                        $(this).hide().appendTo(parent).fadeIn(300);
+                    }).attr("src", href);
+                });
+                //Set initial width
+                this.width = this.list.children().eq(0).outerWidth(true);
+                this.list.width(this.width * (obj.group.length + 1)).css("left", Math.floor($(window).width() * .5 - (obj.index * this.width + this.width * .5)));
+            },
+            beforeLoad: function(opts, obj) {
+                //Remove self if gallery do not have at least two items
+                if (obj.group.length < 2) {
+                    obj.helpers.thumbs = false;
+                    return;
+                }
+                //Increase bottom margin to give space for thumbs
+                obj.margin[opts.position === "top" ? 0 : 2] += opts.height + 15;
+            },
+            afterShow: function(opts, obj) {
+                //Check if exists and create or update list
+                if (this.list) {
+                    this.onUpdate(opts, obj);
+                } else {
+                    this.init(opts, obj);
+                }
+                //Set active element
+                this.list.children().removeClass("active").eq(obj.index).addClass("active");
+            },
+            //Center list
+            onUpdate: function(opts, obj) {
+                if (this.list) {
+                    this.list.stop(true).animate({
+                        left: Math.floor($(window).width() * .5 - (obj.index * this.width + this.width * .5))
+                    }, 150);
+                }
+            },
+            beforeClose: function() {
+                if (this.wrap) {
+                    this.wrap.remove();
+                }
+                this.wrap = null;
+                this.list = null;
+                this.width = 0;
+            }
+        };
+    };
+});
+
+define("#jquery-fancybox/2.1.4/jquery-fancybox", [ "./helpers/jquery-fancybox-buttons", "./helpers/jquery-fancybox-media", "./helpers/jquery-fancybox-thumbs", "#/jquery-mousewheel/3.0.6/jquery-mousewheel" ], function(require, exports, module) {
+    var $, jQuery;
+    /*module.exports = function(externalJQuery) {
+        if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
+            $ = jQuery = externalJQuery;
+        } else if (!$) {
+            $ = jQuery = require("#/jquery/1.7.2/jquery").sub();
+        }*/
+    $ = jQuery = require("jquery");
+        /*!
+ * fancyBox - jQuery Plugin
+ * version: 2.1.4 (Thu, 17 Jan 2013)
+ * @requires jQuery v1.6 or later
+ *
+ * Examples at http://fancyapps.com/fancybox/
+ * License: www.fancyapps.com/fancybox/#license
+ *
+ * Copyright 2012 Janis Skarnelis - janis@fancyapps.com
+ *
+ */
+        require("#/jquery-mousewheel/3.0.6/jquery-mousewheel")(jQuery);
+        seajs.importStyle('/*! fancyBox v2.1.4 fancyapps.com | fancyapps.com/fancybox/#license */.fancybox-wrap,.fancybox-skin,.fancybox-outer,.fancybox-inner,.fancybox-image,.fancybox-wrap iframe,.fancybox-wrap object,.fancybox-nav,.fancybox-nav span,.fancybox-tmp{padding:0;margin:0;border:0;outline:0;vertical-align:top}.fancybox-wrap{position:absolute;top:0;left:0;z-index:8020}.fancybox-skin{position:relative;background:#f9f9f9;color:#444;text-shadow:none;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}.fancybox-opened{z-index:8030}.fancybox-opened .fancybox-skin{-webkit-box-shadow:0 10px 25px rgba(0,0,0,.5);-moz-box-shadow:0 10px 25px rgba(0,0,0,.5);box-shadow:0 10px 25px rgba(0,0,0,.5)}.fancybox-outer,.fancybox-inner{position:relative}.fancybox-inner{overflow:hidden}.fancybox-type-iframe .fancybox-inner{-webkit-overflow-scrolling:touch}.fancybox-error{color:#444;font:14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;padding:15px;white-space:nowrap}.fancybox-image,.fancybox-iframe{display:block;width:100%;height:100%}#fancybox-loading,.fancybox-close,.fancybox-prev span,.fancybox-next span{background-image:url("../assets/images/fancybox_sprite.png")}#fancybox-loading{position:fixed;top:50%;left:50%;margin-top:-22px;margin-left:-22px;background-position:0 -108px;opacity:.8;cursor:pointer;z-index:8060}#fancybox-loading div{width:44px;height:44px;background:url("../assets/images/fancybox_loading.gif") center center no-repeat}.fancybox-close{position:absolute;top:-18px;right:-18px;width:36px;height:36px;cursor:pointer;z-index:8040}.fancybox-nav{position:absolute;top:0;width:40%;height:100%;cursor:pointer;text-decoration:none;background:transparent url("../assets/images/blank.gif");-webkit-tap-highlight-color:rgba(0,0,0,0);z-index:8040}.fancybox-prev{left:0}.fancybox-next{right:0}.fancybox-nav span{position:absolute;top:50%;width:36px;height:34px;margin-top:-18px;cursor:pointer;z-index:8040;visibility:hidden}.fancybox-prev span{left:10px;background-position:0 -36px}.fancybox-next span{right:10px;background-position:0 -72px}.fancybox-nav:hover span{visibility:visible}.fancybox-tmp{position:absolute;top:-99999px;left:-99999px;visibility:hidden;max-width:99999px;max-height:99999px;overflow:visible!important}.fancybox-lock{overflow:hidden}.fancybox-overlay{position:absolute;top:0;left:0;overflow:hidden;display:none;z-index:8010;background:url("../assets/images/fancybox_overlay.png")}.fancybox-overlay-fixed{position:fixed;bottom:0;right:0}.fancybox-lock .fancybox-overlay{overflow:auto;overflow-y:scroll}.fancybox-title{visibility:hidden;font:normal 13px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;position:relative;text-shadow:none;z-index:8050}.fancybox-opened .fancybox-title{visibility:visible}.fancybox-title-float-wrap{position:absolute;bottom:0;right:50%;margin-bottom:-35px;z-index:8050;text-align:center}.fancybox-title-float-wrap .child{display:inline-block;margin-right:-100%;padding:2px 20px;background:transparent;background:rgba(0,0,0,.8);-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;text-shadow:0 1px 2px #222;color:#FFF;font-weight:700;line-height:24px;white-space:nowrap}.fancybox-title-outside-wrap{position:relative;margin-top:10px;color:#fff}.fancybox-title-inside-wrap{padding-top:10px}.fancybox-title-over-wrap{position:absolute;bottom:0;left:0;color:#fff;padding:10px;background:#000;background:rgba(0,0,0,.8)}', "#jquery-fancybox/2.1.4/../css/jquery-fancybox.css", module);
+        (function(window, document, $, undefined) {
+            "use strict";
+            var W = $(window), D = $(document), F = $.fancybox = function() {
+                F.open.apply(this, arguments);
+            }, IE = navigator.userAgent.match(/msie/i), didUpdate = null, isTouch = document.createTouch !== undefined, isQuery = function(obj) {
+                return obj && obj.hasOwnProperty && obj instanceof $;
+            }, isString = function(str) {
+                return str && $.type(str) === "string";
+            }, isPercentage = function(str) {
+                return isString(str) && str.indexOf("%") > 0;
+            }, isScrollable = function(el) {
+                return el && !(el.style.overflow && el.style.overflow === "hidden") && (el.clientWidth && el.scrollWidth > el.clientWidth || el.clientHeight && el.scrollHeight > el.clientHeight);
+            }, getScalar = function(orig, dim) {
+                var value = parseInt(orig, 10) || 0;
+                if (dim && isPercentage(orig)) {
+                    value = F.getViewport()[dim] / 100 * value;
+                }
+                return Math.ceil(value);
+            }, getValue = function(value, dim) {
+                return getScalar(value, dim) + "px";
+            };
+            $.extend(F, {
+                // The current version of fancyBox
+                version: "2.1.4",
+                defaults: {
+                    padding: 15,
+                    margin: 20,
+                    width: 800,
+                    height: 600,
+                    minWidth: 100,
+                    minHeight: 100,
+                    maxWidth: 9999,
+                    maxHeight: 9999,
+                    autoSize: true,
+                    autoHeight: false,
+                    autoWidth: false,
+                    autoResize: true,
+                    autoCenter: !isTouch,
+                    fitToView: true,
+                    aspectRatio: false,
+                    topRatio: .5,
+                    leftRatio: .5,
+                    scrolling: "auto",
+                    // 'auto', 'yes' or 'no'
+                    wrapCSS: "",
+                    arrows: true,
+                    closeBtn: true,
+                    closeClick: false,
+                    nextClick: false,
+                    mouseWheel: true,
+                    autoPlay: false,
+                    playSpeed: 3e3,
+                    preload: 3,
+                    modal: false,
+                    loop: true,
+                    ajax: {
+                        dataType: "html",
+                        headers: {
+                            "X-fancyBox": true
+                        }
+                    },
+                    iframe: {
+                        scrolling: "auto",
+                        preload: true
+                    },
+                    swf: {
+                        wmode: "transparent",
+                        allowfullscreen: "true",
+                        allowscriptaccess: "always"
+                    },
+                    keys: {
+                        next: {
+                            13: "left",
+                            // enter
+                            34: "up",
+                            // page down
+                            39: "left",
+                            // right arrow
+                            40: "up"
+                        },
+                        prev: {
+                            8: "right",
+                            // backspace
+                            33: "down",
+                            // page up
+                            37: "right",
+                            // left arrow
+                            38: "down"
+                        },
+                        close: [ 27 ],
+                        // escape key
+                        play: [ 32 ],
+                        // space - start/stop slideshow
+                        toggle: [ 70 ]
+                    },
+                    direction: {
+                        next: "left",
+                        prev: "right"
+                    },
+                    scrollOutside: true,
+                    // Override some properties
+                    index: 0,
+                    type: null,
+                    href: null,
+                    content: null,
+                    title: null,
+                    // HTML templates
+                    tpl: {
+                        wrap: '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-outer"><div class="fancybox-inner"></div></div></div></div>',
+                        image: '<img class="fancybox-image" src="{href}" alt="" />',
+                        iframe: '<iframe id="fancybox-frame{rnd}" name="fancybox-frame{rnd}" class="fancybox-iframe" frameborder="0" vspace="0" hspace="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen' + (IE ? ' allowtransparency="true"' : "") + "></iframe>",
+                        error: '<p class="fancybox-error">The requested content cannot be loaded.<br/>Please try again later.</p>',
+                        closeBtn: '<a title="Close" class="fancybox-item fancybox-close" href="javascript:;"></a>',
+                        next: '<a title="Next" class="fancybox-nav fancybox-next" href="javascript:;"><span></span></a>',
+                        prev: '<a title="Previous" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>'
+                    },
+                    // Properties for each animation type
+                    // Opening fancyBox
+                    openEffect: "fade",
+                    // 'elastic', 'fade' or 'none'
+                    openSpeed: 250,
+                    openEasing: "swing",
+                    openOpacity: true,
+                    openMethod: "zoomIn",
+                    // Closing fancyBox
+                    closeEffect: "fade",
+                    // 'elastic', 'fade' or 'none'
+                    closeSpeed: 250,
+                    closeEasing: "swing",
+                    closeOpacity: true,
+                    closeMethod: "zoomOut",
+                    // Changing next gallery item
+                    nextEffect: "elastic",
+                    // 'elastic', 'fade' or 'none'
+                    nextSpeed: 250,
+                    nextEasing: "swing",
+                    nextMethod: "changeIn",
+                    // Changing previous gallery item
+                    prevEffect: "elastic",
+                    // 'elastic', 'fade' or 'none'
+                    prevSpeed: 250,
+                    prevEasing: "swing",
+                    prevMethod: "changeOut",
+                    // Enable default helpers
+                    helpers: {
+                        overlay: true,
+                        title: true
+                    },
+                    // Callbacks
+                    onCancel: $.noop,
+                    // If canceling
+                    beforeLoad: $.noop,
+                    // Before loading
+                    afterLoad: $.noop,
+                    // After loading
+                    beforeShow: $.noop,
+                    // Before changing in current item
+                    afterShow: $.noop,
+                    // After opening
+                    beforeChange: $.noop,
+                    // Before changing gallery item
+                    beforeClose: $.noop,
+                    // Before closing
+                    afterClose: $.noop
+                },
+                //Current state
+                group: {},
+                // Selected group
+                opts: {},
+                // Group options
+                previous: null,
+                // Previous element
+                coming: null,
+                // Element being loaded
+                current: null,
+                // Currently loaded element
+                isActive: false,
+                // Is activated
+                isOpen: false,
+                // Is currently open
+                isOpened: false,
+                // Have been fully opened at least once
+                wrap: null,
+                skin: null,
+                outer: null,
+                inner: null,
+                player: {
+                    timer: null,
+                    isActive: false
+                },
+                // Loaders
+                ajaxLoad: null,
+                imgPreload: null,
+                // Some collections
+                transitions: {},
+                helpers: {},
+                /*
+         *  Static methods
+         */
+                open: function(group, opts) {
+                    if (!group) {
+                        return;
+                    }
+                    if (!$.isPlainObject(opts)) {
+                        opts = {};
+                    }
+                    // Close if already active
+                    if (false === F.close(true)) {
+                        return;
+                    }
+                    // Normalize group
+                    if (!$.isArray(group)) {
+                        group = isQuery(group) ? $(group).get() : [ group ];
+                    }
+                    // Recheck if the type of each element is `object` and set content type (image, ajax, etc)
+                    $.each(group, function(i, element) {
+                        var obj = {}, href, title, content, type, rez, hrefParts, selector;
+                        if ($.type(element) === "object") {
+                            // Check if is DOM element
+                            if (element.nodeType) {
+                                element = $(element);
+                            }
+                            if (isQuery(element)) {
+                                obj = {
+                                    href: element.data("fancybox-href") || element.attr("href"),
+                                    title: element.data("fancybox-title") || element.attr("title"),
+                                    type: element.attr("type"),
+                                    isDom: true,
+                                    element: element
+                                };
+                                if ($.metadata) {
+                                    $.extend(true, obj, element.metadata());
+                                }
+                            } else {
+                                obj = element;
+                            }
+                        }
+                        href = opts.href || obj.href || (isString(element) ? element : null);
+                        title = opts.title !== undefined ? opts.title : obj.title || "";
+                        content = opts.content || obj.content;
+                        type = content ? "html" : obj.type || opts.type;
+                        if (!type && obj.isDom) {
+                            type = element.data("fancybox-type");
+                            if (!type) {
+                                rez = element.prop("class").match(/fancybox\.(\w+)/);
+                                type = rez ? rez[1] : null;
+                            }
+                        }
+                        if (isString(href)) {
+                            // Try to guess the content type
+                            if (!type) {
+                                if (F.isImage(href)) {
+                                    type = "image";
+                                } else if (F.isSWF(href)) {
+                                    type = "swf";
+                                } else if (href.charAt(0) === "#") {
+                                    type = "inline";
+                                } else if (isString(element)) {
+                                    type = "html";
+                                    content = element;
+                                }
+                            }
+                            // Split url into two pieces with source url and content selector, e.g,
+                            // "/mypage.html #my_id" will load "/mypage.html" and display element having id "my_id"
+                            if (type === "ajax") {
+                                hrefParts = href.split(/\s+/, 2);
+                                href = hrefParts.shift();
+                                selector = hrefParts.shift();
+                            }
+                        }
+                        if (!content) {
+                            if (type === "inline") {
+                                if (href) {
+                                    content = $(isString(href) ? href.replace(/.*(?=#[^\s]+$)/, "") : href);
+                                } else if (obj.isDom) {
+                                    content = element;
+                                }
+                            } else if (type === "html") {
+                                content = href;
+                            } else if (!type && !href && obj.isDom) {
+                                type = "inline";
+                                content = element;
+                            }
+                        }
+                        $.extend(obj, {
+                            href: href,
+                            type: type,
+                            content: content,
+                            title: title,
+                            selector: selector
+                        });
+                        group[i] = obj;
+                    });
+                    // Extend the defaults
+                    F.opts = $.extend(true, {}, F.defaults, opts);
+                    // All options are merged recursive except keys
+                    if (opts.keys !== undefined) {
+                        F.opts.keys = opts.keys ? $.extend({}, F.defaults.keys, opts.keys) : false;
+                    }
+                    F.group = group;
+                    return F._start(F.opts.index);
+                },
+                // Cancel image loading or abort ajax request
+                cancel: function() {
+                    var coming = F.coming;
+                    if (!coming || false === F.trigger("onCancel")) {
+                        return;
+                    }
+                    F.hideLoading();
+                    if (F.ajaxLoad) {
+                        F.ajaxLoad.abort();
+                    }
+                    F.ajaxLoad = null;
+                    if (F.imgPreload) {
+                        F.imgPreload.onload = F.imgPreload.onerror = null;
+                    }
+                    if (coming.wrap) {
+                        coming.wrap.stop(true, true).trigger("onReset").remove();
+                    }
+                    F.coming = null;
+                    // If the first item has been canceled, then clear everything
+                    if (!F.current) {
+                        F._afterZoomOut(coming);
+                    }
+                },
+                // Start closing animation if is open; remove immediately if opening/closing
+                close: function(event) {
+                    F.cancel();
+                    if (false === F.trigger("beforeClose")) {
+                        return;
+                    }
+                    F.unbindEvents();
+                    if (!F.isActive) {
+                        return;
+                    }
+                    if (!F.isOpen || event === true) {
+                        $(".fancybox-wrap").stop(true).trigger("onReset").remove();
+                        F._afterZoomOut();
+                    } else {
+                        F.isOpen = F.isOpened = false;
+                        F.isClosing = true;
+                        $(".fancybox-item, .fancybox-nav").remove();
+                        F.wrap.stop(true, true).removeClass("fancybox-opened");
+                        F.transitions[F.current.closeMethod]();
+                    }
+                },
+                // Manage slideshow:
+                //   $.fancybox.play(); - toggle slideshow
+                //   $.fancybox.play( true ); - start
+                //   $.fancybox.play( false ); - stop
+                play: function(action) {
+                    var clear = function() {
+                        clearTimeout(F.player.timer);
+                    }, set = function() {
+                        clear();
+                        if (F.current && F.player.isActive) {
+                            F.player.timer = setTimeout(F.next, F.current.playSpeed);
+                        }
+                    }, stop = function() {
+                        clear();
+                        D.unbind(".player");
+                        F.player.isActive = false;
+                        F.trigger("onPlayEnd");
+                    }, start = function() {
+                        if (F.current && (F.current.loop || F.current.index < F.group.length - 1)) {
+                            F.player.isActive = true;
+                            D.bind({
+                                "onCancel.player beforeClose.player": stop,
+                                "onUpdate.player": set,
+                                "beforeLoad.player": clear
+                            });
+                            set();
+                            F.trigger("onPlayStart");
+                        }
+                    };
+                    if (action === true || !F.player.isActive && action !== false) {
+                        start();
+                    } else {
+                        stop();
+                    }
+                },
+                // Navigate to next gallery item
+                next: function(direction) {
+                    var current = F.current;
+                    if (current) {
+                        if (!isString(direction)) {
+                            direction = current.direction.next;
+                        }
+                        F.jumpto(current.index + 1, direction, "next");
+                    }
+                },
+                // Navigate to previous gallery item
+                prev: function(direction) {
+                    var current = F.current;
+                    if (current) {
+                        if (!isString(direction)) {
+                            direction = current.direction.prev;
+                        }
+                        F.jumpto(current.index - 1, direction, "prev");
+                    }
+                },
+                // Navigate to gallery item by index
+                jumpto: function(index, direction, router) {
+                    var current = F.current;
+                    if (!current) {
+                        return;
+                    }
+                    index = getScalar(index);
+                    F.direction = direction || current.direction[index >= current.index ? "next" : "prev"];
+                    F.router = router || "jumpto";
+                    if (current.loop) {
+                        if (index < 0) {
+                            index = current.group.length + index % current.group.length;
+                        }
+                        index = index % current.group.length;
+                    }
+                    if (current.group[index] !== undefined) {
+                        F.cancel();
+                        F._start(index);
+                    }
+                },
+                // Center inside viewport and toggle position type to fixed or absolute if needed
+                reposition: function(e, onlyAbsolute) {
+                    var current = F.current, wrap = current ? current.wrap : null, pos;
+                    if (wrap) {
+                        pos = F._getPosition(onlyAbsolute);
+                        if (e && e.type === "scroll") {
+                            delete pos.position;
+                            wrap.stop(true, true).animate(pos, 200);
+                        } else {
+                            wrap.css(pos);
+                            current.pos = $.extend({}, current.dim, pos);
+                        }
+                    }
+                },
+                update: function(e) {
+                    var type = e && e.type, anyway = !type || type === "orientationchange";
+                    if (anyway) {
+                        clearTimeout(didUpdate);
+                        didUpdate = null;
+                    }
+                    if (!F.isOpen || didUpdate) {
+                        return;
+                    }
+                    didUpdate = setTimeout(function() {
+                        var current = F.current;
+                        if (!current || F.isClosing) {
+                            return;
+                        }
+                        F.wrap.removeClass("fancybox-tmp");
+                        if (anyway || type === "load" || type === "resize" && current.autoResize) {
+                            F._setDimension();
+                        }
+                        if (!(type === "scroll" && current.canShrink)) {
+                            F.reposition(e);
+                        }
+                        F.trigger("onUpdate");
+                        didUpdate = null;
+                    }, anyway && !isTouch ? 0 : 300);
+                },
+                // Shrink content to fit inside viewport or restore if resized
+                toggle: function(action) {
+                    if (F.isOpen) {
+                        F.current.fitToView = $.type(action) === "boolean" ? action : !F.current.fitToView;
+                        // Help browser to restore document dimensions
+                        if (isTouch) {
+                            F.wrap.removeAttr("style").addClass("fancybox-tmp");
+                            F.trigger("onUpdate");
+                        }
+                        F.update();
+                    }
+                },
+                hideLoading: function() {
+                    D.unbind(".loading");
+                    $("#fancybox-loading").remove();
+                },
+                showLoading: function() {
+                    var el, viewport;
+                    F.hideLoading();
+                    el = $('<div id="fancybox-loading"><div></div></div>').click(F.cancel).appendTo("body");
+                    // If user will press the escape-button, the request will be canceled
+                    D.bind("keydown.loading", function(e) {
+                        if ((e.which || e.keyCode) === 27) {
+                            e.preventDefault();
+                            F.cancel();
+                        }
+                    });
+                    if (!F.defaults.fixed) {
+                        viewport = F.getViewport();
+                        el.css({
+                            position: "absolute",
+                            top: viewport.h * .5 + viewport.y,
+                            left: viewport.w * .5 + viewport.x
+                        });
+                    }
+                },
+                getViewport: function() {
+                    var locked = F.current && F.current.locked || false, rez = {
+                        x: W.scrollLeft(),
+                        y: W.scrollTop()
+                    };
+                    if (locked) {
+                        rez.w = locked[0].clientWidth;
+                        rez.h = locked[0].clientHeight;
+                    } else {
+                        // See http://bugs.jquery.com/ticket/6724
+                        rez.w = isTouch && window.innerWidth ? window.innerWidth : W.width();
+                        rez.h = isTouch && window.innerHeight ? window.innerHeight : W.height();
+                    }
+                    return rez;
+                },
+                // Unbind the keyboard / clicking actions
+                unbindEvents: function() {
+                    if (F.wrap && isQuery(F.wrap)) {
+                        F.wrap.unbind(".fb");
+                    }
+                    D.unbind(".fb");
+                    W.unbind(".fb");
+                },
+                bindEvents: function() {
+                    var current = F.current, keys;
+                    if (!current) {
+                        return;
+                    }
+                    // Changing document height on iOS devices triggers a 'resize' event,
+                    // that can change document height... repeating infinitely
+                    W.bind("orientationchange.fb" + (isTouch ? "" : " resize.fb") + (current.autoCenter && !current.locked ? " scroll.fb" : ""), F.update);
+                    keys = current.keys;
+                    if (keys) {
+                        D.bind("keydown.fb", function(e) {
+                            var code = e.which || e.keyCode, target = e.target || e.srcElement;
+                            // Skip esc key if loading, because showLoading will cancel preloading
+                            if (code === 27 && F.coming) {
+                                return false;
+                            }
+                            // Ignore key combinations and key events within form elements
+                            if (!e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey && !(target && (target.type || $(target).is("[contenteditable]")))) {
+                                $.each(keys, function(i, val) {
+                                    if (current.group.length > 1 && val[code] !== undefined) {
+                                        F[i](val[code]);
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                    if ($.inArray(code, val) > -1) {
+                                        F[i]();
+                                        e.preventDefault();
+                                        return false;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                    if ($.fn.mousewheel && current.mouseWheel) {
+                        F.wrap.bind("mousewheel.fb", function(e, delta, deltaX, deltaY) {
+                            var target = e.target || null, parent = $(target), canScroll = false;
+                            while (parent.length) {
+                                if (canScroll || parent.is(".fancybox-skin") || parent.is(".fancybox-wrap")) {
+                                    break;
+                                }
+                                canScroll = isScrollable(parent[0]);
+                                parent = $(parent).parent();
+                            }
+                            if (delta !== 0 && !canScroll) {
+                                if (F.group.length > 1 && !current.canShrink) {
+                                    if (deltaY > 0 || deltaX > 0) {
+                                        F.prev(deltaY > 0 ? "down" : "left");
+                                    } else if (deltaY < 0 || deltaX < 0) {
+                                        F.next(deltaY < 0 ? "up" : "right");
+                                    }
+                                    e.preventDefault();
+                                }
+                            }
+                        });
+                    }
+                },
+                trigger: function(event, o) {
+                    var ret, obj = o || F.coming || F.current;
+                    if (!obj) {
+                        return;
+                    }
+                    if ($.isFunction(obj[event])) {
+                        ret = obj[event].apply(obj, Array.prototype.slice.call(arguments, 1));
+                    }
+                    if (ret === false) {
+                        return false;
+                    }
+                    if (obj.helpers) {
+                        $.each(obj.helpers, function(helper, opts) {
+                            if (opts && F.helpers[helper] && $.isFunction(F.helpers[helper][event])) {
+                                opts = $.extend(true, {}, F.helpers[helper].defaults, opts);
+                                F.helpers[helper][event](opts, obj);
+                            }
+                        });
+                    }
+                    D.trigger(event);
+                },
+                isImage: function(str) {
+                    return isString(str) && str.match(/(^data:image\/.*,)|(\.(jp(e|g|eg)|gif|png|bmp|webp)((\?|#).*)?$)/i);
+                },
+                isSWF: function(str) {
+                    return isString(str) && str.match(/\.(swf)((\?|#).*)?$/i);
+                },
+                _start: function(index) {
+                    var coming = {}, obj, href, type, margin, padding;
+                    index = getScalar(index);
+                    obj = F.group[index] || null;
+                    if (!obj) {
+                        return false;
+                    }
+                    coming = $.extend(true, {}, F.opts, obj);
+                    // Convert margin and padding properties to array - top, right, bottom, left
+                    margin = coming.margin;
+                    padding = coming.padding;
+                    if ($.type(margin) === "number") {
+                        coming.margin = [ margin, margin, margin, margin ];
+                    }
+                    if ($.type(padding) === "number") {
+                        coming.padding = [ padding, padding, padding, padding ];
+                    }
+                    // 'modal' propery is just a shortcut
+                    if (coming.modal) {
+                        $.extend(true, coming, {
+                            closeBtn: false,
+                            closeClick: false,
+                            nextClick: false,
+                            arrows: false,
+                            mouseWheel: false,
+                            keys: null,
+                            helpers: {
+                                overlay: {
+                                    closeClick: false
+                                }
+                            }
+                        });
+                    }
+                    // 'autoSize' property is a shortcut, too
+                    if (coming.autoSize) {
+                        coming.autoWidth = coming.autoHeight = true;
+                    }
+                    if (coming.width === "auto") {
+                        coming.autoWidth = true;
+                    }
+                    if (coming.height === "auto") {
+                        coming.autoHeight = true;
+                    }
+                    /*
+             * Add reference to the group, so it`s possible to access from callbacks, example:
+             * afterLoad : function() {
+             *     this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
+             * }
+             */
+                    coming.group = F.group;
+                    coming.index = index;
+                    // Give a chance for callback or helpers to update coming item (type, title, etc)
+                    F.coming = coming;
+                    if (false === F.trigger("beforeLoad")) {
+                        F.coming = null;
+                        return;
+                    }
+                    type = coming.type;
+                    href = coming.href;
+                    if (!type) {
+                        F.coming = null;
+                        //If we can not determine content type then drop silently or display next/prev item if looping through gallery
+                        if (F.current && F.router && F.router !== "jumpto") {
+                            F.current.index = index;
+                            return F[F.router](F.direction);
+                        }
+                        return false;
+                    }
+                    F.isActive = true;
+                    if (type === "image" || type === "swf") {
+                        coming.autoHeight = coming.autoWidth = false;
+                        coming.scrolling = "visible";
+                    }
+                    if (type === "image") {
+                        coming.aspectRatio = true;
+                    }
+                    if (type === "iframe" && isTouch) {
+                        coming.scrolling = "scroll";
+                    }
+                    // Build the neccessary markup
+                    coming.wrap = $(coming.tpl.wrap).addClass("fancybox-" + (isTouch ? "mobile" : "desktop") + " fancybox-type-" + type + " fancybox-tmp " + coming.wrapCSS).appendTo(coming.parent || "body");
+                    $.extend(coming, {
+                        skin: $(".fancybox-skin", coming.wrap),
+                        outer: $(".fancybox-outer", coming.wrap),
+                        inner: $(".fancybox-inner", coming.wrap)
+                    });
+                    $.each([ "Top", "Right", "Bottom", "Left" ], function(i, v) {
+                        coming.skin.css("padding" + v, getValue(coming.padding[i]));
+                    });
+                    F.trigger("onReady");
+                    // Check before try to load; 'inline' and 'html' types need content, others - href
+                    if (type === "inline" || type === "html") {
+                        if (!coming.content || !coming.content.length) {
+                            return F._error("content");
+                        }
+                    } else if (!href) {
+                        return F._error("href");
+                    }
+                    if (type === "image") {
+                        F._loadImage();
+                    } else if (type === "ajax") {
+                        F._loadAjax();
+                    } else if (type === "iframe") {
+                        F._loadIframe();
+                    } else {
+                        F._afterLoad();
+                    }
+                },
+                _error: function(type) {
+                    $.extend(F.coming, {
+                        type: "html",
+                        autoWidth: true,
+                        autoHeight: true,
+                        minWidth: 0,
+                        minHeight: 0,
+                        scrolling: "no",
+                        hasError: type,
+                        content: F.coming.tpl.error
+                    });
+                    F._afterLoad();
+                },
+                _loadImage: function() {
+                    // Reset preload image so it is later possible to check "complete" property
+                    var img = F.imgPreload = new Image();
+                    img.onload = function() {
+                        this.onload = this.onerror = null;
+                        F.coming.width = this.width;
+                        F.coming.height = this.height;
+                        F._afterLoad();
+                    };
+                    img.onerror = function() {
+                        this.onload = this.onerror = null;
+                        F._error("image");
+                    };
+                    img.src = F.coming.href;
+                    if (img.complete !== true) {
+                        F.showLoading();
+                    }
+                },
+                _loadAjax: function() {
+                    var coming = F.coming;
+                    F.showLoading();
+                    F.ajaxLoad = $.ajax($.extend({}, coming.ajax, {
+                        url: coming.href,
+                        error: function(jqXHR, textStatus) {
+                            if (F.coming && textStatus !== "abort") {
+                                F._error("ajax", jqXHR);
+                            } else {
+                                F.hideLoading();
+                            }
+                        },
+                        success: function(data, textStatus) {
+                            if (textStatus === "success") {
+                                coming.content = data;
+                                F._afterLoad();
+                            }
+                        }
+                    }));
+                },
+                _loadIframe: function() {
+                    var coming = F.coming, iframe = $(coming.tpl.iframe.replace(/\{rnd\}/g, new Date().getTime())).attr("scrolling", isTouch ? "auto" : coming.iframe.scrolling).attr("src", coming.href);
+                    // This helps IE
+                    $(coming.wrap).bind("onReset", function() {
+                        try {
+                            $(this).find("iframe").hide().attr("src", "//about:blank").end().empty();
+                        } catch (e) {}
+                    });
+                    if (coming.iframe.preload) {
+                        F.showLoading();
+                        iframe.one("load", function() {
+                            $(this).data("ready", 1);
+                            // iOS will lose scrolling if we resize
+                            if (!isTouch) {
+                                $(this).bind("load.fb", F.update);
+                            }
+                            // Without this trick:
+                            //   - iframe won't scroll on iOS devices
+                            //   - IE7 sometimes displays empty iframe
+                            $(this).parents(".fancybox-wrap").width("100%").removeClass("fancybox-tmp").show();
+                            F._afterLoad();
+                        });
+                    }
+                    coming.content = iframe.appendTo(coming.inner);
+                    if (!coming.iframe.preload) {
+                        F._afterLoad();
+                    }
+                },
+                _preloadImages: function() {
+                    var group = F.group, current = F.current, len = group.length, cnt = current.preload ? Math.min(current.preload, len - 1) : 0, item, i;
+                    for (i = 1; i <= cnt; i += 1) {
+                        item = group[(current.index + i) % len];
+                        if (item.type === "image" && item.href) {
+                            new Image().src = item.href;
+                        }
+                    }
+                },
+                _afterLoad: function() {
+                    var coming = F.coming, previous = F.current, placeholder = "fancybox-placeholder", current, content, type, scrolling, href, embed;
+                    F.hideLoading();
+                    if (!coming || F.isActive === false) {
+                        return;
+                    }
+                    if (false === F.trigger("afterLoad", coming, previous)) {
+                        coming.wrap.stop(true).trigger("onReset").remove();
+                        F.coming = null;
+                        return;
+                    }
+                    if (previous) {
+                        F.trigger("beforeChange", previous);
+                        previous.wrap.stop(true).removeClass("fancybox-opened").find(".fancybox-item, .fancybox-nav").remove();
+                    }
+                    F.unbindEvents();
+                    current = coming;
+                    content = coming.content;
+                    type = coming.type;
+                    scrolling = coming.scrolling;
+                    $.extend(F, {
+                        wrap: current.wrap,
+                        skin: current.skin,
+                        outer: current.outer,
+                        inner: current.inner,
+                        current: current,
+                        previous: previous
+                    });
+                    href = current.href;
+                    switch (type) {
+                      case "inline":
+                      case "ajax":
+                      case "html":
+                        if (current.selector) {
+                            content = $("<div>").html(content).find(current.selector);
+                        } else if (isQuery(content)) {
+                            if (!content.data(placeholder)) {
+                                content.data(placeholder, $('<div class="' + placeholder + '"></div>').insertAfter(content).hide());
+                            }
+                            content = content.show().detach();
+                            current.wrap.bind("onReset", function() {
+                                if ($(this).find(content).length) {
+                                    content.hide().replaceAll(content.data(placeholder)).data(placeholder, false);
+                                }
+                            });
+                        }
+                        break;
+
+                      case "image":
+                        content = current.tpl.image.replace("{href}", href);
+                        break;
+
+                      case "swf":
+                        content = '<object id="fancybox-swf" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%"><param name="movie" value="' + href + '"></param>';
+                        embed = "";
+                        $.each(current.swf, function(name, val) {
+                            content += '<param name="' + name + '" value="' + val + '"></param>';
+                            embed += " " + name + '="' + val + '"';
+                        });
+                        content += '<embed src="' + href + '" type="application/x-shockwave-flash" width="100%" height="100%"' + embed + "></embed></object>";
+                        break;
+                    }
+                    if (!(isQuery(content) && content.parent().is(current.inner))) {
+                        current.inner.append(content);
+                    }
+                    // Give a chance for helpers or callbacks to update elements
+                    F.trigger("beforeShow");
+                    // Set scrolling before calculating dimensions
+                    current.inner.css("overflow", scrolling === "yes" ? "scroll" : scrolling === "no" ? "hidden" : scrolling);
+                    // Set initial dimensions and start position
+                    F._setDimension();
+                    F.reposition();
+                    F.isOpen = false;
+                    F.coming = null;
+                    F.bindEvents();
+                    if (!F.isOpened) {
+                        $(".fancybox-wrap").not(current.wrap).stop(true).trigger("onReset").remove();
+                    } else if (previous.prevMethod) {
+                        F.transitions[previous.prevMethod]();
+                    }
+                    F.transitions[F.isOpened ? current.nextMethod : current.openMethod]();
+                    F._preloadImages();
+                },
+                _setDimension: function() {
+                    var viewport = F.getViewport(), steps = 0, canShrink = false, canExpand = false, wrap = F.wrap, skin = F.skin, inner = F.inner, current = F.current, width = current.width, height = current.height, minWidth = current.minWidth, minHeight = current.minHeight, maxWidth = current.maxWidth, maxHeight = current.maxHeight, scrolling = current.scrolling, scrollOut = current.scrollOutside ? current.scrollbarWidth : 0, margin = current.margin, wMargin = getScalar(margin[1] + margin[3]), hMargin = getScalar(margin[0] + margin[2]), wPadding, hPadding, wSpace, hSpace, origWidth, origHeight, origMaxWidth, origMaxHeight, ratio, width_, height_, maxWidth_, maxHeight_, iframe, body;
+                    // Reset dimensions so we could re-check actual size
+                    wrap.add(skin).add(inner).width("auto").height("auto").removeClass("fancybox-tmp");
+                    wPadding = getScalar(skin.outerWidth(true) - skin.width());
+                    hPadding = getScalar(skin.outerHeight(true) - skin.height());
+                    // Any space between content and viewport (margin, padding, border, title)
+                    wSpace = wMargin + wPadding;
+                    hSpace = hMargin + hPadding;
+                    origWidth = isPercentage(width) ? (viewport.w - wSpace) * getScalar(width) / 100 : width;
+                    origHeight = isPercentage(height) ? (viewport.h - hSpace) * getScalar(height) / 100 : height;
+                    if (current.type === "iframe") {
+                        iframe = current.content;
+                        if (current.autoHeight && iframe.data("ready") === 1) {
+                            try {
+                                if (iframe[0].contentWindow.document.location) {
+                                    inner.width(origWidth).height(9999);
+                                    body = iframe.contents().find("body");
+                                    if (scrollOut) {
+                                        body.css("overflow-x", "hidden");
+                                    }
+                                    origHeight = body.height();
+                                }
+                            } catch (e) {}
+                        }
+                    } else if (current.autoWidth || current.autoHeight) {
+                        inner.addClass("fancybox-tmp");
+                        // Set width or height in case we need to calculate only one dimension
+                        if (!current.autoWidth) {
+                            inner.width(origWidth);
+                        }
+                        if (!current.autoHeight) {
+                            inner.height(origHeight);
+                        }
+                        if (current.autoWidth) {
+                            origWidth = inner.width();
+                        }
+                        if (current.autoHeight) {
+                            origHeight = inner.height();
+                        }
+                        inner.removeClass("fancybox-tmp");
+                    }
+                    width = getScalar(origWidth);
+                    height = getScalar(origHeight);
+                    ratio = origWidth / origHeight;
+                    // Calculations for the content
+                    minWidth = getScalar(isPercentage(minWidth) ? getScalar(minWidth, "w") - wSpace : minWidth);
+                    maxWidth = getScalar(isPercentage(maxWidth) ? getScalar(maxWidth, "w") - wSpace : maxWidth);
+                    minHeight = getScalar(isPercentage(minHeight) ? getScalar(minHeight, "h") - hSpace : minHeight);
+                    maxHeight = getScalar(isPercentage(maxHeight) ? getScalar(maxHeight, "h") - hSpace : maxHeight);
+                    // These will be used to determine if wrap can fit in the viewport
+                    origMaxWidth = maxWidth;
+                    origMaxHeight = maxHeight;
+                    if (current.fitToView) {
+                        maxWidth = Math.min(viewport.w - wSpace, maxWidth);
+                        maxHeight = Math.min(viewport.h - hSpace, maxHeight);
+                    }
+                    maxWidth_ = viewport.w - wMargin;
+                    maxHeight_ = viewport.h - hMargin;
+                    if (current.aspectRatio) {
+                        if (width > maxWidth) {
+                            width = maxWidth;
+                            height = getScalar(width / ratio);
+                        }
+                        if (height > maxHeight) {
+                            height = maxHeight;
+                            width = getScalar(height * ratio);
+                        }
+                        if (width < minWidth) {
+                            width = minWidth;
+                            height = getScalar(width / ratio);
+                        }
+                        if (height < minHeight) {
+                            height = minHeight;
+                            width = getScalar(height * ratio);
+                        }
+                    } else {
+                        width = Math.max(minWidth, Math.min(width, maxWidth));
+                        if (current.autoHeight && current.type !== "iframe") {
+                            inner.width(width);
+                            height = inner.height();
+                        }
+                        height = Math.max(minHeight, Math.min(height, maxHeight));
+                    }
+                    // Try to fit inside viewport (including the title)
+                    if (current.fitToView) {
+                        inner.width(width).height(height);
+                        wrap.width(width + wPadding);
+                        // Real wrap dimensions
+                        width_ = wrap.width();
+                        height_ = wrap.height();
+                        if (current.aspectRatio) {
+                            while ((width_ > maxWidth_ || height_ > maxHeight_) && width > minWidth && height > minHeight) {
+                                if (steps++ > 19) {
+                                    break;
+                                }
+                                height = Math.max(minHeight, Math.min(maxHeight, height - 10));
+                                width = getScalar(height * ratio);
+                                if (width < minWidth) {
+                                    width = minWidth;
+                                    height = getScalar(width / ratio);
+                                }
+                                if (width > maxWidth) {
+                                    width = maxWidth;
+                                    height = getScalar(width / ratio);
+                                }
+                                inner.width(width).height(height);
+                                wrap.width(width + wPadding);
+                                width_ = wrap.width();
+                                height_ = wrap.height();
+                            }
+                        } else {
+                            width = Math.max(minWidth, Math.min(width, width - (width_ - maxWidth_)));
+                            height = Math.max(minHeight, Math.min(height, height - (height_ - maxHeight_)));
+                        }
+                    }
+                    if (scrollOut && scrolling === "auto" && height < origHeight && width + wPadding + scrollOut < maxWidth_) {
+                        width += scrollOut;
+                    }
+                    inner.width(width).height(height);
+                    wrap.width(width + wPadding);
+                    width_ = wrap.width();
+                    height_ = wrap.height();
+                    canShrink = (width_ > maxWidth_ || height_ > maxHeight_) && width > minWidth && height > minHeight;
+                    canExpand = current.aspectRatio ? width < origMaxWidth && height < origMaxHeight && width < origWidth && height < origHeight : (width < origMaxWidth || height < origMaxHeight) && (width < origWidth || height < origHeight);
+                    $.extend(current, {
+                        dim: {
+                            width: getValue(width_),
+                            height: getValue(height_)
+                        },
+                        origWidth: origWidth,
+                        origHeight: origHeight,
+                        canShrink: canShrink,
+                        canExpand: canExpand,
+                        wPadding: wPadding,
+                        hPadding: hPadding,
+                        wrapSpace: height_ - skin.outerHeight(true),
+                        skinSpace: skin.height() - height
+                    });
+                    if (!iframe && current.autoHeight && height > minHeight && height < maxHeight && !canExpand) {
+                        inner.height("auto");
+                    }
+                },
+                _getPosition: function(onlyAbsolute) {
+                    var current = F.current, viewport = F.getViewport(), margin = current.margin, width = F.wrap.width() + margin[1] + margin[3], height = F.wrap.height() + margin[0] + margin[2], rez = {
+                        position: "absolute",
+                        top: margin[0],
+                        left: margin[3]
+                    };
+                    if (current.autoCenter && current.fixed && !onlyAbsolute && height <= viewport.h && width <= viewport.w) {
+                        rez.position = "fixed";
+                    } else if (!current.locked) {
+                        rez.top += viewport.y;
+                        rez.left += viewport.x;
+                    }
+                    rez.top = getValue(Math.max(rez.top, rez.top + (viewport.h - height) * current.topRatio));
+                    rez.left = getValue(Math.max(rez.left, rez.left + (viewport.w - width) * current.leftRatio));
+                    return rez;
+                },
+                _afterZoomIn: function() {
+                    var current = F.current;
+                    if (!current) {
+                        return;
+                    }
+                    F.isOpen = F.isOpened = true;
+                    F.wrap.css("overflow", "visible").addClass("fancybox-opened");
+                    F.update();
+                    // Assign a click event
+                    if (current.closeClick || current.nextClick && F.group.length > 1) {
+                        F.inner.css("cursor", "pointer").bind("click.fb", function(e) {
+                            if (!$(e.target).is("a") && !$(e.target).parent().is("a")) {
+                                e.preventDefault();
+                                F[current.closeClick ? "close" : "next"]();
+                            }
+                        });
+                    }
+                    // Create a close button
+                    if (current.closeBtn) {
+                        $(current.tpl.closeBtn).appendTo(F.skin).bind("click.fb", function(e) {
+                            e.preventDefault();
+                            F.close();
+                        });
+                    }
+                    // Create navigation arrows
+                    if (current.arrows && F.group.length > 1) {
+                        if (current.loop || current.index > 0) {
+                            $(current.tpl.prev).appendTo(F.outer).bind("click.fb", F.prev);
+                        }
+                        if (current.loop || current.index < F.group.length - 1) {
+                            $(current.tpl.next).appendTo(F.outer).bind("click.fb", F.next);
+                        }
+                    }
+                    F.trigger("afterShow");
+                    // Stop the slideshow if this is the last item
+                    if (!current.loop && current.index === current.group.length - 1) {
+                        F.play(false);
+                    } else if (F.opts.autoPlay && !F.player.isActive) {
+                        F.opts.autoPlay = false;
+                        F.play();
+                    }
+                },
+                _afterZoomOut: function(obj) {
+                    obj = obj || F.current;
+                    $(".fancybox-wrap").trigger("onReset").remove();
+                    $.extend(F, {
+                        group: {},
+                        opts: {},
+                        router: false,
+                        current: null,
+                        isActive: false,
+                        isOpened: false,
+                        isOpen: false,
+                        isClosing: false,
+                        wrap: null,
+                        skin: null,
+                        outer: null,
+                        inner: null
+                    });
+                    F.trigger("afterClose", obj);
+                }
+            });
+            /*
+     *  Default transitions
+     */
+            F.transitions = {
+                getOrigPosition: function() {
+                    var current = F.current, element = current.element, orig = current.orig, pos = {}, width = 50, height = 50, hPadding = current.hPadding, wPadding = current.wPadding, viewport = F.getViewport();
+                    if (!orig && current.isDom && element.is(":visible")) {
+                        orig = element.find("img:first");
+                        if (!orig.length) {
+                            orig = element;
+                        }
+                    }
+                    if (isQuery(orig)) {
+                        pos = orig.offset();
+                        if (orig.is("img")) {
+                            width = orig.outerWidth();
+                            height = orig.outerHeight();
+                        }
+                    } else {
+                        pos.top = viewport.y + (viewport.h - height) * current.topRatio;
+                        pos.left = viewport.x + (viewport.w - width) * current.leftRatio;
+                    }
+                    if (F.wrap.css("position") === "fixed" || current.locked) {
+                        pos.top -= viewport.y;
+                        pos.left -= viewport.x;
+                    }
+                    pos = {
+                        top: getValue(pos.top - hPadding * current.topRatio),
+                        left: getValue(pos.left - wPadding * current.leftRatio),
+                        width: getValue(width + wPadding),
+                        height: getValue(height + hPadding)
+                    };
+                    return pos;
+                },
+                step: function(now, fx) {
+                    var ratio, padding, value, prop = fx.prop, current = F.current, wrapSpace = current.wrapSpace, skinSpace = current.skinSpace;
+                    if (prop === "width" || prop === "height") {
+                        ratio = fx.end === fx.start ? 1 : (now - fx.start) / (fx.end - fx.start);
+                        if (F.isClosing) {
+                            ratio = 1 - ratio;
+                        }
+                        padding = prop === "width" ? current.wPadding : current.hPadding;
+                        value = now - padding;
+                        F.skin[prop](getScalar(prop === "width" ? value : value - wrapSpace * ratio));
+                        F.inner[prop](getScalar(prop === "width" ? value : value - wrapSpace * ratio - skinSpace * ratio));
+                    }
+                },
+                zoomIn: function() {
+                    var current = F.current, startPos = current.pos, effect = current.openEffect, elastic = effect === "elastic", endPos = $.extend({
+                        opacity: 1
+                    }, startPos);
+                    // Remove "position" property that breaks older IE
+                    delete endPos.position;
+                    if (elastic) {
+                        startPos = this.getOrigPosition();
+                        if (current.openOpacity) {
+                            startPos.opacity = .1;
+                        }
+                    } else if (effect === "fade") {
+                        startPos.opacity = .1;
+                    }
+                    F.wrap.css(startPos).animate(endPos, {
+                        duration: effect === "none" ? 0 : current.openSpeed,
+                        easing: current.openEasing,
+                        step: elastic ? this.step : null,
+                        complete: F._afterZoomIn
+                    });
+                },
+                zoomOut: function() {
+                    var current = F.current, effect = current.closeEffect, elastic = effect === "elastic", endPos = {
+                        opacity: .1
+                    };
+                    if (elastic) {
+                        endPos = this.getOrigPosition();
+                        if (current.closeOpacity) {
+                            endPos.opacity = .1;
+                        }
+                    }
+                    F.wrap.animate(endPos, {
+                        duration: effect === "none" ? 0 : current.closeSpeed,
+                        easing: current.closeEasing,
+                        step: elastic ? this.step : null,
+                        complete: F._afterZoomOut
+                    });
+                },
+                changeIn: function() {
+                    var current = F.current, effect = current.nextEffect, startPos = current.pos, endPos = {
+                        opacity: 1
+                    }, direction = F.direction, distance = 200, field;
+                    startPos.opacity = .1;
+                    if (effect === "elastic") {
+                        field = direction === "down" || direction === "up" ? "top" : "left";
+                        if (direction === "down" || direction === "right") {
+                            startPos[field] = getValue(getScalar(startPos[field]) - distance);
+                            endPos[field] = "+=" + distance + "px";
+                        } else {
+                            startPos[field] = getValue(getScalar(startPos[field]) + distance);
+                            endPos[field] = "-=" + distance + "px";
+                        }
+                    }
+                    // Workaround for http://bugs.jquery.com/ticket/12273
+                    if (effect === "none") {
+                        F._afterZoomIn();
+                    } else {
+                        F.wrap.css(startPos).animate(endPos, {
+                            duration: current.nextSpeed,
+                            easing: current.nextEasing,
+                            complete: F._afterZoomIn
+                        });
+                    }
+                },
+                changeOut: function() {
+                    var previous = F.previous, effect = previous.prevEffect, endPos = {
+                        opacity: .1
+                    }, direction = F.direction, distance = 200;
+                    if (effect === "elastic") {
+                        endPos[direction === "down" || direction === "up" ? "top" : "left"] = (direction === "up" || direction === "left" ? "-" : "+") + "=" + distance + "px";
+                    }
+                    previous.wrap.animate(endPos, {
+                        duration: effect === "none" ? 0 : previous.prevSpeed,
+                        easing: previous.prevEasing,
+                        complete: function() {
+                            $(this).trigger("onReset").remove();
+                        }
+                    });
+                }
+            };
+            /*
+     *  Overlay helper
+     */
+            F.helpers.overlay = {
+                defaults: {
+                    closeClick: true,
+                    // if true, fancyBox will be closed when user clicks on the overlay
+                    speedOut: 200,
+                    // duration of fadeOut animation
+                    showEarly: true,
+                    // indicates if should be opened immediately or wait until the content is ready
+                    css: {},
+                    // custom CSS properties
+                    locked: !isTouch,
+                    // if true, the content will be locked into overlay
+                    fixed: true
+                },
+                overlay: null,
+                // current handle
+                fixed: false,
+                // indicates if the overlay has position "fixed"
+                // Public methods
+                create: function(opts) {
+                    opts = $.extend({}, this.defaults, opts);
+                    if (this.overlay) {
+                        this.close();
+                    }
+                    this.overlay = $('<div class="fancybox-overlay"></div>').appendTo("body");
+                    this.fixed = false;
+                    if (opts.fixed && F.defaults.fixed) {
+                        this.overlay.addClass("fancybox-overlay-fixed");
+                        this.fixed = true;
+                    }
+                },
+                open: function(opts) {
+                    var that = this;
+                    opts = $.extend({}, this.defaults, opts);
+                    if (this.overlay) {
+                        this.overlay.unbind(".overlay").width("auto").height("auto");
+                    } else {
+                        this.create(opts);
+                    }
+                    if (!this.fixed) {
+                        W.bind("resize.overlay", $.proxy(this.update, this));
+                        this.update();
+                    }
+                    if (opts.closeClick) {
+                        this.overlay.bind("click.overlay", function(e) {
+                            if ($(e.target).hasClass("fancybox-overlay")) {
+                                if (F.isActive) {
+                                    F.close();
+                                } else {
+                                    that.close();
+                                }
+                            }
+                        });
+                    }
+                    this.overlay.css(opts.css).show();
+                },
+                close: function() {
+                    $(".fancybox-overlay").remove();
+                    W.unbind("resize.overlay");
+                    this.overlay = null;
+                    if (this.margin !== false) {
+                        $("body").css("margin-right", this.margin);
+                        this.margin = false;
+                    }
+                    if (this.el) {
+                        this.el.removeClass("fancybox-lock");
+                    }
+                },
+                // Private, callbacks
+                update: function() {
+                    var width = "100%", offsetWidth;
+                    // Reset width/height so it will not mess
+                    this.overlay.width(width).height("100%");
+                    // jQuery does not return reliable result for IE
+                    if (IE) {
+                        offsetWidth = Math.max(document.documentElement.offsetWidth, document.body.offsetWidth);
+                        if (D.width() > offsetWidth) {
+                            width = D.width();
+                        }
+                    } else if (D.width() > W.width()) {
+                        width = D.width();
+                    }
+                    this.overlay.width(width).height(D.height());
+                },
+                // This is where we can manipulate DOM, because later it would cause iframes to reload
+                onReady: function(opts, obj) {
+                    $(".fancybox-overlay").stop(true, true);
+                    if (!this.overlay) {
+                        this.margin = D.height() > W.height() || $("body").css("overflow-y") === "scroll" ? $("body").css("margin-right") : false;
+                        this.el = document.all && !document.querySelector ? $("html") : $("body");
+                        this.create(opts);
+                    }
+                    if (opts.locked && this.fixed) {
+                        obj.locked = this.overlay.append(obj.wrap);
+                        obj.fixed = false;
+                    }
+                    if (opts.showEarly === true) {
+                        this.beforeShow.apply(this, arguments);
+                    }
+                },
+                beforeShow: function(opts, obj) {
+                    if (obj.locked) {
+                        this.el.addClass("fancybox-lock");
+                        if (this.margin !== false) {
+                            $("body").css("margin-right", getScalar(this.margin) + obj.scrollbarWidth);
+                        }
+                    }
+                    this.open(opts);
+                },
+                onUpdate: function() {
+                    if (!this.fixed) {
+                        this.update();
+                    }
+                },
+                afterClose: function(opts) {
+                    // Remove overlay if exists and fancyBox is not opening
+                    // (e.g., it is not being open using afterClose callback)
+                    if (this.overlay && !F.isActive) {
+                        this.overlay.fadeOut(opts.speedOut, $.proxy(this.close, this));
+                    }
+                }
+            };
+            /*
+     *  Title helper
+     */
+            F.helpers.title = {
+                defaults: {
+                    type: "float",
+                    // 'float', 'inside', 'outside' or 'over',
+                    position: "bottom"
+                },
+                beforeShow: function(opts) {
+                    var current = F.current, text = current.title, type = opts.type, title, target;
+                    if ($.isFunction(text)) {
+                        text = text.call(current.element, current);
+                    }
+                    if (!isString(text) || $.trim(text) === "") {
+                        return;
+                    }
+                    title = $('<div class="fancybox-title fancybox-title-' + type + '-wrap">' + text + "</div>");
+                    switch (type) {
+                      case "inside":
+                        target = F.skin;
+                        break;
+
+                      case "outside":
+                        target = F.wrap;
+                        break;
+
+                      case "over":
+                        target = F.inner;
+                        break;
+
+                      default:
+                        // 'float'
+                        target = F.skin;
+                        title.appendTo("body");
+                        if (IE) {
+                            title.width(title.width());
+                        }
+                        title.wrapInner('<span class="child"></span>');
+                        //Increase bottom margin so this title will also fit into viewport
+                        F.current.margin[2] += Math.abs(getScalar(title.css("margin-bottom")));
+                        break;
+                    }
+                    title[opts.position === "top" ? "prependTo" : "appendTo"](target);
+                }
+            };
+            // jQuery plugin initialization
+            $.fn.fancybox = function(options) {
+                var index, that = $(this), selector = this.selector || "", run = function(e) {
+                    var what = $(this).blur(), idx = index, relType, relVal;
+                    if (!(e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) && !what.is(".fancybox-wrap")) {
+                        relType = options.groupAttr || "data-fancybox-group";
+                        relVal = what.attr(relType);
+                        if (!relVal) {
+                            relType = "rel";
+                            relVal = what.get(0)[relType];
+                        }
+                        if (relVal && relVal !== "" && relVal !== "nofollow") {
+                            what = selector.length ? $(selector) : that;
+                            what = what.filter("[" + relType + '="' + relVal + '"]');
+                            idx = what.index(this);
+                        }
+                        options.index = idx;
+                        // Stop an event from bubbling if everything is fine
+                        if (F.open(what, options) !== false) {
+                            e.preventDefault();
+                        }
+                    }
+                };
+                options = options || {};
+                index = options.index || 0;
+                if (!selector || options.live === false) {
+                    that.unbind("click.fb-start").bind("click.fb-start", run);
+                } else {
+                    D.undelegate(selector, "click.fb-start").delegate(selector + ":not('.fancybox-item, .fancybox-nav')", "click.fb-start", run);
+                }
+                this.filter("[data-fancybox-start=1]").trigger("click");
+                return this;
+            };
+            // Tests that need a body at doc ready
+            D.ready(function() {
+                if ($.scrollbarWidth === undefined) {
+                    // http://benalman.com/projects/jquery-misc-plugins/#scrollbarwidth
+                    $.scrollbarWidth = function() {
+                        var parent = $('<div style="width:50px;height:50px;overflow:auto"><div/></div>').appendTo("body"), child = parent.children(), width = child.innerWidth() - child.height(99).innerWidth();
+                        parent.remove();
+                        return width;
+                    };
+                }
+                if ($.support.fixedPosition === undefined) {
+                    $.support.fixedPosition = function() {
+                        var elem = $('<div style="position:fixed;top:20px;"></div>').appendTo("body"), fixed = elem[0].offsetTop === 20 || elem[0].offsetTop === 15;
+                        elem.remove();
+                        return fixed;
+                    }();
+                }
+                $.extend(F.defaults, {
+                    scrollbarWidth: $.scrollbarWidth(),
+                    fixed: $.support.fixedPosition,
+                    parent: $("body")
+                });
+            });
+        })(window, document, jQuery);
+        require("./helpers/jquery-fancybox-buttons")(jQuery);
+        require("./helpers/jquery-fancybox-media")(jQuery);
+        require("./helpers/jquery-fancybox-thumbs")(jQuery);
+        return jQuery;
+    //};
+});

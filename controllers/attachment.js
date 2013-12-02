@@ -24,17 +24,22 @@ exports.upload = function(req, res) {
   var attachmentImagePath = tempImagePath + '_s';
 
   utils.imageSize(tempPath, function(err, size) {
+
     utils.thumb(tempImagePath, attachmentImagePath, size.width, size.height, function() {
+
       // 图片原尺寸入库
       utils.upload(file.name, file.type, attachmentImagePath, function(err, docFileS) {
+
         if(err) utils.log(err);
 
         var thumbWidth = config.thumb.width;
         var thumbHeight = size.height * (thumbWidth / size.width);
 
         utils.thumb(tempImagePath, thumbImagePath, thumbWidth, thumbHeight, function(err) {
+
           // 图片缩略入库
           utils.upload('s_' + file.name, file.type, thumbImagePath, function(err, docFileT) {
+
             if(err) {
               
               utils.log(err);
@@ -66,7 +71,6 @@ exports.download = function(req, res) {
 
     if(err) {
 
-      utils.log(err);
       return res.json(400, '找不到该文件');
     }
 

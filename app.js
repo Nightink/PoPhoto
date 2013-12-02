@@ -17,8 +17,8 @@ var program = require('commander');
 
 program
   .version(require('./package.json').version)
-  .option('-d, --debug', 'web js is debug', Boolean, false)
-  .option('-p, --port [port]', 'server port', Number, config.sys_port)
+  .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
+  .option('-p, --port [port]', '设置服务器端口', Number, config.sys_port)
   .parse(process.argv);
 
 
