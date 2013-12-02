@@ -13,6 +13,15 @@ var hbs     = require('hbs');
 var config  = require('./conf/config');
 var app     = express();
 
+var program = require('commander');
+
+program
+  .version(require('./package.json').version)
+  .option('-d, --debug', 'web js is debug', Boolean, false)
+  .option('-p, --port [port]', 'server port', Number, config.sys_port)
+  .parse(process.argv);
+
+
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
 
@@ -81,6 +90,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
 
     // url为 *.json 进行响应头处理
     app.use(function(req, res, next) {
+
       if(req.url.match(/\.json/g)) {
         res.back = {};
 
@@ -105,6 +115,8 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
       res.send(500, err.message);
     });
 
+    // 設置前端開發是否開啟debug模式
+    app.use('/sea-modules/sea-config.js', require('./lib/fileDebug')(program.debug));
     // 设置静态文件路径
     app.use(express.static(path.join(__dirname, 'public')));
 
@@ -125,7 +137,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
   });
 
   // 配置服务器端口
-  app.set('port', config.sys_port || 3000);
+  app.set('port', program.port);
   // 设置页面渲染类型*.html
   app.set('view engine', 'html');
   // 设置视图模板路径

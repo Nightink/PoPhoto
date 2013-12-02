@@ -1,8 +1,5 @@
 /**
- * User: ysj
- * Date: 13-1-22
- * Time: 上午11:47
- * To change this template use File | Settings | File Templates.
+ * 圖片預加載功能
  */
 
 define(function (require, exports, modules) {

@@ -6,14 +6,17 @@
  * User用户管理页面主控
  */
 
-seajs.use(['jquery', 'underscore', 'backbone', './src/view/user-photos', './src/view/top-view', './src/view/user-info-view', './css/style.css'], 
+seajs.use(['jquery', 'underscore', 'backbone', '../src/view/user-photos', '../src/view/top-view', '../src/view/user-info-view', '../css/style.css'], 
   function($, _, backbone, UserPhotoView, TopView, UserInfoView) {
 
-    var userPhotoView = new UserPhotoView({ el: '#photo-list' });
+    var userPhotoView = new UserPhotoView({
+
+      el: '#photo-list' 
+    });
     var topView = new TopView;
 
     var $lis = $('#nav-con-list li');
-    $lis.die('click').on('click', function(e) {
+    $lis.on('click', function(e) {
         _.each($lis, function(dom) {
             $(dom).removeClass('active');
         });

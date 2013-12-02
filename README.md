@@ -13,7 +13,10 @@
 * [mongodb官网](http://www.mongodb.org/) 
 
 ### 运行
-在程序目录下创建`temp`文件夹，然后终端运行`$ node app`或者`$ npm start`
+* 在程序目录下创建`temp`文件夹，然后终端运行`$ node app`或者`$ npm start`
+* 提供启动参数`node app -h`
+* -p 设置端口
+* -d 前端js文件是否输出 debug版本文件
 
 ## 后期规划
 * 后端采用纯RESTFul api接口

@@ -8,12 +8,14 @@
 
 define(function (require, exports, module) {
 
-    var $ = require('jquery')
-        , Backbone = require('backbone')
-        , Handlebars = require('handlebars')
-        , observer = require('observer')
-        , PhotoCollection = require('../model/photo-collection')
-        , PhotoModel = require('../model/photo-model');
+    var $ = require('jquery');
+    var Backbone = require('backbone');
+    var handlebars = require('handlebars');
+    var _ = require('underscore');
+    var moment = require('moment');
+    var observer = require('observer');
+    var PhotoCollection = require('../model/photo-collection');
+    var PhotoModel = require('../model/photo-model');
 
     require("../util/cookie");
 
@@ -22,7 +24,15 @@ define(function (require, exports, module) {
     var PhotoUpdateView = Backbone.View.extend({
         el: 'body',
 
-        template: Handlebars.compile(require('../tpl/photo-update.tpl')),
+        events: {
+            'blur #title': 'valueSet',
+            'blur #description': 'valueSet',
+            'blur #keywords': 'valueSet',
+            'click .sure-update': 'sureUpdate',
+            'click .close-cancel': 'closeCancel'
+        },
+
+        template: handlebars.compile(require('../tpl/photo-update.tpl')),
 
         initialize: function(option) {
             this.photoModel = option.model;
@@ -30,14 +40,6 @@ define(function (require, exports, module) {
             data.keywords = data.keywords.join(' ');
 
             this.$el.html(this.template(data));
-        },
-
-        events: {
-            'blur #title': 'valueSet',
-            'blur #description': 'valueSet',
-            'blur #keywords': 'valueSet',
-            'click .sure-update': 'sureUpdate',
-            'click .close-cancel': 'closeCancel'
         },
 
         valueSet: function(e) {
@@ -85,7 +87,7 @@ define(function (require, exports, module) {
     var UserPhotosView = Backbone.View.extend({
         el: 'body',
 
-        template: Handlebars.compile(require('../tpl/user-photos.tpl')),
+        template: handlebars.compile(require('../tpl/user-photos.tpl')),
 
         events: {
             'click .edit': 'editPhoto',
@@ -111,10 +113,19 @@ define(function (require, exports, module) {
         },
 
         render: function() {
-            var content = this.template({ 'photos': this.photoCollection.toJSON() });
+
+            var photos = this.photoCollection.toJSON();
+
+            _.each(photos, function(photo) {
+
+                photo.created = moment(photo.created).format('YYYY-MM-DD HH:mm:ss');
+            });
+
+            var content = this.template({ 
+                photos: photos
+            });
+
             this.$el.html(content);
-            var timeBatchConversion = require("../util/timeBatchConversion");
-            timeBatchConversion.time(this.$el.find('.createdTime'));
         },
 
         editPhoto: function(e) {

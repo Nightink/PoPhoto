@@ -6,14 +6,15 @@
  */
 
 define(function (require, exports, module) {
-    var $ = require('jquery')
-        , _ = require('underscore')
-        , Backbone = require('backbone')
-        , observer = require('observer')
-        , Handlebars = require('handlebars')
-        , PhotoCollection = require('../model/photo-collection')
-        , PhotoModel = require('../model/photo-model')
-        , fileUpload = require('../util/fileUpload');
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var Backbone = require('backbone');
+    var observer = require('observer');
+    var handlebars = require('handlebars');
+    var moment = require('moment');
+    var PhotoCollection = require('../model/photo-collection');
+    var PhotoModel = require('../model/photo-model');
+    var fileUpload = require('../util/fileUpload');
 
     require('fancybox');
     require('axzoomer');
@@ -21,7 +22,7 @@ define(function (require, exports, module) {
     var CommentsView = Backbone.View.extend({
         el: 'body',
 
-        template: Handlebars.compile(require('../tpl/comments-view.tpl')),
+        template: handlebars.compile(require('../tpl/comments-view.tpl')),
 
         initialize: function(option) {
             this.model = option.model;
@@ -72,9 +73,6 @@ define(function (require, exports, module) {
             $remarkLayout.css("height", remarkLayout+"px");
 
             $remarkLayout.css({ "top": "20px", "right": "20px" });
-
-            var timeBatchConversion = require("../util/timeBatchConversion");
-            timeBatchConversion.time($(".addTime, .remarkTime"));
         }
     });
 
@@ -82,7 +80,7 @@ define(function (require, exports, module) {
 
         el: 'body',
 
-        template: Handlebars.compile(require('../tpl/photo-flow-view.tpl')),   //载入模版文件
+        template: handlebars.compile(require('../tpl/photo-flow-view.tpl')),   //载入模版文件
 
         initialize: function() {
 

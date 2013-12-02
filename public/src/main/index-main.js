@@ -6,7 +6,7 @@
  * Photo主页面调度入口
  */
 
-seajs.use(['jquery', './src/view/app-view', 'json', 'imagesloaded'], 
+seajs.use(['jquery', './src/view/app-view', 'json'], 
   function($, AppView) {
 
     var appView = new AppView();
