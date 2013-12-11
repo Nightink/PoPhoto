@@ -81,33 +81,65 @@ exports.updateUser = function(req, res) {
 //判断用户是否登录，或者登录有效，进行url过滤中间件
 //登录验证
 exports.userCorrect = function(req, res, next) {
-  var _id = req.cookies._id;
 
-  if(!_id && req.session.user) {      //session还存活cookie被删除的情况
-    res.cookie('_id', utils.encryptHelper(result._id), { path:'/', maxAge: config.cookie_maxage });
-    res.cookie('username', result.username, { path:'/', maxAge: config.cookie_maxage });
-    return next(true, req.session.user);
+  var _id = req.cookies._id;
+  var result = req.session.user;
+
+  // session还存活cookie被删除的情况
+  if(!_id && result) {
+
+    var cookieParams = {
+
+      path   : '/', 
+      maxAge : config.cookie_maxage
+    };
+
+    res.cookie('_id', utils.encryptHelper(result._id), cookieParams);
+    res.cookie('username', result.username, cookieParams);
+
+    return next(true, result);
   }
-  if(!_id) return next(false);
+
+  if(!_id) {
+
+    return next(false);
+  } 
 
   _id = utils.decipherHelper(_id);
 
-  if(!req.session.user) {
+  if(!result) {
+
     User.findOne({ "_id": _id }, function(err, doc) {
-      if(err) utils.log(err);
-      if(!doc) return next(false);
+
+      if(err) {
+
+        console.log(err);
+      }
+      if(!doc) {
+
+        return next(false);
+      }
 
       req.session.user = doc;
+
       req.session.save(function(err) {
-        if(err) utils.log(err);
+
+        if(err) {
+
+          console.log(err);
+        }
+
         next(true, req.session.user);
       });
     });
-  } else if(req.session.user._id !== _id) {
+  } else if(result._id !== _id) {
+
     next(false);
-  } else if(req.session.user._id === _id) {
-    next(true, req.session.user);
+  } else if(result._id === _id) {
+
+    next(true, result);
   } else {
+
     next(false);
   }
 };

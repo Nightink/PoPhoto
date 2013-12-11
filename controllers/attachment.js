@@ -25,6 +25,12 @@ exports.upload = function(req, res) {
 
   utils.imageSize(tempPath, function(err, size) {
 
+    if(err) {
+
+      res.json(500, 'server error image :' + err);
+      return;
+    }
+
     utils.thumb(tempImagePath, attachmentImagePath, size.width, size.height, function() {
 
       // 图片原尺寸入库
@@ -54,7 +60,7 @@ exports.upload = function(req, res) {
               size: size
             };
 
-            utils.sendJson(req, res, data);
+            res.json(200, data);
           });
         });
       });
