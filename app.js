@@ -68,7 +68,11 @@ function randomPort() {
 }
 
 require('./conf/' + config.db_env + '.js')(app, function(err) {
-  if(err) return;
+
+  if(err) {
+
+    return;
+  }
 
   // 全环境下配置
   app.configure(function() {
@@ -80,8 +84,8 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     // 配置客户端表单数据提交，必须在app.router之前，否者 res.body 为空
     app.use(express.methodOverride());
     // 设置文件上传缓存路径
-    app.use(express.bodyParser({ 
-      uploadDir: './temp' 
+    app.use(express.bodyParser({
+      uploadDir: './temp'
     }));
 
     // 配置session，必须在cookie之后，依赖cookie
@@ -147,6 +151,6 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
 
   // 路由调度加载
   require('./routes')(app);
-  
+
   startServer();
 });

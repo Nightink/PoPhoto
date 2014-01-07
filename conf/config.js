@@ -8,8 +8,8 @@
 exports.db_env          = 'mongo_config';
 
 // 数据库连接路由
-exports.dbAdd           = 'mongodb://127.0.0.1:27017/Pophoto';
-// exports.dbAdd           = 'mongodb://192.168.1.128:27017/Pophoto';
+
+exports.dbAdd           = 'mongodb://node:node@127.0.0.1:27017/Pophoto';
 
 exports.sys_port        = 3001;
 exports.session_secret  = 'pophoto';
@@ -26,5 +26,6 @@ exports.file_clear_time = 3600000;
 
 // 指定缩略图比例
 exports.thumb = {
-    width: 200
+
+  width: 200
 };
