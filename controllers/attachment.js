@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-24
- * Time: 下午3:11
  * 负责图片上传、返回显示
  */
 
@@ -47,7 +44,7 @@ exports.upload = function(req, res) {
           utils.upload('s_' + file.name, file.type, thumbImagePath, function(err, docFileT) {
 
             if(err) {
-              
+
               utils.log(err);
               return res.send(500);
             }

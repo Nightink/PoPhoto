@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-11
- * Time: 下午9:49
  * 服务器运行
  */
 

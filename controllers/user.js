@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-15
- * Time: 上午11:34
  * User控制器
  */
 
@@ -50,7 +47,7 @@ exports.addUser = function(req, res) {
 
     utils.sendStatus(req, res, 200, "添加用户成功");
   });
-  
+
 };
 
 //PUT --> /user-update   用户更新数据
@@ -90,7 +87,7 @@ exports.userCorrect = function(req, res, next) {
 
     var cookieParams = {
 
-      path   : '/', 
+      path   : '/',
       maxAge : config.cookie_maxage
     };
 
@@ -103,7 +100,7 @@ exports.userCorrect = function(req, res, next) {
   if(!_id) {
 
     return next(false);
-  } 
+  }
 
   _id = utils.decipherHelper(_id);
 

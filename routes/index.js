@@ -1,14 +1,11 @@
 /**
- * User: Nightink
- * Date: 13-4-11
- * Time: 下午10:19
  * PoPhoto index 路由调度接口
  */
 
 var mongoose = require('mongoose');
 var _ = require('underscore');
 
-var Photo = mongoose.model('Photo'); 
+var Photo = mongoose.model('Photo');
 
 module.exports = function(app) {
 
@@ -26,10 +23,10 @@ module.exports = function(app) {
       return res.json('用户请登陆');
     }
 
-    var _params = { 
-      limit: 15, 
-      skip: 0, 
-      sort: { updated: -1 } 
+    var _params = {
+      limit: 15,
+      skip: 0,
+      sort: { updated: -1 }
     };
 
     Photo.find(null, null, _params, function(err, docs) {

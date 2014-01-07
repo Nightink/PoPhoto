@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-15
- * Time: 上午11:34
  * photo 控制器
  */
 
@@ -31,7 +28,7 @@ exports.photo = function(req, res) {
   }
 
   query.updated = {
-    '$lte': time 
+    '$lte': time
   };
 
   if(q) {
@@ -42,16 +39,16 @@ exports.photo = function(req, res) {
     }];
   }
   if (keywords) {
-    query.keywords = { 
-      '$in': keywords 
+    query.keywords = {
+      '$in': keywords
     };
   }
 
-  var _params = { 
-    limit: (req.query.limit ? req.query.limit : 15), 
-    skip: (req.query.skip ? req.query.skip : 0), 
-    sort: { 
-      updated: -1 
+  var _params = {
+    limit: (req.query.limit ? req.query.limit : 15),
+    skip: (req.query.skip ? req.query.skip : 0),
+    sort: {
+      updated: -1
     }
   };
 
@@ -117,7 +114,7 @@ exports.addCommentsPhoto = function(req, res) {
         content: reviews.content,
         created: new Date()
       }
-    }, 
+    },
     '$set': {
       update: new Date()
     }
@@ -184,7 +181,7 @@ exports.updatePhoto = function(req, res) {
   var reqBody = req.body;
 
   Photo.findOne({_id: reqBody._id }, function(err, doc) {
-    
+
     if(err) {
       return utils.sendStatus(req, res, 500, '服务器查询失败');
     }

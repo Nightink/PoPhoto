@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-13
- * Time: 上午00:14
  * photo 路由处理
  */
 

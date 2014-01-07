@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-13
- * Time: 上午3:23
  * User数据模型
  */
 
@@ -22,7 +19,7 @@ var UserSchema = new mongoose.Schema({
 
   email: String,
   password: String,
-  discipline: String    
+  discipline: String
 }, { versionKey: false });
 
 // 创建User用户文档模型

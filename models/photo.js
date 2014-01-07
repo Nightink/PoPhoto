@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-4-13
- * Time: 上午3:23
  * photo数据模型
  */
 

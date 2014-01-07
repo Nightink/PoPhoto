@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-5-4
- * Time: 下午11:35
  * 文件上传、下载Routes路由
  */
 
