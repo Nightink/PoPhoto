@@ -11,16 +11,14 @@ var config = require('../conf/config');
 exports.upload = function(req, res) {
 
   var file = req.files.file;
-  var tempPath = file.path;
+  var tempImagePath = file.path;
 
-  // var tempImagePath = __dirname + '/../' + tempPath;
-  var tempImagePath = path.join(__dirname, '..', tempPath);
   // 缩略图缓存
   var thumbImagePath = tempImagePath + '_t';
   // 原生图缓存
   var attachmentImagePath = tempImagePath + '_s';
 
-  utils.imageSize(tempPath, function(err, size) {
+  utils.imageSize(tempImagePath, function(err, size) {
 
     if(err) {
 
@@ -33,7 +31,9 @@ exports.upload = function(req, res) {
       // 图片原尺寸入库
       utils.upload(file.name, file.type, attachmentImagePath, function(err, docFileS) {
 
-        if(err) utils.log(err);
+        if(err) {
+          console.log(err);
+        }
 
         var thumbWidth = config.thumb.width;
         var thumbHeight = size.height * (thumbWidth / size.width);
@@ -45,7 +45,7 @@ exports.upload = function(req, res) {
 
             if(err) {
 
-              utils.log(err);
+              console.log(err);
               return res.send(500);
             }
 

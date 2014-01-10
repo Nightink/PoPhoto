@@ -8,7 +8,7 @@ exports.db_env          = 'mongo_config';
 
 exports.dbAdd           = 'mongodb://node:node@127.0.0.1:27017/Pophoto';
 
-exports.sys_port        = 3001;
+// exports.sys_port        = 3001;
 exports.session_secret  = 'pophoto';
 exports.session_key     = 'pophoto-strong';
 

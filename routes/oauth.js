@@ -18,7 +18,7 @@ module.exports = function(app) {
     if(req.session && req.session.user) {
 
       var userId = req.session.user.username;
-      utils.log('用户"' + userId + '"登出');
+      console.log('用户"' + userId + '"登出');
     }
 
     res.clearCookie('_id', { path:'/' });

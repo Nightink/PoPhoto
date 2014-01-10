@@ -1,23 +1,8 @@
+#!/usr/bin/env node
+
 /**
  * 服务器运行
  */
-
-var express = require('express');
-var fs      = require('fs');
-var path    = require('path');
-var hbs     = require('hbs');
-
-var config  = require('./conf/config');
-var app     = express();
-
-var program = require('commander');
-
-program
-  .version(require('./package.json').version)
-  .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
-  .option('-p, --port [port]', '设置服务器端口', Number, config.sys_port)
-  .parse(process.argv);
-
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
@@ -33,6 +18,32 @@ process.on('uncaughtException', function(err) {
     console.log('Sys %s', err.stack);
   }
 });
+
+var fs      = require('fs');
+var path    = require('path');
+
+var hbs     = require('hbs');
+var express = require('express');
+var program = require('commander');
+
+var app     = express();
+var config  = require('./conf/config');
+
+program
+  .version(require('./package.json').version)
+  .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
+  .option('-p, --port [port]', '设置服务器端口', Number, 3001)
+  .parse(process.argv);
+
+
+var tempPath = path.join(__dirname, 'temp');
+
+// 判断是否存在缓存目录，没有则创建缓存目录
+if(!fs.existsSync(tempPath)) {
+
+  fs.mkdirSync(tempPath);
+  console.log('Debug: create image temp dir %s.', tempPath);
+}
 
 // 加载视图注册模版
 require('./lib/registerTemplate');
@@ -82,7 +93,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     app.use(express.methodOverride());
     // 设置文件上传缓存路径
     app.use(express.bodyParser({
-      uploadDir: './temp'
+      uploadDir: tempPath
     }));
 
     // 配置session，必须在cookie之后，依赖cookie
