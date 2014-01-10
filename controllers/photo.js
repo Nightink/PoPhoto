@@ -131,7 +131,7 @@ exports.addCommentsPhoto = function(req, res) {
     }
 
     if(num === 0) {
-      return utils.sendStatus(req, res, 403, '图片信息错误');
+      return utils.sendStatus(req, res, 400, '图片信息错误');
     }
     // utils.sendStatus(req, res, 200, '添加评论成功');
     return res.json(200, '添加评论成功');

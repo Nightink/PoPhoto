@@ -130,7 +130,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     // 設置前端開發是否開啟debug模式
     app.use('/sea-modules/sea-config.js', require('./lib/fileDebug')(program.debug));
     // 设置静态文件路径
-    app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.static(path.join(__dirname, 'static')));
 
     // 设置站点图标
     // app.use(express.favicon(path.join(__dirname, 'public/favicon.jpg')));
