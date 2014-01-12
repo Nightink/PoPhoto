@@ -43,6 +43,7 @@ exports.addUser = function(req, res) {
   _.each(reqBody, function(val, key) {
 
     if( (val == null) || (val == '') ) {
+
       delete reqBody[key];
     }
   });
@@ -104,8 +105,8 @@ exports.updateUser = function(req, res) {
   });
 };
 
-//判断用户是否登录，或者登录有效，进行url过滤中间件
-//登录验证
+// 判断用户是否登录，或者登录有效，进行url过滤中间件
+// 登录验证
 exports.userCorrect = function(req, res, next) {
 
   var _id = req.cookies._id;
@@ -170,6 +171,7 @@ exports.userCorrect = function(req, res, next) {
   }
 };
 
+// 根据用户id 获取用户信息
 exports.getUserById = function(req, res) {
 
   var userId = req.cookies._id;

@@ -1,7 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-5-12
- * Time: 下午4:54
  * 图片流视图
  */
 

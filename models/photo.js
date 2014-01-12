@@ -13,25 +13,25 @@ var mongoose = require('mongoose');
  */
 var PhotoSchema = new mongoose.Schema({
 
-  author: { type: String, ref: 'User' },
+  keywords    : [String],
+  url         : String,
+  urlSmall    : String,
+  title       : String,
+  description : String,
+  width       : Number,
+  height      : Number,
 
-  keywords: [String],
-  url: String,
-  urlSmall: String,
-  title: String,
-  description: String,
-  width: Number,
-  height: Number,
-
-  created: { type: Date, default: Date.now },
-  updated: { type: Date, default: Date.now },
-  type: { type: String, default: "photo" },
+  author  : { type: String, ref: 'User' },
+  created : { type: Date, default: Date.now },
+  updated : { type: Date, default: Date.now },
+  type    : { type: String, default: "photo" },
 
   reviews: [{
     author: { type: String, ref: 'User' },
     content: String,
     created: { type: Date, default: Date.now }
   }]
+
 }, { versionKey: false });
 
 // 创建Photo模型

@@ -80,7 +80,6 @@ exports.download = function(req, res) {
     // 设置响应头 文件格式
     res.set('Content-Type', contentType);
     res.send(file);
-    // res.sendfile(file);
   });
 };
 

@@ -6,7 +6,8 @@
 var moment   = require('moment');
 var mongoose = require('mongoose');
 var _        = require('underscore');
-// 自身模块
+
+// 应用模块
 var utils    = require('../lib/utils');
 var config   = require('../conf/config');
 var Photo    = mongoose.model('Photo');

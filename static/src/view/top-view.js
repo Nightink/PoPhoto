@@ -1,7 +1,5 @@
 /**
- * User: Nightink
- * Date: 13-5-7
- * Time: 下午11:07
+ * 主页头部模块
  */
 
 define(function (require, exports, module) {
@@ -21,7 +19,7 @@ define(function (require, exports, module) {
 
         // 载入模版文件
         template: handlebars.compile(require('../tpl/top-view.tpl')),
-        
+
         events: {
             'click .uploadBtn': 'uploadFn',
             'click #user-register': 'userRegister',
@@ -34,8 +32,8 @@ define(function (require, exports, module) {
 
             this.poPhotoView = new PoPhotoView();
             this.userModel = new UserModel();
-            this.userView = new UserView({ 
-                el: '#register-user' 
+            this.userView = new UserView({
+                el: '#register-user'
             });
         },
 

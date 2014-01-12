@@ -1,8 +1,4 @@
 /**
- * User: Nightink
- * Date: 13-5-21
- * Time: 下午2:21
- *
  * 用户个人图片管理
  */
 
@@ -121,7 +117,7 @@ define(function (require, exports, module) {
                 photo.created = moment(photo.created).format('YYYY-MM-DD HH:mm:ss');
             });
 
-            var content = this.template({ 
+            var content = this.template({
                 photos: photos
             });
 

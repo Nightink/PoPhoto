@@ -98,14 +98,15 @@ exports.download = function (fileId, next) {
   // 打开当前Mongo数据存储对象
   gs.open(function (err, docFile) {
 
-    if (err) return next(err, null);
-    // set the opinter of the read head to the start of the gridstored file
+    if (err) {
+
+      return next(err, null);
+    }
+
     gs.seek(0, function () {
 
-      // read the entire file
       gs.read(function (err, docChunk) {
 
-        if (err) return next(err, null);
         next(err, docFile.contentType, new Buffer(docChunk.toString("binary"), 'binary'));
 
       });
@@ -134,12 +135,19 @@ exports.upload = function (fileName, fileType, filePath, next) {
   // open the file
   gs.open(function (err, gridStore) {
 
-    if (err) return next(err);
-    // write the file to gridfs
+    if (err) {
+
+      return next(err);
+    }
+
     gridStore.writeFile(filePath, function (err, docFile) {
 
       fs.unlink(filePath, function (err) {
-        if (err) Log('删除文件(' + filePath + ')出现异常: ' + err);
+
+        if (err) {
+
+          Log('删除文件(' + filePath + ')出现异常: ' + err);
+        }
       });
 
       next(err, docFile);
@@ -241,7 +249,8 @@ exports.decipherHelper = function(data) {
 /**
  * 格式化日志输出
  *
- * getPos 获取文件信息参考cnodejs.org http://cnodejs.org/topic/4f16442ccae1f4aa27001125
+ * getPos 获取文件信息
+ * 参考cnodejs.org http://cnodejs.org/topic/4f16442ccae1f4aa27001125
  * @param message
  */
 var Log = exports.log = function(message) {
