@@ -7,7 +7,7 @@ var _        = require('underscore');
 
 var User     = mongoose.model('User');
 var config   = require('../conf/config');
-var utils    = require('../lib/utils');
+var utils    = require('../libs/utils');
 
 //  GET --> /user/:id  个人用户管理界面
 exports.userInfo = function(req, res){

@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var _        = require('underscore');
 
 // 应用模块
-var utils    = require('../lib/utils');
+var utils    = require('../libs/utils');
 var config   = require('../conf/config');
 var Photo    = mongoose.model('Photo');
 

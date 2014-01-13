@@ -46,7 +46,7 @@ if(!fs.existsSync(tempPath)) {
 }
 
 // 加载视图注册模版
-require('./lib/registerTemplate');
+require('./libs/registerTemplate');
 // 加载实体对象
 require('./models');
 
@@ -62,7 +62,7 @@ function startServer() {
     console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
 
     // 缓存文件定期处理
-    require('./lib/fileClean');
+    require('./libs/fileClean');
 
   });
   console.log("Debug: Express server listening on port %s", app.get('port'));
@@ -115,7 +115,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     });
 
     // 设置过滤器
-    app.use(require('./lib/filter'));
+    app.use(require('./libs/filter'));
 
     // 配置路由异常处理 (路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用)
     // 必须配置视图模版路径之前，否则请求index时服务器会直接调用静态路径下index.html
@@ -128,7 +128,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     });
 
     // 設置前端開發是否開啟debug模式
-    app.use('/sea-modules/sea-config.js', require('./lib/fileDebug')(program.debug));
+    app.use('/sea-modules/sea-config.js', require('./libs/fileDebug')(program.debug));
     // 设置静态文件路径
     app.use(express.static(path.join(__dirname, 'static')));
 
@@ -155,10 +155,10 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
   // 设置视图模板路径
   app.set('views', path.join(__dirname, 'views'));
   // 设置视图渲染引擎
-  app.engine('html', require('./lib/engineHtml'));
+  app.engine('html', require('./libs/engineHtml'));
 
   // 路由调度加载
-  require('./routes')(app);
+  require('./routers')(app);
 
   startServer();
 });

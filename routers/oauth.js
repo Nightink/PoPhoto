@@ -7,7 +7,7 @@ var _        = require('underscore');
 
 var User     = mongoose.model('User');
 var config   = require('../conf/config');
-var utils    = require('../lib/utils');
+var utils    = require('../libs/utils');
 
 module.exports = function(app) {
 
