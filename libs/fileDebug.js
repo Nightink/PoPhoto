@@ -2,12 +2,12 @@
  * 前端js开发debug模式
  */
 
-var _ = require('underscore');
-
 var fs = require('fs');
 var path = require('path');
 
-var seaPath = '../static/sea-modules'
+var _ = require('underscore');
+
+var seaPath = '../static/sea-modules';
 
 module.exports = function(isDebug) {
 

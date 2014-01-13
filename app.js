@@ -133,7 +133,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     app.use(express.static(path.join(__dirname, 'static')));
 
     // 设置站点图标
-    // app.use(express.favicon(path.join(__dirname, 'public/favicon.jpg')));
+    app.use(express.favicon(path.join(__dirname, 'static/favicon.ico')));
 
     // 显示请求错误路由
     app.use(function(req, res, next) {

@@ -19,4 +19,4 @@ node_modules
 log.txt
 npm-debug.log
 info.log
-public/sea-modules/sea-config.js
+static/sea-modules/sea-config.js
