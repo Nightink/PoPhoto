@@ -4,7 +4,10 @@ define(function(require, exports, modules) {
     var stack = {};
     var _events = {};
     var eventCount = {};
-    var console = window.console || function() {};
+    var console = window.console || {
+
+        log: function() {}
+    };
 
     modules.exports = {
 
@@ -92,7 +95,7 @@ define(function(require, exports, modules) {
 
         var e = new Error();
         var errorStack = e.stack;
-        return errorStack.split('\n')[3];
+        return errorStack ? errorStack.split('\n')[3] : '';
     }
 
 });

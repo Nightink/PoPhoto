@@ -92,7 +92,6 @@ define(function(require, exports, modules) {
 
         var e = new Error();
         var errorStack = e.stack;
-        return errorStack.split('\n')[3];
+        return errorStack ? errorStack.split('\n')[3] : '';
     }
-
 });
