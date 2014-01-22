@@ -49,6 +49,8 @@ if(!fs.existsSync(tempPath)) {
 require('./libs/registerTemplate');
 // 加载实体对象
 require('./models');
+// 进行sea-config.js 配置输出
+require('./libs/fileDebug')(program.debug)
 
 function startServer() {
 
@@ -127,13 +129,11 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
       res.send(500, err.message);
     });
 
-    // 設置前端開發是否開啟debug模式
-    app.use('/sea-modules/sea-config.js', require('./libs/fileDebug')(program.debug));
     // 设置静态文件路径
-    app.use(express.static(path.join(__dirname, 'static')));
+    app.use(express.static(path.join(config.static_path)));
 
     // 设置站点图标
-    app.use(express.favicon(path.join(__dirname, 'static/favicon.ico')));
+    app.use(express.favicon(path.join(config.static_path, 'favicon.ico')));
 
     // 显示请求错误路由
     app.use(function(req, res, next) {
@@ -147,6 +147,9 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
   app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
   });
+
+  // 隐藏响应头x-powered-by 备注
+  app.disable('x-powered-by');
 
   // 配置服务器端口
   app.set('port', program.port);

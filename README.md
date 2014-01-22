@@ -17,6 +17,7 @@
 * 提供启动参数`node app -h`
 * -p 设置端口
 * -d 前端js文件是否输出 debug版本文件
+* `conf/config.js` static_path 用于配置前端文件路径
 
 ## 后期规划
 * 后端采用纯RESTFul api接口

@@ -26,3 +26,6 @@ exports.thumb = {
 
   width: 200
 };
+
+// 静态文件路径与nginx静态文件路径一致
+exports.static_path = '/Users/Nightink/code/github/web-static';
