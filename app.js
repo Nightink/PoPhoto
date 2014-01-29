@@ -7,6 +7,7 @@
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
 
+  // 捕获启动端口被占用，异常
   if (err.code === 'EADDRINUSE') {
 
     console.warn('Port %d in use', app.get('port'));
@@ -33,6 +34,7 @@ program
   .version(require('./package.json').version)
   .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
   .option('-p, --port [port]', '设置服务器端口', Number, 3001)
+  .option('-s, --static [path]', '设置服务器静态文件路径', String)
   .parse(process.argv);
 
 
@@ -44,6 +46,9 @@ if(!fs.existsSync(tempPath)) {
   fs.mkdirSync(tempPath);
   console.log('Debug: create image temp dir %s.', tempPath);
 }
+
+// 调整系统congfig  静态文件夹路径
+config.static_path = program.static || config.static_path || '';
 
 // 加载视图注册模版
 require('./libs/registerTemplate');
