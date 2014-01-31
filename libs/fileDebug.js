@@ -7,7 +7,7 @@ var path    = require('path');
 
 var _       = require('underscore');
 
-var seaPath = require('../conf/config').static_path;
+var seaPath = require('../conf/config.json').staticPath;
 
 /**
  * 生成sea.js config 配置文件，用于前端是否js debug 文件输出

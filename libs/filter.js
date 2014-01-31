@@ -4,7 +4,7 @@
 
 var _              = require('underscore');
 
-var config         = require('../conf/config');
+var config         = require('../conf/config.json');
 var userController = require('../controllers/user');
 
 // app.use中间件 function(req, res, next) {}

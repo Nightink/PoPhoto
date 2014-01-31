@@ -3,10 +3,11 @@
  * 说明：通用工具集方法注释采用doc说明，便于后续项目开发使用
  */
 
-var gm         = require('gm');
 var fs         = require('fs');
-var _          = require('underscore');
 var crypto     = require("crypto");
+
+var _          = require('underscore');
+var gm         = require('gm');
 var mongoose   = require('mongoose');
 
 // 使用mongoose gridfs文件流

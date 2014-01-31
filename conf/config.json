@@ -1,0 +1,13 @@
+{
+  "dbEnv": "mongo_config",
+  "dbAdd": "mongodb://node:node@127.0.0.1:27017/Pophoto",
+  "sessionSecret": "pophoto",
+  "session_key": "pophoto-strong",
+  "cookieMaxage": 259200,
+  "needFilter": ["/photos.json", "/photo-delete", "/po-photo", "/user"],
+  "fileClearTime": 3600000,
+  "thumb": {
+    "width": 200
+  },
+  "staticPath": "/Users/Nightink/code/github/web-static"
+}

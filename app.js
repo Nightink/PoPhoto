@@ -28,7 +28,7 @@ var express = require('express');
 var program = require('commander');
 
 var app     = express();
-var config  = require('./conf/config');
+var config  = require('./conf/config.json');
 
 program
   .version(require('./package.json').version)
@@ -48,7 +48,7 @@ if(!fs.existsSync(tempPath)) {
 }
 
 // 调整系统congfig  静态文件夹路径
-config.static_path = program.static || config.static_path || '';
+config.staticPath = program.static || config.staticPath || '';
 
 // 加载视图注册模版
 require('./libs/registerTemplate');
@@ -82,7 +82,7 @@ function randomPort() {
   return Math.floor(Math.random() * 1000) + 7000
 }
 
-require('./conf/' + config.db_env + '.js')(app, function(err) {
+require('./conf/' + config.dbEnv + '.js')(app, function(err) {
 
   if(err) {
 
@@ -104,7 +104,7 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     }));
 
     // 配置session，必须在cookie之后，依赖cookie
-    app.use(express.cookieParser(config.session_secret));
+    app.use(express.cookieParser(config.sessionSecret));
     app.use(express.session());
 
     // url为 *.json 进行响应头处理
@@ -135,10 +135,10 @@ require('./conf/' + config.db_env + '.js')(app, function(err) {
     });
 
     // 设置静态文件路径
-    app.use(express.static(path.join(config.static_path)));
+    app.use(express.static(path.join(config.staticPath)));
 
     // 设置站点图标
-    app.use(express.favicon(path.join(config.static_path, 'favicon.ico')));
+    app.use(express.favicon(path.join(config.staticPath, 'favicon.ico')));
 
     // 显示请求错误路由
     app.use(function(req, res, next) {

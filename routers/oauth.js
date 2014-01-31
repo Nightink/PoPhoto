@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var _        = require('underscore');
 
 var User     = mongoose.model('User');
-var config   = require('../conf/config');
+var config   = require('../conf/config.json');
 var utils    = require('../libs/utils');
 
 module.exports = function(app) {
@@ -61,8 +61,8 @@ module.exports = function(app) {
       req.session.user = result;
       req.session.save(function(err){
 
-        res.cookie('_id', utils.encryptHelper(result._id), { path:'/', maxAge: config.cookie_maxage });
-        res.cookie('username', result.username, { path:'/', maxAge: config.cookie_maxage });
+        res.cookie('_id', utils.encryptHelper(result._id), { path:'/', maxAge: config.cookieMaxage });
+        res.cookie('username', result.username, { path:'/', maxAge: config.cookieMaxage });
 
         utils.sendJson(req, res, result);   //登陆成功，返回用户信息
       });

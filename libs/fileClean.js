@@ -6,10 +6,10 @@ var fs           = require('fs');
 var path         = require('path');
 var _            = require('underscore');
 
-var config       = require('../conf/config');
+var config       = require('../conf/config.json');
 
 
-var INVALID_TIME = config.file_clear_time;
+var INVALID_TIME = config.fileClearTime;
 
 function fileClean() {
 
