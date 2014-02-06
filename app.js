@@ -4,6 +4,19 @@
  * 服务器运行
  */
 
+var fs      = require('fs');
+var path    = require('path');
+
+var hbs     = require('hbs');
+var express = require('express');
+var program = require('commander');
+
+var app     = express();
+
+// require 会进行二次缓存
+// 针对require 配置，将会导致配置被重写覆盖
+var config  = require('./conf/config.json');
+
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
 
@@ -19,16 +32,6 @@ process.on('uncaughtException', function(err) {
     console.log('Sys %s', err.stack);
   }
 });
-
-var fs      = require('fs');
-var path    = require('path');
-
-var hbs     = require('hbs');
-var express = require('express');
-var program = require('commander');
-
-var app     = express();
-var config  = require('./conf/config.json');
 
 program
   .version(require('./package.json').version)
@@ -130,6 +133,7 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     // app.use(require('./routes')(app));
     // 设置500服务器处理
     app.use(function(err, req, res, next) {
+
       console.log(err.stack);
       res.send(500, err.message);
     });

@@ -26,7 +26,8 @@ module.exports = function(req, res, next) {
         return nf == path;
       });
 
-      return verify ? res.redirect('/photos') : next();
+      // 无用户权限，则跳转到首页
+      return verify ? res.redirect('/') : next();
     }
   });
 };

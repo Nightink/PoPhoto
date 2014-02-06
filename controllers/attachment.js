@@ -66,6 +66,7 @@ exports.upload = function(req, res) {
 };
 
 // GET --> attachment/:id
+// 图片下载操作
 exports.download = function(req, res) {
 
   var attachmentID = req.params.id;
@@ -83,6 +84,8 @@ exports.download = function(req, res) {
   });
 };
 
+// GET --> /delete/:id
+// 图片删除操作
 exports.delete = function(req, res) {
 
   var attachmentID = req.params.id;

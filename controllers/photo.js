@@ -16,7 +16,7 @@ exports.photo = function(req, res) {
 
   var query = {};
   var fields = '';
-  var q  = req.query.q || null;
+  var q = req.query.q || null;
   // 用户查询图片关键字
   var keywords = req.query.keywords && req.query.keywords.split(',');
   var time = req.query.time ? req.query.time : Date.now();
@@ -216,7 +216,7 @@ exports.deletePhoto = function(req, res) {
 
   if(userId !== req.session.user._id) {
 
-    return res.json(400, '无权限删除此照片');
+    return res.json(403, '无权限删除此照片');
   }
 
   console.log(userId);
