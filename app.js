@@ -4,18 +4,17 @@
  * 服务器运行
  */
 
-var fs      = require('fs');
-var path    = require('path');
+var fs        = require('fs');
+var path      = require('path');
 
-var hbs     = require('hbs');
-var express = require('express');
-var program = require('commander');
+var hbs       = require('hbs');
+var express   = require('express');
+var commander = require('commander');
 
-var app     = express();
-
+var app       = express();
 // require 会进行二次缓存
 // 针对require 配置，将会导致配置被重写覆盖
-var config  = require('./conf/config.json');
+var config    = require('./conf/config.json');
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
@@ -33,7 +32,7 @@ process.on('uncaughtException', function(err) {
   }
 });
 
-program
+commander
   .version(require('./package.json').version)
   .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
   .option('-p, --port [port]', '设置服务器端口', Number, 3001)
@@ -51,14 +50,14 @@ if(!fs.existsSync(tempPath)) {
 }
 
 // 调整系统congfig  静态文件夹路径
-config.staticPath = program.static || config.staticPath || '';
+config.staticPath = commander.static || config.staticPath || '';
 
+// 缓存文件定期处理
+require('./libs/fileClean');
 // 加载视图注册模版
 require('./libs/registerTemplate');
 // 加载实体对象
 require('./models');
-// 进行sea-config.js 配置输出
-require('./libs/fileDebug')(program.debug)
 
 function startServer() {
 
@@ -69,11 +68,8 @@ function startServer() {
       console.log(err.message);
       return;
     }
+
     console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
-
-    // 缓存文件定期处理
-    require('./libs/fileClean');
-
   });
   console.log("Debug: Express server listening on port %s", app.get('port'));
 
@@ -127,7 +123,8 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     // 设置过滤器
     app.use(require('./libs/filter'));
 
-    // 配置路由异常处理 (路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用)
+    // 配置路由异常处理
+    // (路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用)
     // 必须配置视图模版路径之前，否则请求index时服务器会直接调用静态路径下index.html
     app.use(app.router);
     // app.use(require('./routes')(app));
@@ -138,6 +135,8 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
       res.send(500, err.message);
     });
 
+    // 支持字典列表形式显示静态文件目录
+    app.use(express.directory(config.staticPath, { hidden: true }));
     // 设置静态文件路径
     app.use(express.static(path.join(config.staticPath)));
 
@@ -161,7 +160,7 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
   app.disable('x-powered-by');
 
   // 配置服务器端口
-  app.set('port', program.port);
+  app.set('port', commander.port);
   // 设置页面渲染类型*.html
   app.set('view engine', 'html');
   // 设置视图模板路径
@@ -171,6 +170,8 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
 
   // 路由调度加载
   require('./routers')(app);
+  // 进行sea-config.js 配置输出
+  require('./libs/fileDebug')(commander.debug);
 
   startServer();
 });

@@ -33,7 +33,7 @@ function fileClean() {
           if(err) {
             console.log(err);
           } else {
-            console.log('Debug: file clean is %s.', filePath);
+            console.log('Debug: file clean is %s', filePath);
           }
         });
       }

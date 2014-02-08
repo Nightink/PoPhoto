@@ -5,4 +5,4 @@
 require('./photo');
 require('./user');
 
-console.log('Debug: loaded model');
+console.log('Debug: loaded model files');

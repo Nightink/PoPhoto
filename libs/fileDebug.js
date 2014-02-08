@@ -31,4 +31,6 @@ module.exports = function(isDebug) {
 
   fs.writeFileSync(path.join(seaPath, 'sea-modules/sea-config.js'), string);
 
+  console.log('Debug: create web front debug javascript file');
+
 };

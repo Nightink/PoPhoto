@@ -17,4 +17,4 @@ lib-cov
 results
 node_modules
 log.txt
-static/sea-modules/sea-config.js
+sea-config.js

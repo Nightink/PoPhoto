@@ -49,13 +49,14 @@ module.exports = function(app) {
         res.render('index', { title: 'PoPhoto', time: Date.now(), items: backDoc });
       }
     });
-
   });
 
   require('./attachment')(app);
   require('./user')(app);
   require('./photo')(app);
   require('./oauth')(app);
+
+  console.log('Debug: loaded router files');
 
   //return app.router;
 }

@@ -10,7 +10,7 @@ var config   = require('./config');
 
 module.exports = function(app, next) {      //连接数据库操作
 
-  console.log('Debug: loader db config');
+  console.log('Debug: loader db config file');
 
   var params = _.extend({
 
