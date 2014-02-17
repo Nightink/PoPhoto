@@ -4,6 +4,7 @@
 
 var fs      = require('fs');
 var path    = require('path');
+var format  = require('util').format;
 
 var _       = require('underscore');
 
@@ -27,10 +28,11 @@ module.exports = function(isDebug) {
     });
   }
 
-  var string = 'seajs.config(' + JSON.stringify(json) + ');';
+  // 格式化输出
+  var string = format('seajs.config(%s);', JSON.stringify(json, null, 4));
 
   fs.writeFileSync(path.join(seaPath, 'sea-modules/sea-config.js'), string);
 
-  console.log('Debug: create web front debug javascript file');
+  console.log('Debug: create web front sea.js config javascript file');
 
 };
