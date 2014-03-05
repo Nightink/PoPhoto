@@ -12,7 +12,7 @@ var express   = require('express');
 var commander = require('commander');
 
 var app       = express();
-// require 会进行二次缓存
+// require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
 var config    = require('./conf/config.json');
 
@@ -39,11 +39,12 @@ commander
   .option('-s, --static [path]', '设置服务器静态文件路径', String)
   .parse(process.argv);
 
-
 var tempPath = path.join(__dirname, 'temp');
+// 判断文件夹路径是否存在
+var isDir    = fs.existsSync || path.existsSync;
 
 // 判断是否存在缓存目录，没有则创建缓存目录
-if(!fs.existsSync(tempPath)) {
+if(!isDir(tempPath)) {
 
   fs.mkdirSync(tempPath);
   console.log('Debug: create image temp dir %s.', tempPath);
@@ -71,14 +72,14 @@ function startServer() {
 
     console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
   });
-  console.log("Debug: Express server listening on port %s", app.get('port'));
 
+  console.log("Debug: Express server listening on port %s", app.get('port'));
 }
 
 // 随机端口轮询
 function randomPort() {
 
-  return Math.floor(Math.random() * 1000) + 7000
+  return Math.floor(Math.random() * 1000) + 7000;
 }
 
 require('./conf/' + config.dbEnv + '.js')(app, function(err) {
@@ -94,6 +95,8 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     var stream = fs.createWriteStream(path.join(__dirname, 'info.log'), {flags: 'a'});
     // app.use 内置中间件队列  依次执行队列的中间件
     app.use(express.logger({stream: stream}));
+    // 添加gzip 输出压缩中间件
+    app.use(express.compress());
 
     // 配置客户端表单数据提交，必须在app.router之前，否者 res.body 为空
     app.use(express.methodOverride());
@@ -107,21 +110,10 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     app.use(express.session());
 
     // url为 *.json 进行响应头处理
-    app.use(function(req, res, next) {
-
-      if(req.url.match(/\.json/g)) {
-        res.back = {};
-
-      } else {
-        res.back = {
-          userAgent: req.headers['user-agent']
-        }
-      }
-      next();
-    });
+    app.use(require('./libs/requestJSONHandler'));
 
     // 设置过滤器
-    app.use(require('./libs/filter'));
+    app.use(require('./libs/filterRouterHandler'));
 
     // 配置路由异常处理
     // (路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用)
@@ -129,11 +121,7 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     app.use(app.router);
     // app.use(require('./routes')(app));
     // 设置500服务器处理
-    app.use(function(err, req, res, next) {
-
-      console.log(err.stack);
-      res.send(500, err.message);
-    });
+    app.use(require('./libs/serverErrorHandler'));
 
     // 支持字典列表形式显示静态文件目录
     app.use(express.directory(config.staticPath, { hidden: true }));
@@ -144,21 +132,21 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     app.use(express.favicon(path.join(config.staticPath, 'favicon.ico')));
 
     // 显示请求错误路由
-    app.use(function(req, res, next) {
-
-      console.log('Debug: Error routes %s --> %s', req.method, req.url);
-      next();
-    });
+    app.use(require('./libs/routerErrorHandler'));
   });
 
   // 开发环境
   app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions:true, showStack:true }));
+
+    app.use(express.errorHandler({
+      dumpExceptions: true,
+      showStack: true
+    }));
+
   });
 
   // 隐藏响应头x-powered-by 备注
   app.disable('x-powered-by');
-
   // 配置服务器端口
   app.set('port', commander.port);
   // 设置页面渲染类型*.html
@@ -172,6 +160,6 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
   require('./routers')(app);
   // 进行sea-config.js 配置输出
   require('./libs/fileDebug')(commander.debug);
-
+  // 启动服务器
   startServer();
 });

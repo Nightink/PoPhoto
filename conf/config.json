@@ -4,7 +4,7 @@
   "sessionSecret": "pophoto",
   "session_key": "pophoto-strong",
   "cookieMaxage": 259200000,
-  "needFilter": ["/photo-delete", "/po-photo", "/user"],
+  "needFilter": ["/photo-delete", "/po-photo", "/user", "/delete/:id"],
   "fileClearTime": 3600000,
   "thumb": {
     "width": 200

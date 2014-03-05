@@ -12,6 +12,7 @@ module.exports = function(req, res, next) {
 
   // 获取当前url
   var path = req.path;
+  console.log(path);
 
   userController.userCorrect(req, res, function(result) {
 
@@ -27,7 +28,9 @@ module.exports = function(req, res, next) {
       });
 
       // 无用户权限，则跳转到首页
-      return verify ? res.redirect('/') : next();
+      return verify ?
+              res.redirect('/') :
+              next();
     }
   });
 };
