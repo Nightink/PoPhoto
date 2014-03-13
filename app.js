@@ -163,3 +163,6 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
   // 启动服务器
   startServer();
 });
+
+// exports test app
+module.exports = app;
