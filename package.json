@@ -1,6 +1,6 @@
 {
   "name": "PoPhoto",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "description": "NodeJS晒图,瀑布流,BackboneJS,SeaJS结合开发",
   "main": "app.js",
   "private": true,
@@ -8,8 +8,7 @@
     "node": ">=0.8"
   },
   "scripts": {
-    "start": "node app",
-    "test": "make test"
+    "start": "node app"
   },
   "dependencies": {
     "gm": "~1.9",
