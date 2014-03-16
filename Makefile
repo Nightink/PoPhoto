@@ -12,5 +12,8 @@ test-unit:
 		--globals setImmediate,clearImmediate \
 		$(MOCHA_OPTS)
 
+run:
+	@node app.js -d -p 3000
 
-.PHONY: test test-unit
+
+.PHONY: test test-unit run

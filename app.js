@@ -32,6 +32,12 @@ process.on('uncaughtException', function(err) {
   }
 });
 
+// 捕获node 进程结束事件
+process.on('SIGINT', function () {
+
+  process.exit();
+});
+
 commander
   .version(require('./package.json').version)
   .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)

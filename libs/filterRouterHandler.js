@@ -12,7 +12,6 @@ module.exports = function(req, res, next) {
 
   // 获取当前url
   var path = req.path;
-  console.log(path);
 
   userController.userCorrect(req, res, function(result) {
 
