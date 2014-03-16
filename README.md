@@ -1,4 +1,4 @@
-# 基于node.js 图片展示web应用
+# 基于node.js 图片展示web应用 [![Build Status](https://travis-ci.org/Nightink/node-Pophoto.png?branch=develop)](https://travis-ci.org/Nightink/node-Pophoto)
 
 ## node app
 

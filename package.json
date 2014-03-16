@@ -1,14 +1,16 @@
 {
   "name": "PoPhoto",
   "version": "0.2.0",
-  "description": "NodeJS晒图,瀑布流,BackboneJS,SeaJS结合开发",
+  "description": "NodeJS图片瀑布流",
+  "keywords": ["NodeJS", "BackboneJS", "SeaJS", "图片"],
   "main": "app.js",
   "private": true,
   "engines": {
     "node": ">=0.8"
   },
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "test": "make test"
   },
   "dependencies": {
     "gm": "~1.9",
