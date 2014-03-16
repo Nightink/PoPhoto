@@ -1,8 +1,9 @@
-#!/usr/bin/env node
 
 var app = require('express')();
 var fs = require('fs');
 var path = require('path');
+
+var tplPath = path.join(__dirname, '../views/test.html');
 
 require('should');
 
@@ -11,7 +12,7 @@ describe('app', function() {
 
     before(function() {
 
-      fs.writeFileSync(__dirname + '/../views/test.html', '{{user.name}}');
+      fs.writeFileSync(tplPath, '{{user.name}}');
     });
 
     it('should map a hbs template engine test ok', function(done) {
@@ -32,7 +33,7 @@ describe('app', function() {
 
     after(function() {
 
-      fs.unlink(__dirname + '/../views/test.html');
+      fs.unlink(tplPath);
     });
   })
 })

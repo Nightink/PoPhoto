@@ -4,11 +4,10 @@
 
 var fs           = require('fs');
 var path         = require('path');
+
 var _            = require('underscore');
 
 var config       = require('../conf/config.json');
-
-
 var INVALID_TIME = config.fileClearTime;
 
 function fileClean() {
@@ -19,8 +18,8 @@ function fileClean() {
   // 遍历文件数组
   _.each(fileNameList, function(fileName) {
 
-    var filePath = path.join(tempPath, fileName);
     var now      = Date.now();
+    var filePath = path.join(tempPath, fileName);
 
     fs.stat(filePath, function(err, stat) {
 
