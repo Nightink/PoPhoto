@@ -5,12 +5,13 @@
 var mongoose = require('mongoose');
 
 var _        = require('underscore');
+var debug    = require('debug')('app:config');
 
 var config   = require('./config');
 
 module.exports = function(app, next) {      //连接数据库操作
 
-  console.log('Debug: loader db config file');
+  debug('loader db config file');
 
   var params = _.extend({
 
@@ -24,7 +25,7 @@ module.exports = function(app, next) {      //连接数据库操作
 
     var status = err ? 'fialuer' : 'success';
 
-    console.log('Debug: connect to %s %s', config.dbAdd, status);
+    debug('Debug: connect to %s %s', config.dbAdd, status);
 
     next(err);
 

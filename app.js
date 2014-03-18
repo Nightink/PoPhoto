@@ -10,11 +10,14 @@ var path      = require('path');
 var hbs       = require('hbs');
 var express   = require('express');
 var commander = require('commander');
+var debug     = require('debug')('app');
 
 var app       = express();
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
 var config    = require('./conf/config.json');
+
+debug('app start run');
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
@@ -53,7 +56,7 @@ var isDir    = fs.existsSync || path.existsSync;
 if(!isDir(tempPath)) {
 
   fs.mkdirSync(tempPath);
-  console.log('Debug: create image temp dir %s.', tempPath);
+  debug('create image temp dir %s.', tempPath);
 }
 
 // 调整系统congfig  静态文件夹路径
@@ -76,10 +79,12 @@ function startServer() {
       return;
     }
 
-    console.log('Debug: Express server start success http://localhost:%s/', app.get('port'));
+    debug('Express app server start success http://localhost:%s/', app.get('port'));
+
+    console.log('Express app server start success http://localhost:%s/', app.get('port'));
   });
 
-  console.log("Debug: Express server listening on port %s", app.get('port'));
+  debug('Express app server listening on port %s', app.get('port'));
 }
 
 // 随机端口轮询
@@ -98,7 +103,10 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
   // 全环境下配置
   app.configure(function() {
     // 配置日志记录
-    var stream = fs.createWriteStream(path.join(__dirname, 'info.log'), {flags: 'a'});
+    var stream = fs.createWriteStream(path.join(__dirname, 'info.log'), {
+
+      flags: 'a'
+    });
     // app.use 内置中间件队列  依次执行队列的中间件
     app.use(express.logger({stream: stream}));
     // 添加gzip 输出压缩中间件

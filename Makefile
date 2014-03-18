@@ -12,8 +12,11 @@ test-unit:
 		--globals setImmediate,clearImmediate \
 		$(MOCHA_OPTS)
 
+debug:
+	@DEBUG=app,app:* ./app.js -d -p 3000
+
 run:
-	@node app.js -d -p 3000
+	@node app.js
 
 
 .PHONY: test test-unit run
