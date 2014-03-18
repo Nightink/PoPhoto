@@ -18,5 +18,4 @@ debug:
 run:
 	@node app.js
 
-
-.PHONY: test test-unit run
+.PHONY: test test-unit debug run

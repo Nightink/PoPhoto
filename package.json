@@ -10,11 +10,12 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "make test"
+    "test": "./node_modules/.bin/mocha --reporter spec --globals setImmediate,clearImmediate --check-leaks"
   },
   "dependencies": {
     "gm": "~1.9",
     "hbs": "~1.0",
+    "debug": "*",
     "async": "~0.2",
     "moment": "~2.0",
     "express": "~3.0",
@@ -23,7 +24,6 @@
     "underscore": "~1.4"
   },
   "devDependencies": {
-    "debug": "*",
     "mocha": "*",
     "should": "*"
   }
