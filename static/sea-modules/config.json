@@ -2,9 +2,10 @@
     "preload": [
         "jquery",
         "bootstrap",
-        "plugin-base",
-        "plugin-text"
+        "seajs-text",
+        "seajs-style"
     ],
+    "debug": true,
     "base": "/sea-modules/",
     "alias": {
         "jquery": "jquery/1.8.2/jquery",

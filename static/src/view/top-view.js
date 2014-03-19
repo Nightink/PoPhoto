@@ -4,7 +4,7 @@
 
 define(function (require, exports, module) {
 
-    var Backbone    = require('backbone');
+    var backbone    = require('backbone');
     var $           = require('jquery');
     var observer    = require('observer');
     var handlebars  = require('handlebars');
@@ -13,7 +13,7 @@ define(function (require, exports, module) {
     var UserModel   = require('../model/user-model');
     var UserView    = require('./user-view');
 
-    var TopView = Backbone.View.extend({
+    var TopView = backbone.View.extend({
 
         el: '.pull-right',
 

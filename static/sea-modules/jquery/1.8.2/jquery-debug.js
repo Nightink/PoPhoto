@@ -11,7 +11,7 @@
  *
  * Date: Thu Sep 20 2012 21:13:05 GMT-0400 (Eastern Daylight Time)
  */
-define('#jquery/1.8.2/jquery', [], function(require) {
+define('jquery/1.8.2/jquery-debug', [], function(require) {
 (function( window, undefined ) {
 var
 	// A central reference to the root jQuery(document)

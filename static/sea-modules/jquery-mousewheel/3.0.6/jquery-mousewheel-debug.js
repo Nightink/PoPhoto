@@ -1,4 +1,4 @@
-define("#jquery-mousewheel/3.0.6/jquery-mousewheel-debug", function(require, exports, module) {
+define("jquery-mousewheel/3.0.6/jquery-mousewheel-debug", function(require, exports, module) {
     var $, jQuery, $$;
     module.exports = function(externalJQuery) {
         if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
@@ -15,7 +15,7 @@ define("#jquery-mousewheel/3.0.6/jquery-mousewheel-debug", function(require, exp
  * Thanks to: Seamus Leahy for adding deltaX and deltaY
  *
  * Version: 3.0.6
- * 
+ *
  * Requires: 1.2.2+
  */
         (function($) {

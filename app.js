@@ -16,7 +16,7 @@ var app       = express();
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
 var config    = require('./conf/config.json');
-var debugging = require('./libs/utils').debugging;
+var debugging = require('./libs/debugging');
 
 debugging(debug, 'app start run');
 

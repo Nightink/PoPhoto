@@ -1,4 +1,4 @@
-define("#underscore/1.4.4/underscore-debug", [], function(require, exports, module) {
+define("underscore/1.4.4/underscore-debug", [], function(require, exports, module) {
     // Underscore.js 1.4.4
     // ===================
     // > http://underscorejs.org

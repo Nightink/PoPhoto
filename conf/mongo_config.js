@@ -7,7 +7,7 @@ var debug     = require('debug')('app:config');
 var mongoose  = require('mongoose');
 
 var config    = require('./config');
-var debugging = require('../libs/utils').debugging;
+var debugging = require('../libs/debugging');
 
 module.exports = function(app, next) {      //连接数据库操作
 
