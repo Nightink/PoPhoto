@@ -2,11 +2,13 @@
  * PoPhoto index 路由调度接口
  */
 
-var _        = require('underscore');
-var debug    = require('debug')('app:router');
-var mongoose = require('mongoose');
+var _         = require('underscore');
+var debug     = require('debug')('app:router');
+var mongoose  = require('mongoose');
 
-var Photo = mongoose.model('Photo');
+var debugging = require('../libs/utils').debugging;
+
+var Photo     = mongoose.model('Photo');
 
 module.exports = function(app) {
 
@@ -57,7 +59,7 @@ module.exports = function(app) {
   require('./photo')(app);
   require('./oauth')(app);
 
-  debug('loaded router files');
+  debugging(debug, 'loaded router files');
 
   //return app.router;
 }

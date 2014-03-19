@@ -16,8 +16,9 @@ var app       = express();
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
 var config    = require('./conf/config.json');
+var debugging = require('./libs/utils').debugging;
 
-debug('app start run');
+debugging(debug, 'app start run');
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
@@ -25,7 +26,7 @@ process.on('uncaughtException', function(err) {
   // 捕获启动端口被占用，异常
   if (err.code === 'EADDRINUSE') {
 
-    console.warn('Port %d in use', app.get('port'));
+    debugging(debug, 'Port %d in use', app.get('port'));
     app.set('port', randomPort());
     startServer();
 
@@ -56,7 +57,7 @@ var isDir    = fs.existsSync || path.existsSync;
 if(!isDir(tempPath)) {
 
   fs.mkdirSync(tempPath);
-  debug('create image temp dir %s.', tempPath);
+  debugging(debug, 'create image temp dir %s.', tempPath);
 }
 
 // 调整系统congfig  静态文件夹路径
@@ -79,12 +80,10 @@ function startServer() {
       return;
     }
 
-    debug('Express app server start success http://localhost:%s/', app.get('port'));
-
-    console.log('Express app server start success http://localhost:%s/', app.get('port'));
+    debugging(debug, 'Express app server start success http://localhost:%s/', app.get('port'));
   });
 
-  debug('Express app server listening on port %s', app.get('port'));
+  debugging(debug, 'Express app server listening on port %s', app.get('port'));
 }
 
 // 随机端口轮询

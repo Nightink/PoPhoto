@@ -5,6 +5,7 @@
 require('./photo');
 require('./user');
 
-var debug = require('debug')('app:models');
+var debug     = require('debug')('app:models');
+var debugging = require('../libs/utils').debugging;
 
-debug('loaded model files');
+debugging(debug, 'loaded model files');
