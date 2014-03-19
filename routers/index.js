@@ -6,7 +6,7 @@ var _         = require('underscore');
 var debug     = require('debug')('app:router');
 var mongoose  = require('mongoose');
 
-var debugging = require('../libs/utils').debugging;
+var debugging = require('../libs/debugging');
 
 var Photo     = mongoose.model('Photo');
 

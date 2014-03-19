@@ -1,8 +1,8 @@
-define("#backbone/1.0.0/backbone-debug", [ "#/underscore/1.4.4/underscore-debug", "#/jquery/1.8.2/jquery-debug" ], function(require, exports, modules) {
+define("backbone/1.0.0/backbone-debug", [ "underscore/1.4.4/underscore-debug", "jquery/1.8.2/jquery-debug" ], function(require, exports, modules) {
     var previousUnderscore = this._;
     var previousJQuery = this.jQuery;
-    this._ = require("#/underscore/1.4.4/underscore-debug");
-    this.jQuery = require("#/jquery/1.8.2/jquery-debug");
+    this._ = require("underscore/1.4.4/underscore-debug");
+    this.jQuery = require("jquery/1.8.2/jquery-debug");
     //     Backbone.js 1.0.0
     //     (c) 2010-2013 Jeremy Ashkenas, DocumentCloud Inc.
     //     Backbone may be freely distributed under the MIT license.

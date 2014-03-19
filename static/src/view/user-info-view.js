@@ -3,17 +3,17 @@
  */
 
 define(function(require, exports, module) {
-    var _ = require('underscore')
-        , $ = require('jquery')
-        , Handlebars = require('handlebars')
-        , Backbone = require('backbone')
-        , observer = require('observer')
-        , UserModel = require('../model/user-model');
+    var _ = require('underscore');
+    var $ = require('jquery');
+    var handlebars = require('handlebars');
+    var backbone = require('backbone');
+    var observer = require('observer');
+    var UserModel = require('../model/user-model');
 
-    var UserInfoView = Backbone.View.extend({
+    var UserInfoView = backbone.View.extend({
         el: 'body',
 
-        template: Handlebars.compile(require('../tpl/user-info.tpl')),
+        template: handlebars.compile(require('../tpl/user-info.tpl')),
 
         initialize: function(option) {
             observer.on('verify:user-msg', this.tipMsg, this);

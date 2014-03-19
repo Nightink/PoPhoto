@@ -7,9 +7,9 @@
 
 define(function (require, exports, module) {
 
-    var _ = require('underscore')
-        , observer = require('observer')
-        , backbone = require('backbone');
+    var _ = require('underscore');
+    var observer = require('observer');
+    var backbone = require('backbone');
 
     var PhotoModel = backbone.Model.extend({
         idAttribute: '_id',

@@ -13,7 +13,7 @@
  *     });
  *
  */
-define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-buttons", [], function(require, exports, module) {
+define("jquery-fancybox/2.1.4/helpers/jquery-fancybox-buttons", [], function(require, exports, module) {
     seajs.importStyle('#fancybox-buttons{position:fixed;left:0;width:100%;z-index:8050}#fancybox-buttons.top{top:10px}#fancybox-buttons.bottom{bottom:10px}#fancybox-buttons ul{display:block;width:166px;height:30px;margin:0 auto;padding:0;list-style:none;border:1px solid #111;border-radius:3px;-webkit-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);-moz-box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);background:#323232;background:-moz-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-webkit-gradient(linear,left top,left bottom,color-stop(0%, #444),color-stop(50%, #343434),color-stop(50%, #292929),color-stop(100%, #333));background:-webkit-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-o-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:-ms-linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);background:linear-gradient(top, #444 0, #343434 50%, #292929 50%, #333 100%);filter:progid:DXImageTransform.Microsoft.gradient( startColorstr="#444444", endColorstr="#222222", GradientType=0 )}#fancybox-buttons ul li{float:left;margin:0;padding:0}#fancybox-buttons a{display:block;width:30px;height:30px;text-indent:-9999px;background-image:url("../assets/images/fancybox_buttons.png");background-repeat:no-repeat;outline:0;opacity:.8}#fancybox-buttons a:hover{opacity:1}#fancybox-buttons a.btnPrev{background-position:5px 0}#fancybox-buttons a.btnNext{background-position:-33px 0;border-right:1px solid #3e3e3e}#fancybox-buttons a.btnPlay{background-position:0 -30px}#fancybox-buttons a.btnPlayOn{background-position:-30px -30px}#fancybox-buttons a.btnToggle{background-position:3px -60px;border-left:1px solid #111;border-right:1px solid #3e3e3e;width:35px}#fancybox-buttons a.btnToggleOn{background-position:-27px -60px}#fancybox-buttons a.btnClose{border-left:1px solid #111;width:35px;background-position:-56px 0}#fancybox-buttons a.btnDisabled{opacity:.4;cursor:default}', "#jquery-fancybox/2.1.4/../css/jquery-fancybox-buttons.css", module);
     module.exports = function($) {
         //var $ = require('jquery');
@@ -166,7 +166,7 @@ define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-buttons", [], function(re
  *          http://maps.google.com/?ll=48.857995,2.294297&spn=0.007666,0.021136&t=m&z=16
  *          http://maps.google.com/?ll=48.859463,2.292626&spn=0.000965,0.002642&t=m&z=19&layer=c&cbll=48.859524,2.292532&panoid=YJ0lq28OOy3VT2IqIuVY0g&cbp=12,151.58,,0,-15.56
  */
-define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-media", [], function(require, exports, module) {
+define("jquery-fancybox/2.1.4/helpers/jquery-fancybox-media", [], function(require, exports, module) {
     module.exports = function($) {
         //(function ($) {
         "use strict";
@@ -298,7 +298,7 @@ define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-media", [], function(requ
  *     });
  *
  */
-define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs", [], function(require, exports, module) {
+define("jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs", [], function(require, exports, module) {
     seajs.importStyle("#fancybox-thumbs{position:fixed;left:0;width:100%;overflow:hidden;z-index:8050}#fancybox-thumbs.bottom{bottom:2px}#fancybox-thumbs.top{top:2px}#fancybox-thumbs ul{position:relative;list-style:none;margin:0;padding:0}#fancybox-thumbs ul li{float:left;padding:1px;opacity:.5}#fancybox-thumbs ul li.active{opacity:.75;padding:0;border:1px solid #fff}#fancybox-thumbs ul li:hover{opacity:1}#fancybox-thumbs ul li a{display:block;position:relative;overflow:hidden;border:1px solid #222;background:#111;outline:0}#fancybox-thumbs ul li img{display:block;position:relative;border:0;padding:0}", "#jquery-fancybox/2.1.4/../css/jquery-fancybox-thumbs.css", module);
     module.exports = function($) {
         //(function ($) {
@@ -414,7 +414,7 @@ define("#jquery-fancybox/2.1.4/helpers/jquery-fancybox-thumbs", [], function(req
     };
 });
 
-define("#jquery-fancybox/2.1.4/jquery-fancybox", [ "./helpers/jquery-fancybox-buttons", "./helpers/jquery-fancybox-media", "./helpers/jquery-fancybox-thumbs", "#/jquery-mousewheel/3.0.6/jquery-mousewheel" ], function(require, exports, module) {
+define("jquery-fancybox/2.1.4/jquery-fancybox", [ "./helpers/jquery-fancybox-buttons", "./helpers/jquery-fancybox-media", "./helpers/jquery-fancybox-thumbs", "jquery-mousewheel/3.0.6/jquery-mousewheel" ], function(require, exports, module) {
     var $, jQuery;
     /*module.exports = function(externalJQuery) {
         if (externalJQuery && externalJQuery.fn && externalJQuery.fn.jquery) {
@@ -434,7 +434,7 @@ define("#jquery-fancybox/2.1.4/jquery-fancybox", [ "./helpers/jquery-fancybox-bu
  * Copyright 2012 Janis Skarnelis - janis@fancyapps.com
  *
  */
-        require("#/jquery-mousewheel/3.0.6/jquery-mousewheel")(jQuery);
+        require("jquery-mousewheel/3.0.6/jquery-mousewheel")(jQuery);
         seajs.importStyle('/*! fancyBox v2.1.4 fancyapps.com | fancyapps.com/fancybox/#license */.fancybox-wrap,.fancybox-skin,.fancybox-outer,.fancybox-inner,.fancybox-image,.fancybox-wrap iframe,.fancybox-wrap object,.fancybox-nav,.fancybox-nav span,.fancybox-tmp{padding:0;margin:0;border:0;outline:0;vertical-align:top}.fancybox-wrap{position:absolute;top:0;left:0;z-index:8020}.fancybox-skin{position:relative;background:#f9f9f9;color:#444;text-shadow:none;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}.fancybox-opened{z-index:8030}.fancybox-opened .fancybox-skin{-webkit-box-shadow:0 10px 25px rgba(0,0,0,.5);-moz-box-shadow:0 10px 25px rgba(0,0,0,.5);box-shadow:0 10px 25px rgba(0,0,0,.5)}.fancybox-outer,.fancybox-inner{position:relative}.fancybox-inner{overflow:hidden}.fancybox-type-iframe .fancybox-inner{-webkit-overflow-scrolling:touch}.fancybox-error{color:#444;font:14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;margin:0;padding:15px;white-space:nowrap}.fancybox-image,.fancybox-iframe{display:block;width:100%;height:100%}#fancybox-loading,.fancybox-close,.fancybox-prev span,.fancybox-next span{background-image:url("../assets/images/fancybox_sprite.png")}#fancybox-loading{position:fixed;top:50%;left:50%;margin-top:-22px;margin-left:-22px;background-position:0 -108px;opacity:.8;cursor:pointer;z-index:8060}#fancybox-loading div{width:44px;height:44px;background:url("../assets/images/fancybox_loading.gif") center center no-repeat}.fancybox-close{position:absolute;top:-18px;right:-18px;width:36px;height:36px;cursor:pointer;z-index:8040}.fancybox-nav{position:absolute;top:0;width:40%;height:100%;cursor:pointer;text-decoration:none;background:transparent url("../assets/images/blank.gif");-webkit-tap-highlight-color:rgba(0,0,0,0);z-index:8040}.fancybox-prev{left:0}.fancybox-next{right:0}.fancybox-nav span{position:absolute;top:50%;width:36px;height:34px;margin-top:-18px;cursor:pointer;z-index:8040;visibility:hidden}.fancybox-prev span{left:10px;background-position:0 -36px}.fancybox-next span{right:10px;background-position:0 -72px}.fancybox-nav:hover span{visibility:visible}.fancybox-tmp{position:absolute;top:-99999px;left:-99999px;visibility:hidden;max-width:99999px;max-height:99999px;overflow:visible!important}.fancybox-lock{overflow:hidden}.fancybox-overlay{position:absolute;top:0;left:0;overflow:hidden;display:none;z-index:8010;background:url("../assets/images/fancybox_overlay.png")}.fancybox-overlay-fixed{position:fixed;bottom:0;right:0}.fancybox-lock .fancybox-overlay{overflow:auto;overflow-y:scroll}.fancybox-title{visibility:hidden;font:normal 13px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;position:relative;text-shadow:none;z-index:8050}.fancybox-opened .fancybox-title{visibility:visible}.fancybox-title-float-wrap{position:absolute;bottom:0;right:50%;margin-bottom:-35px;z-index:8050;text-align:center}.fancybox-title-float-wrap .child{display:inline-block;margin-right:-100%;padding:2px 20px;background:transparent;background:rgba(0,0,0,.8);-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px;text-shadow:0 1px 2px #222;color:#FFF;font-weight:700;line-height:24px;white-space:nowrap}.fancybox-title-outside-wrap{position:relative;margin-top:10px;color:#fff}.fancybox-title-inside-wrap{padding-top:10px}.fancybox-title-over-wrap{position:absolute;bottom:0;left:0;color:#fff;padding:10px;background:#000;background:rgba(0,0,0,.8)}', "#jquery-fancybox/2.1.4/../css/jquery-fancybox.css", module);
         (function(window, document, $, undefined) {
             "use strict";

@@ -3,13 +3,13 @@
  */
 
 define(function (require, exports, module) {
-    var $ = require('jquery')
-        , _ = require('underscore')
-        , observer = require('observer')
-        , UserModel = require('../model/user-model')
-        , Backbone = require('backbone');
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var observer = require('observer');
+    var UserModel = require('../model/user-model');
+    var backbone = require('backbone');
 
-    var UserView = Backbone.View.extend({
+    var UserView = backbone.View.extend({
         el: '#register-user',
         // 载入模版文件
         template: require('../tpl/user-view.tpl'),

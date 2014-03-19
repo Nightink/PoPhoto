@@ -158,7 +158,7 @@
 
 // Create a JSON object only if one does not already exist. We create the
 // methods in a closure to avoid creating global variables.
-define('#json/2.0/json2', [], function() {
+define('json/2.0/json2', [], function() {
 if (typeof JSON !== 'object') {
     JSON = {};
 }
