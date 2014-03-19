@@ -3,14 +3,16 @@
  */
 
 define(function (require, exports, module) {
-    var $ = require('jquery')
-        , _ = require('underscore')
-        , observer = require('observer')
-        , PhotoModel = require('../model/photo-model')
-        , Backbone = require('backbone')
-        , fileUpload = require('../util/fileUpload');
 
-    var PoPhotoView = Backbone.View.extend({
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var backbone = require('backbone');
+
+    var observer = require('observer');
+    var PhotoModel = require('../model/photo-model');
+    var fileUpload = require('../util/fileUpload');
+
+    var PoPhotoView = backbone.View.extend({
         el: '#new-pin',
         template: require('../tpl/pophoto-view.tpl'),   //载入模版文件
         initialize: function() {

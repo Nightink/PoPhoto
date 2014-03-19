@@ -3,7 +3,7 @@
 // author : Tim Wood
 // license : MIT
 // momentjs.com
-define("#/moment/2.0.0/moment-debug", [], function(require, exports, module) {
+define("moment/2.0.0/moment", [], function(require, exports, module) {
     (function(undefined) {
         /************************************
          Constants

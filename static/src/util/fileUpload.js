@@ -3,8 +3,8 @@
  */
 
 define(function (require, exports, modules) {
-    var $ = jQuery = require('jquery'),
-        _ = require("underscore");
+    var $ = jQuery = require('jquery');
+    var _ = require("underscore");
     require('uiwidget')($);
     //require('xdr-transport')($);
     require('transport')($);

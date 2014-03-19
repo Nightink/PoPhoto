@@ -5,19 +5,21 @@
 define(function (require, exports, module) {
 
     var $ = require('jquery');
-    var Backbone = require('backbone');
-    var handlebars = require('handlebars');
     var _ = require('underscore');
     var moment = require('moment');
+    var backbone = require('backbone');
+    var handlebars = require('handlebars');
+
     var observer = require('observer');
     var PhotoCollection = require('../model/photo-collection');
     var PhotoModel = require('../model/photo-model');
+    var timeFormat = require('../util/time-format');
 
     require("../util/cookie");
 
     var console = window.console || function() {};
 
-    var PhotoUpdateView = Backbone.View.extend({
+    var PhotoUpdateView = backbone.View.extend({
         el: 'body',
 
         events: {
@@ -39,10 +41,10 @@ define(function (require, exports, module) {
         },
 
         valueSet: function(e) {
-            var $dom = $(e.target)
-                , str = $.trim($dom.val())
-                , name = $dom.attr('name')
-                , opt = {};
+            var $dom = $(e.target);
+            var str = $.trim($dom.val());
+            var name = $dom.attr('name');
+            var opt = {};
             opt[name] = str;
             this.photoModel.set(opt);
         },
@@ -72,6 +74,8 @@ define(function (require, exports, module) {
         },
 
         render: function() {
+
+            // bootstrap modal 插件
             this.$el.modal();
         },
 
@@ -80,7 +84,7 @@ define(function (require, exports, module) {
         }
     });
 
-    var UserPhotosView = Backbone.View.extend({
+    var UserPhotosView = backbone.View.extend({
         el: 'body',
 
         template: handlebars.compile(require('../tpl/user-photos.tpl')),
@@ -112,9 +116,11 @@ define(function (require, exports, module) {
 
             var photos = this.photoCollection.toJSON();
 
+            var currDate = moment().dayOfYear();
+
             _.each(photos, function(photo) {
 
-                photo.created = moment(photo.created).format('YYYY-MM-DD HH:mm:ss');
+                photo.created = timeFormat(currDate, photo.created);
             });
 
             var content = this.template({
@@ -144,13 +150,14 @@ define(function (require, exports, module) {
                     self.render();
                 }
             });
+        },
+
+        // 注销用户视图
+        dispose: function() {
+
+            this.$el.remove();
         }
     });
-
-    //注销用户视图
-    UserPhotosView.prototype.dispose = function() {
-        this.$el.remove();
-    };
 
     module.exports = UserPhotosView;
 });

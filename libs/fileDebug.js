@@ -2,13 +2,15 @@
  * 前端js开发debug模式
  */
 
-var fs      = require('fs');
-var path    = require('path');
-var format  = require('util').format;
+var fs        = require('fs');
+var path      = require('path');
+var format    = require('util').format;
 
-var _       = require('underscore');
+var _         = require('underscore');
+var debug     = require('debug')('app:webfront');
+var debugging = require('./debugging');
 
-var seaPath = require('../conf/config.json').staticPath;
+var seaPath   = require('../conf/config.json').staticPath;
 
 /**
  * 生成sea.js config 配置文件，用于前端是否js debug 文件输出
@@ -33,6 +35,6 @@ module.exports = function(isDebug) {
 
   fs.writeFileSync(path.join(seaPath, 'sea-modules/sea-config.js'), string);
 
-  console.log('Debug: create web front sea.js config javascript file');
+  debugging(debug, 'create web front sea.js config javascript file');
 
 };

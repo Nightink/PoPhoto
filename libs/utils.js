@@ -8,7 +8,10 @@ var crypto     = require("crypto");
 
 var _          = require('underscore');
 var gm         = require('gm');
+var debug      = require('debug')('app:utils')
 var mongoose   = require('mongoose');
+
+var debugging  = require('./debugging');
 
 // 使用mongoose gridfs文件流
 var mongooseDb = mongoose.connection.db;
@@ -95,6 +98,8 @@ exports.download = function (fileId, next) {
   var id = new ObjectID(fileId);
 
   var gs = new GridStore(mongooseDb, id, "r");
+
+  debugging(debug, 'mongodb %s, %s', id, gs);
 
   // 打开当前Mongo数据存储对象
   gs.open(function (err, docFile) {

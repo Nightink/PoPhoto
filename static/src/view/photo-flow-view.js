@@ -12,6 +12,7 @@ define(function (require, exports, module) {
     var PhotoCollection = require('../model/photo-collection');
     var PhotoModel = require('../model/photo-model');
     var fileUpload = require('../util/fileUpload');
+    var timeFormat = require('../util/time-format');
 
     require('fancybox');
     require('axzoomer');
@@ -58,6 +59,15 @@ define(function (require, exports, module) {
 
             var data = this.model.toJSON();
             data.number = data.reviews.length;
+
+            var currDate = moment().dayOfYear();
+
+            data.created = timeFormat(currDate, data.created);
+
+            _.each(data.reviews, function(review) {
+
+                review.created = timeFormat(currDate, review.created);
+            });
 
             var contents = this.template(data);
 
@@ -136,23 +146,25 @@ define(function (require, exports, module) {
                     self.requestComments();
                 }
             });
+        },
+
+        requestComments: function() {
+
+            var photoModel = new PhotoModel;
+            photoModel.fetch({
+                'url': '/photo/' + this.imgId,
+                success: function(data) {
+                    var commentsView = new CommentsView({ el: '.fancybox-overlay', model: data });
+                    commentsView.render();
+                }
+            });
+        },
+
+        dispose: function() {
+
+            this.$el.remove();
         }
     });
-
-    PhotoFlowView.prototype.requestComments = function() {
-        var photoModel = new PhotoModel;
-        photoModel.fetch({
-            'url': '/photo/' + this.imgId,
-            success: function(data) {
-                var commentsView = new CommentsView({ el: '.fancybox-overlay', model: data });
-                commentsView.render();
-            }
-        });
-    };
-
-    PhotoFlowView.prototype.dispose = function() {
-        this.$el.remove();
-    };
 
     module.exports = PhotoFlowView;
 });
