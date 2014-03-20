@@ -15,7 +15,7 @@ define(function (require, exports, module) {
     var PhotoModel = require('../model/photo-model');
     var timeFormat = require('../util/time-format');
 
-    require("../util/cookie");
+    require('../util/cookie');
 
     var console = window.console || function() {};
 

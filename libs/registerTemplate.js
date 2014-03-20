@@ -2,10 +2,13 @@
  * handlebars模版注册
  */
 
-var hbs = require('hbs');
-var fs  = require('fs');
+var handlebars = require('handlebars');
+var readString = require('fs').readFileSync;
 
 // 注册top模版
-hbs.registerPartial('top', fs.readFileSync(__dirname + '/../views/tpl/top.html', 'utf8'));
-hbs.registerPartial('photo-flow', fs.readFileSync(__dirname + '/../views/tpl/photo-flow.html', 'utf8'));
-hbs.registerPartial('photoList', fs.readFileSync(__dirname + '/../views/tpl/photo-list.html', 'utf8'));
+handlebars.registerPartial('top',
+  readString(__dirname + '/../views/partial/top.html', 'utf8'));
+handlebars.registerPartial('photo-flow',
+  readString(__dirname + '/../views/partial/photo-flow.html', 'utf8'));
+handlebars.registerPartial('photoList',
+  readString(__dirname + '/../views/partial/photo-list.html', 'utf8'));

@@ -3,6 +3,7 @@
  */
 
 var path   = require('path');
+var async  = require('async');
 
 var utils  = require('../libs/utils');
 var config = require('../conf/config.json');
@@ -18,50 +19,47 @@ exports.upload = function(req, res) {
   // 原生图缓存
   var attachmentImagePath = tempImagePath + '_s';
 
-  utils.imageSize(tempImagePath, function(err, size) {
+  var size, docFileS;
 
-    if(err) {
+  async.waterfall([
+    function getImageSize(cb) {
 
-      res.json(500, 'server error image :' + err);
-      return;
+      utils.imageSize(tempImagePath, cb);
+    },
+    function genArtImage(s, cb) {
+
+      size = s;
+      utils.thumb(tempImagePath, attachmentImagePath, s.width, s.height, cb);
+    },
+    function uploadArtImage(cb) {
+
+      utils.upload(file.name, file.type, attachmentImagePath, cb);
+    },
+    function genThumbImage(result, cb) {
+
+      var thumbWidth = config.thumb.width;
+      var thumbHeight = size.height * (thumbWidth / size.width);
+
+      docFileS = result;
+      utils.thumb(tempImagePath, thumbImagePath, thumbWidth, thumbHeight, cb);
+    },
+    function uploadThumbImage(cb) {
+
+      utils.upload('s_' + file.name, file.type, thumbImagePath, cb);
     }
+  ], function(err, docFileT) {
 
-    utils.thumb(tempImagePath, attachmentImagePath, size.width, size.height, function() {
+    utils.throwError(err, 'server error image', res);
 
-      // 图片原尺寸入库
-      utils.upload(file.name, file.type, attachmentImagePath, function(err, docFileS) {
+    // 原图url
+    var data = {
+      url: docFileS._id.toString() || '',
+      // 缩略图url
+      url_small: docFileT._id.toString() || '',
+      size: size
+    };
 
-        if(err) {
-          console.log(err);
-        }
-
-        var thumbWidth = config.thumb.width;
-        var thumbHeight = size.height * (thumbWidth / size.width);
-
-        utils.thumb(tempImagePath, thumbImagePath, thumbWidth, thumbHeight, function(err) {
-
-          // 图片缩略入库
-          utils.upload('s_' + file.name, file.type, thumbImagePath, function(err, docFileT) {
-
-            if(err) {
-
-              console.log(err);
-              return res.send(500);
-            }
-
-            // 原图url
-            var data = {
-              url: docFileS._id.toString() || '',
-              // 缩略图url
-              url_small: docFileT._id.toString() || '',
-              size: size
-            };
-
-            res.json(200, data);
-          });
-        });
-      });
-    });
+    res.json(200, data);
   });
 };
 

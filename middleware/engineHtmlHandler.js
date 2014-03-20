@@ -1,9 +1,9 @@
-/**
- * html模型解析引擎,使用handlebars模版引擎
- */
 
-var fs        = require('fs');
-var hbs       = require('hbs');
+// html模型解析引擎,使用handlebars模版引擎
+
+var fs         = require('fs');
+
+var handlebars = require('handlebars');
 
 var htmlCache = {};
 
@@ -41,7 +41,7 @@ module.exports = function(path, option, fn) {
   readHtml(path, option, function(str) {
 
     // handlebars模版解析
-    var tmplFn = hbs.compile(str);
-    fn(null, tmplFn(option));
+    var tplFn = handlebars.compile(str);
+    fn(null, tplFn(option));
   });
 };

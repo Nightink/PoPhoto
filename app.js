@@ -7,7 +7,6 @@
 var fs        = require('fs');
 var path      = require('path');
 
-var hbs       = require('hbs');
 var express   = require('express');
 var commander = require('commander');
 var debug     = require('debug')('app');
@@ -32,7 +31,9 @@ process.on('uncaughtException', function(err) {
 
   } else {
 
-    console.log('Sys %s', err.stack);
+    console.log(err.message);
+    console.log(err.stack);
+    process.exit(1);
   }
 });
 
@@ -92,7 +93,7 @@ function randomPort() {
   return Math.floor(Math.random() * 1000) + 7000;
 }
 
-require('./conf/' + config.dbEnv + '.js')(app, function(err) {
+require('./libs/' + config.dbEnv)(app, function(err) {
 
   if(err) {
 
@@ -122,19 +123,19 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     app.use(express.cookieParser(config.sessionSecret));
     app.use(express.session());
 
-    // url为 *.json 进行响应头处理
-    app.use(require('./libs/requestJSONHandler'));
+    // url为 `*.json` 进行响应头处理
+    app.use(require('./middleware/requestJSONHandler'));
 
     // 设置过滤器
-    app.use(require('./libs/filterRouterHandler'));
+    app.use(require('./middleware/filterRouterHandler'));
 
     // 配置路由异常处理
-    // (路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用)
+    // 路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用
     // 必须配置视图模版路径之前，否则请求index时服务器会直接调用静态路径下index.html
     app.use(app.router);
     // app.use(require('./routes')(app));
     // 设置500服务器处理
-    app.use(require('./libs/serverErrorHandler'));
+    app.use(require('./middleware/serverErrorHandler'));
 
     // 支持字典列表形式显示静态文件目录
     app.use(express.directory(config.staticPath, { hidden: true }));
@@ -145,7 +146,7 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
     app.use(express.favicon(path.join(config.staticPath, 'favicon.ico')));
 
     // 显示请求错误路由
-    app.use(require('./libs/routerErrorHandler'));
+    app.use(require('./middleware/routerErrorHandler'));
   });
 
   // 开发环境
@@ -158,24 +159,24 @@ require('./conf/' + config.dbEnv + '.js')(app, function(err) {
 
   });
 
-  // 隐藏响应头x-powered-by 备注
+  // 隐藏响应头`x-powered-by`备注
   app.disable('x-powered-by');
   // 配置服务器端口
   app.set('port', commander.port);
-  // 设置页面渲染类型*.html
+  // 设置页面渲染类型`*.html`
   app.set('view engine', 'html');
   // 设置视图模板路径
   app.set('views', path.join(__dirname, 'views'));
   // 设置视图渲染引擎
-  app.engine('html', require('./libs/engineHtml'));
+  app.engine('html', require('./middleware/engineHtmlHandler'));
 
   // 路由调度加载
   require('./routers')(app);
-  // 进行sea-config.js 配置输出
+  // 进行`sea-config.js`配置输出
   require('./libs/fileDebug')(commander.debug);
   // 启动服务器
   startServer();
 });
 
-// exports test app
+// `exports test app`
 module.exports = app;

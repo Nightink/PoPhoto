@@ -1,7 +1,5 @@
-/**
- * NodeJS通用工具集
- * 说明：通用工具集方法注释采用doc说明，便于后续项目开发使用
- */
+// NodeJS通用工具集
+// 说明：通用工具集方法注释采用doc说明，便于后续项目开发使用
 
 var fs         = require('fs');
 var crypto     = require("crypto");
@@ -13,18 +11,14 @@ var mongoose   = require('mongoose');
 
 var debugging  = require('./debugging');
 
-// 使用mongoose gridfs文件流
+// mongoose.connection.db 必须确保已经连接mongo数据
+// 否则 mongooseDb 将为空
 var mongooseDb = mongoose.connection.db;
+// 使用mongoose gridfs文件流
 var GridStore  = mongoose.mongo.GridStore;
 var ObjectID   = mongoose.mongo.BSONPure.ObjectID;
 
-/**
- * 生成缩略图
- * @param readPath           图片读取路径
- * @param writePath          图片写入路径
- * @param width              图片生成宽度
- * @param height             图片生成高度
- */
+// 生成缩略图
 exports.thumb = function(readPath, writePath, width, height, next) {
 
   gm(readPath).resize(width, height).write(writePath, function(err) {
@@ -34,11 +28,7 @@ exports.thumb = function(readPath, writePath, width, height, next) {
 
 };
 
-/**
- * 获取图片的宽高
- * @param readPath  图片读取文件路径
- * @param next    回调函数
- */
+// 获取图片的宽高
 exports.imageSize = function(readPath, next) {
 
   gm(readPath).size(function(err, size) {
@@ -47,59 +37,12 @@ exports.imageSize = function(readPath, next) {
   });
 };
 
-/**
- * 提供统一的 '发送浏览器给JSON数据' 接口
- * @param req        请求对象
- * @param res        返回对象
- * @param data       返回数据
- */
-exports.sendJson = function(req, res, jsonData) {
-
-  // var jsonData = JSON.stringify(jsonData);
-
-  if(req.headers['user-agent']){
-    var isIE = req.headers['user-agent'].indexOf('MSIE') != -1 ? true : false;
-    if (isIE) {
-
-      res.set('Content-Type', 'text/html; charset=utf-8');
-      // res.set('Content-Type', 'application/json; charset=utf-8');
-      // var jsonData = JSON.stringify(jsonData);
-    } else {
-
-      res.set('Content-Type', 'application/json; charset=utf-8');
-    }
-
-    res.send(jsonData);
-  } else {
-
-    res.set('Content-Type', 'application/json; charset=utf-8');
-    res.send(jsonData);
-  }
-
-};
-
-// 针对backbone，restful接口风格的json
-exports.sendStatus = function(req, res, statusCode, data) {
-
-  var jsonData = JSON.stringify(data);
-
-  res.set('Content-Type', 'application/json; charset=utf-8');
-  res.send(statusCode, jsonData);
-
-};
-
-/**
- * 下载文件
- * @param fileId
- * @param next
- */
+// 下载文件
 exports.download = function (fileId, next) {
 
   var id = new ObjectID(fileId);
 
   var gs = new GridStore(mongooseDb, id, "r");
-
-  debugging(debug, 'mongodb %s, %s', id, gs);
 
   // 打开当前Mongo数据存储对象
   gs.open(function (err, docFile) {
@@ -113,7 +56,8 @@ exports.download = function (fileId, next) {
 
       gs.read(function (err, docChunk) {
 
-        next(err, docFile.contentType, new Buffer(docChunk.toString("binary"), 'binary'));
+        var buffer = new Buffer(docChunk.toString('binary'), 'binary');
+        next(err, docFile.contentType, buffer);
 
       });
 
@@ -123,21 +67,16 @@ exports.download = function (fileId, next) {
 
 };
 
-/**
- * 上传文件入库
- * @param file
- * @param next
- */
+// 上传文件入库
 exports.upload = function (fileName, fileType, filePath, next) {
 
-  var params = {
+  var gs = new GridStore(mongooseDb, fileName, 'w', {
 
-    'chunk_size': 1024 * 4,
-    'content_type': fileType,
-    'metadata': {}
-  };
+    chunk_size: 1024 * 4,
+    content_type: fileType,
+    metadata: {}
+  });
 
-  var gs = new GridStore(mongooseDb, fileName, "w", params);
   // open the file
   gs.open(function (err, gridStore) {
 
@@ -164,11 +103,7 @@ exports.upload = function (fileName, fileType, filePath, next) {
 
 };
 
-/**
- * 删除入库文件
- * @param fileId
- * @param next
- */
+// 删除入库文件
 exports.delete = function(fileId, next) {
 
   var id = ObjectID(fileId);
@@ -197,14 +132,12 @@ exports.uploadFromBuffer = function(fileName, fileType, data, next) {
     return next('空数据', null);
   }
 
-  var params = {
+  var gs = new GridStore(mongooseDb, fileName, 'w', {
 
-    'chunk_size': 1024 * 4,
-    'content_type': fileType,
-    'metadata': {}
-  };
-
-  var gs = new GridStore(mongooseDb, fileName, 'w', params);
+    chunk_size: 1024 * 4,
+    content_type: fileType,
+    metadata: {}
+  });
 
   // open the file
   gs.open(function(err, gridStore) {
@@ -222,10 +155,7 @@ exports.uploadFromBuffer = function(fileName, fileType, data, next) {
   });
 };
 
-/**
- * 数据加密
- * @param data
- */
+// 数据加密
 exports.encryptHelper = function(data) {
 
   var cipher = crypto.createCipher('aes-256-cbc', 'photo');
@@ -234,10 +164,7 @@ exports.encryptHelper = function(data) {
   return crypted;
 };
 
-/**
- * 数据解密
- * @param data
- */
+// 数据解密
 exports.decipherHelper = function(data) {
 
   var decipher = crypto.createDecipher('aes-256-cbc', 'photo');
@@ -252,29 +179,40 @@ exports.decipherHelper = function(data) {
   return dec;
 };
 
-/**
- * 格式化日志输出
- *
- * getPos 获取文件信息
- * 参考cnodejs.org http://cnodejs.org/topic/4f16442ccae1f4aa27001125
- * @param message
- */
+// 抛出错误方法
+exports.throwError = function(err, errorString, res) {
+
+  if(err) {
+
+    res.json(500, errorString);
+    throw err;
+  }
+};
+
+// 格式化日志输出
+// getPos 获取文件信息
+// 参考cnodejs.org http://cnodejs.org/topic/4f16442ccae1f4aa27001125
 var Log = exports.log = function(message) {
 
   function getPos() {
 
     var cwd = process.cwd() + '/';
     try {
-        throw new Error();
+
+      throw new Error();
     } catch(e) {
-        var pos = e.stack.split('\n')[3].split('(')[1].split(')')[0].split(':');
-        return pos[0].replace(cwd, '') + ':' + pos[1];
+
+      // 获取调用Log函数文件位置
+      var getPosition = e.stack.split('\n')[3];
+      var pos = getPosition.split('(')[1].split(')')[0].split(':');
+      return pos[0].replace(cwd, '') + ':' + pos[1];
     }
   }
 
   if(!_.isObject(message)) {
 
-    console.log('Debug: [info]\n  filename: %s\n  message: %s', getPos(), message);
+    console.log('Debug: [info]\n  filename: %s\n  message: %s',
+      getPos(), message);
   } else {
 
     console.log('Debug: [info]\n  filename: %s\n  message:', getPos());

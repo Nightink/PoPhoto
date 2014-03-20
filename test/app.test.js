@@ -6,13 +6,14 @@ var app = require('express')();
 var should = require('should');
 
 describe('app', function() {
-  describe('.engine(\'html\', fn) libs/engineHtml', function() {
+  describe('.engine(\'html\', fn) middleware/engineHtmlHandler', function() {
 
     var tplPath = path.join(__dirname, '../views/test.html');
 
     before(function() {
 
-      fs.writeFileSync(tplPath, '<p>repo name is {{repo.name}}</p> <p>repo url is {{repo.url}}</p>');
+      fs.writeFileSync(tplPath,
+        '<p>repo name is {{repo.name}}</p> <p>repo url is {{repo.url}}</p>');
     });
 
     after(function() {
@@ -24,18 +25,23 @@ describe('app', function() {
 
       app.set('view engine', 'html');
       app.set('views', path.join(__dirname, '../views'));
-      app.engine('html', require(path.join(__dirname, '../libs/engineHtml')));
+      app.engine('html',
+        require(path.join(__dirname, '../middleware/engineHtmlHandler')));
 
       app.locals.repo = {
         name: 'node-Pophoto',
         url: 'https://github.com/Nightink/node-Pophoto'
       };
 
-      var _str = '<p>repo name is node-Pophoto</p> <p>repo url is https://github.com/Nightink/node-Pophoto</p>';
+      var _str = '<p>repo name is node-Pophoto</p> '
+        + '<p>repo url is https://github.com/Nightink/node-Pophoto</p>';
 
       app.render('test.html', function(err, str) {
 
-        if(err) return done(err);
+        if(err) {
+          return done(err);
+        }
+
         str.should.equal(_str);
         done();
       });

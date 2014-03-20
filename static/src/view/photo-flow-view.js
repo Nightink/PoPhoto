@@ -77,9 +77,9 @@ define(function (require, exports, module) {
                 , remarkLayout = windowHeight - 60
                 , $remarkLayout = this.$el.find('#remarkLayout');
 
-            $remarkLayout.css("height", remarkLayout+"px");
+            $remarkLayout.css('height', remarkLayout+'px');
 
-            $remarkLayout.css({ "top": "20px", "right": "20px" });
+            $remarkLayout.css({ 'top': '20px', 'right': '20px' });
         }
     });
 
@@ -107,7 +107,7 @@ define(function (require, exports, module) {
         render: function() {
             var content = this.template({ 'items': this.photoCollection.toJSON() });
             this.$el.append(content);
-            this.$el.attr("ontimeupdate", Date.now());
+            this.$el.attr('ontimeupdate', Date.now());
             observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
         },
 
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
             var data = model.toJSON();
             var content = this.template({ 'items': data });
             this.$el.prepend(content);
-            this.$el.attr("ontimeupdate", Date.now());
+            this.$el.attr('ontimeupdate', Date.now());
             observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
         },
 
@@ -125,8 +125,8 @@ define(function (require, exports, module) {
             $('.fancybox').fancybox({
                 margin     : [20,300,20,20],
                 mouseWheel : false,
-                swf : {FlashVars:"flv=/videos/2013.flv"},
-                type       : "image",
+                swf : {FlashVars:'flv=/videos/2013.flv'},
+                type       : 'image',
                 helpers : {
                     title: {
                         type: 'inside'
@@ -134,8 +134,8 @@ define(function (require, exports, module) {
                 },
                 preload:1,
                 afterShow:function() {
-                    if($("#remarkLayout").size()>0) {
-                        $("#remarkLayout").remove();
+                    if($('#remarkLayout').size()>0) {
+                        $('#remarkLayout').remove();
                     }
                     self.imgId = $(this.element).find('img').attr('imgid');
                     $('.fancybox-image').axzoomer({

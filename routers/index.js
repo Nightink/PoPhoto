@@ -42,16 +42,24 @@ module.exports = function(app) {
       _.each(docs, function(doc){
 
         var reviews = doc.reviews;
-        doc._doc.reviews = ((reviews && reviews instanceof Array) ? reviews.length : 0);
+        doc._doc.reviews = (Array.isArray(reviews) ? reviews.length : 0);
         backDoc.push(doc._doc);
       });
 
+      var indexRenderObj = {
+        title: 'PoPhoto',
+        time: Date.now(),
+        items: backDoc
+      };
+
       if(user && user.username) {
-        res.render('index', { title: 'PoPhoto', time: Date.now(), user: user, items: backDoc });
-      } else {
-        res.render('index', { title: 'PoPhoto', time: Date.now(), items: backDoc });
+
+        indexRenderObj.user = user;
       }
+
+      res.render('index', indexRenderObj);
     });
+
   });
 
   require('./attachment')(app);

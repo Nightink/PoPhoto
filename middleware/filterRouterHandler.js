@@ -15,10 +15,7 @@ module.exports = function(req, res, next) {
 
   userController.userCorrect(req, res, function(result) {
 
-    if(result) {
-
-      return next();
-    } else {
+    if(!result) {
 
       // 遍历needFilter，返回第一个通过真值检测的元素值
       var verify = _.find(config.needFilter, function(nf) {
@@ -28,8 +25,10 @@ module.exports = function(req, res, next) {
 
       // 无用户权限，则跳转到首页
       return verify ?
-              res.redirect('/') :
-              next();
+        res.redirect('/') :
+        next();
     }
+
+    return next();
   });
 };
