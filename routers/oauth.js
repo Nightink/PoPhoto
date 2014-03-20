@@ -64,7 +64,7 @@ module.exports = function(app) {
         res.cookie('_id', utils.encryptHelper(result._id), { path:'/', maxAge: config.cookieMaxage });
         res.cookie('username', result.username, { path:'/', maxAge: config.cookieMaxage });
 
-        utils.sendJson(req, res, result);   //登陆成功，返回用户信息
+        res.json(200, result);   //登陆成功，返回用户信息
       });
 
     });
