@@ -30,8 +30,8 @@ define(function (require, exports, module) {
                 url: '/upload',
                 barProCss: {
                     left: 290,
-                    position: "absolute",
-                    "z-index": 111111
+                    position: 'absolute',
+                    'z-index': 111111
                 },
                 callback: function() {
                     observer.trigger('upload:success');

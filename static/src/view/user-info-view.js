@@ -62,7 +62,7 @@ define(function(require, exports, module) {
 
         // 设置性别
         genderSet: function(e) {
-            var gender = this.$("input[name=gender]:checked").val();
+            var gender = this.$('input[name=gender]:checked').val();
             this.userModel.set({gender: gender});
         },
 
@@ -82,7 +82,7 @@ define(function(require, exports, module) {
             var contents = this.template(data);
             this.$el.html(contents);
             // 渲染站点类型
-            this.$("input[name=gender][value='"+ data.gender +"']").attr("checked", true);
+            this.$('input[name=gender][value="' + data.gender +'"]').attr('checked', true);
         }
     });
 
