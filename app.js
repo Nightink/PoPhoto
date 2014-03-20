@@ -31,7 +31,8 @@ process.on('uncaughtException', function(err) {
 
   } else {
 
-    console.log('Sys %s', err.stack);
+    console.log(err.message);
+    console.log(err.stack);
     process.exit(1);
   }
 });
