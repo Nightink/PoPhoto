@@ -93,7 +93,7 @@ exports.getPhotoById = function(req, res) {
 
     if(err) {
 
-      return utils.sendStatus(req, res, 500, '获取图片信息错误');
+      return res.json(500, '获取图片信息错误');
     }
 
     res.json(doc);
@@ -127,15 +127,14 @@ exports.addCommentsPhoto = function(req, res) {
   Photo.update(params, update, function(err, num){
 
     if(err) {
-      return utils.sendStatus(req, res, 500, '添加图片评论错误');
+      return res.json(500, '添加图片评论错误');
     }
 
     if(num === 0) {
-      return utils.sendStatus(req, res, 400, '图片信息错误');
+      return res.json(400, '图片信息错误');
     }
-    // utils.sendStatus(req, res, 200, '添加评论成功');
-    return res.json(200, '添加评论成功');
 
+    return res.json(200, '添加评论成功');
   });
 };
 
@@ -147,10 +146,12 @@ exports.poPhoto  = function(req, res) {
     , title = reqPost.title;
 
   if(!author) {
-    return utils.sendJson(req, res, '请重新登陆');
+
+    return res.json(200, '请重新登陆');
   }
 
   if(_.isEmpty(reqPost.keywords)) {
+
     return res.send(400, '关键字不能为空');
   }
 
@@ -183,7 +184,7 @@ exports.updatePhoto = function(req, res) {
   Photo.findOne({_id: reqBody._id }, function(err, doc) {
 
     if(err) {
-      return utils.sendStatus(req, res, 500, '服务器查询失败');
+      return res.json(500, '服务器查询失败');
     }
 
     doc.title       = reqBody.title;
@@ -228,10 +229,10 @@ exports.deletePhoto = function(req, res) {
   Photo.remove(params, function(err) {
 
     if(err) {
-      return utils.sendStatus(req, res, 500, err);
+      return res.json(500, err);
     }
 
-    utils.sendStatus(req, res, 200, '删除成功');
+    res.json(200, '删除成功');
   });
 };
 

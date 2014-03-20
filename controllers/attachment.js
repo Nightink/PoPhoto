@@ -20,20 +20,14 @@ exports.upload = function(req, res) {
 
   utils.imageSize(tempImagePath, function(err, size) {
 
-    if(err) {
-
-      res.json(500, 'server error image :' + err);
-      return;
-    }
+    utils.throwError(err, 'server error image', res);
 
     utils.thumb(tempImagePath, attachmentImagePath, size.width, size.height, function() {
 
       // 图片原尺寸入库
-      utils.upload(file.name, file.type, attachmentImagePath, function(err, docFileS) {
+      utils.upload(file.name, file.type, attachmentImagePath, function(er, docFileS) {
 
-        if(err) {
-          console.log(err);
-        }
+        utils.throwError(er, 'server error image', res);
 
         var thumbWidth = config.thumb.width;
         var thumbHeight = size.height * (thumbWidth / size.width);
@@ -41,13 +35,9 @@ exports.upload = function(req, res) {
         utils.thumb(tempImagePath, thumbImagePath, thumbWidth, thumbHeight, function(err) {
 
           // 图片缩略入库
-          utils.upload('s_' + file.name, file.type, thumbImagePath, function(err, docFileT) {
+          utils.upload('s_' + file.name, file.type, thumbImagePath, function(e, docFileT) {
 
-            if(err) {
-
-              console.log(err);
-              return res.send(500);
-            }
+            utils.throwError(e, 'server error image', res);
 
             // 原图url
             var data = {

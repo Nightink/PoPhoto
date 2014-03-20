@@ -12,7 +12,7 @@ test-unit:
 		$(MOCHA_OPTS)
 
 debug:
-	@DEBUG=app,app:* ./app.js -d -p 3000
+	@DEBUG=app,app:* node app.js -d -p 3000
 
 run:
 	@node app.js

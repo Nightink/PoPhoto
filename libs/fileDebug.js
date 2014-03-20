@@ -18,7 +18,8 @@ var seaPath   = require('../conf/config.json').staticPath;
  */
 module.exports = function(isDebug) {
 
-  var json = JSON.parse(fs.readFileSync(path.join(seaPath, 'sea-modules/config.json')));
+  var baseSeaPath = path.join(seaPath, 'sea-modules/sea-config');
+  var json = JSON.parse(fs.readFileSync(baseSeaPath + '.json'));
 
   if(isDebug) {
 
@@ -33,7 +34,7 @@ module.exports = function(isDebug) {
   // 格式化输出
   var string = format('seajs.config(%s);', JSON.stringify(json, null, 4));
 
-  fs.writeFileSync(path.join(seaPath, 'sea-modules/sea-config.js'), string);
+  fs.writeFileSync((baseSeaPath + '.js'), string);
 
   debugging(debug, 'create web front sea.js config javascript file');
 

@@ -1,5 +1,5 @@
 {
-  "dbEnv": "mongo_config",
+  "dbEnv": "mongoConnect",
   "dbAdd": "mongodb://node:node@127.0.0.1:27017/Pophoto",
   "sessionSecret": "pophoto",
   "session_key": "pophoto-strong",
@@ -9,5 +9,5 @@
   "thumb": {
     "width": 200
   },
-  "staticPath": "/Users/Nightink/code/gitwork/web-static"
+  "staticPath": "static"
 }

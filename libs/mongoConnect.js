@@ -1,13 +1,12 @@
-/**
- * 数据库配置文件
- */
+
+// 数据库配置文件
 
 var _         = require('underscore');
 var debug     = require('debug')('app:config');
 var mongoose  = require('mongoose');
 
-var config    = require('./config');
-var debugging = require('../libs/debugging');
+var config    = require('../conf/config');
+var debugging = require('./debugging');
 
 module.exports = function(app, next) {      //连接数据库操作
 

@@ -1,6 +1,5 @@
-/**
- * html模型解析引擎,使用handlebars模版引擎
- */
+
+// html模型解析引擎,使用handlebars模版引擎
 
 var fs        = require('fs');
 var hbs       = require('hbs');

@@ -5,5 +5,5 @@
 module.exports = function(err, req, res, next) {
 
   console.log(err.stack);
-  res.send(500, err.message);
+  res.end(500, err.message);
 };
