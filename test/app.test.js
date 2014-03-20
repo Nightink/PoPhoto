@@ -38,7 +38,10 @@ describe('app', function() {
 
       app.render('test.html', function(err, str) {
 
-        if(err) return done(err);
+        if(err) {
+          return done(err);
+        }
+
         str.should.equal(_str);
         done();
       });

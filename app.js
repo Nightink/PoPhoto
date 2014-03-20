@@ -7,7 +7,6 @@
 var fs        = require('fs');
 var path      = require('path');
 
-var hbs       = require('hbs');
 var express   = require('express');
 var commander = require('commander');
 var debug     = require('debug')('app');
@@ -33,6 +32,7 @@ process.on('uncaughtException', function(err) {
   } else {
 
     console.log('Sys %s', err.stack);
+    process.exit(1);
   }
 });
 
