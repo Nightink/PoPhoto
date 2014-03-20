@@ -11,8 +11,10 @@ var mongoose   = require('mongoose');
 
 var debugging  = require('./debugging');
 
-// 使用mongoose gridfs文件流
+// mongoose.connection.db 必须确保已经连接mongo数据
+// 否则 mongooseDb 将为空
 var mongooseDb = mongoose.connection.db;
+// 使用mongoose gridfs文件流
 var GridStore  = mongoose.mongo.GridStore;
 var ObjectID   = mongoose.mongo.BSONPure.ObjectID;
 
@@ -54,7 +56,8 @@ exports.download = function (fileId, next) {
 
       gs.read(function (err, docChunk) {
 
-        next(err, docFile.contentType, new Buffer(docChunk.toString("binary"), 'binary'));
+        var buffer = new Buffer(docChunk.toString('binary'), 'binary');
+        next(err, docFile.contentType, buffer);
 
       });
 
@@ -67,14 +70,13 @@ exports.download = function (fileId, next) {
 // 上传文件入库
 exports.upload = function (fileName, fileType, filePath, next) {
 
-  var params = {
+  var gs = new GridStore(mongooseDb, fileName, 'w', {
 
-    'chunk_size': 1024 * 4,
-    'content_type': fileType,
-    'metadata': {}
-  };
+    chunk_size: 1024 * 4,
+    content_type: fileType,
+    metadata: {}
+  });
 
-  var gs = new GridStore(mongooseDb, fileName, "w", params);
   // open the file
   gs.open(function (err, gridStore) {
 
@@ -130,14 +132,12 @@ exports.uploadFromBuffer = function(fileName, fileType, data, next) {
     return next('空数据', null);
   }
 
-  var params = {
+  var gs = new GridStore(mongooseDb, fileName, 'w', {
 
-    'chunk_size': 1024 * 4,
-    'content_type': fileType,
-    'metadata': {}
-  };
-
-  var gs = new GridStore(mongooseDb, fileName, 'w', params);
+    chunk_size: 1024 * 4,
+    content_type: fileType,
+    metadata: {}
+  });
 
   // open the file
   gs.open(function(err, gridStore) {
@@ -198,16 +198,21 @@ var Log = exports.log = function(message) {
 
     var cwd = process.cwd() + '/';
     try {
-        throw new Error();
+
+      throw new Error();
     } catch(e) {
-        var pos = e.stack.split('\n')[3].split('(')[1].split(')')[0].split(':');
-        return pos[0].replace(cwd, '') + ':' + pos[1];
+
+      // 获取调用Log函数文件位置
+      var getPosition = e.stack.split('\n')[3];
+      var pos = getPosition.split('(')[1].split(')')[0].split(':');
+      return pos[0].replace(cwd, '') + ':' + pos[1];
     }
   }
 
   if(!_.isObject(message)) {
 
-    console.log('Debug: [info]\n  filename: %s\n  message: %s', getPos(), message);
+    console.log('Debug: [info]\n  filename: %s\n  message: %s',
+      getPos(), message);
   } else {
 
     console.log('Debug: [info]\n  filename: %s\n  message:', getPos());
