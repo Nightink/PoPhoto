@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "./node_modules/.bin/mocha --reporter spec --check-leaks"
+    "test": "./node_modules/.bin/mocha --require should --reporter spec --check-leaks"
   },
   "dependencies": {
     "gm": "~1.9",
