@@ -36,7 +36,7 @@ function readHtml(path, option, fn) {
   });
 }
 
-module.exports = function(path, option, fn) {
+module.exports = function engineHtmlHandler(path, option, fn) {
 
   readHtml(path, option, function(str) {
 
