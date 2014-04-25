@@ -8,8 +8,7 @@
 
 seajs.use([
   'jquery',
-  './src/view/app-view',
-  'json'
+  './src/view/app-view'
 ], function($, AppView) {
 
   var appView = new AppView();
@@ -27,10 +26,11 @@ seajs.use([
         , winh = $(window).height();
 
       (st > 0) ? $backToTopEle.show(): $backToTopEle.hide();
-      //IE6下的定位
+      // IE6下的定位
       if (!window.XMLHttpRequest) {
         $backToTopEle.css("top", st + winh - 166);
       }
     });
   })();
+
 });

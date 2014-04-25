@@ -7,14 +7,14 @@
 
 define(function (require, exports, module) {
 
-    var backbone = require('backbone');
-    var PhotoModel = require('./photo-model');
+  var backbone = require('backbone');
+  var PhotoModel = require('./photo-model');
 
-    var PhotoCollection = backbone.Collection.extend({
-        model : PhotoModel,   //指定控制器的数据模型
+  var PhotoCollection = backbone.Collection.extend({
+    model : PhotoModel,   //指定控制器的数据模型
 
-        initialize : function (models, options) {}
-    });
+    initialize : function (models, options) {}
+  });
 
-    module.exports = PhotoCollection;
+  module.exports = PhotoCollection;
 });

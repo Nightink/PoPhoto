@@ -1,4 +1,4 @@
-
+/*
 var http = require('http');
 
 var curl = http.get;
@@ -6,15 +6,6 @@ var curl = http.get;
 describe('app', function() {
   // 测试api接口是否正常运行
   describe('.api statusCode test', function() {
-
-    before(function(done) {
-
-      require('..');
-      setTimeout(function() {
-
-        done();
-      }, 500);
-    })
 
     // 运行测试用例 统一接口方法
     function runTest(summyString, contentType, url) {
@@ -50,3 +41,4 @@ describe('app', function() {
 
   });
 });
+*/

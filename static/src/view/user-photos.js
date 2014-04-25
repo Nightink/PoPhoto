@@ -4,160 +4,160 @@
 
 define(function (require, exports, module) {
 
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var moment = require('moment');
-    var backbone = require('backbone');
-    var handlebars = require('handlebars');
+  var $ = require('jquery');
+  var _ = require('underscore');
+  var moment = require('moment');
+  var backbone = require('backbone');
+  var handlebars = require('handlebars');
 
-    var observer = require('observer');
-    var PhotoCollection = require('../model/photo-collection');
-    var PhotoModel = require('../model/photo-model');
-    var timeFormat = require('../util/time-format');
+  var observer = require('observer');
+  var PhotoCollection = require('../model/photo-collection');
+  var PhotoModel = require('../model/photo-model');
+  var timeFormat = require('../util/time-format');
 
-    require('../util/cookie');
+  require("../util/cookie");
 
-    var console = window.console || function() {};
+  var console = window.console || function() {};
 
-    var PhotoUpdateView = backbone.View.extend({
-        el: 'body',
+  var PhotoUpdateView = backbone.View.extend({
+    el: 'body',
 
-        events: {
-            'blur #title': 'valueSet',
-            'blur #description': 'valueSet',
-            'blur #keywords': 'valueSet',
-            'click .sure-update': 'sureUpdate',
-            'click .close-cancel': 'closeCancel'
+    events: {
+      'blur #title': 'valueSet',
+      'blur #description': 'valueSet',
+      'blur #keywords': 'valueSet',
+      'click .sure-update': 'sureUpdate',
+      'click .close-cancel': 'closeCancel'
+    },
+
+    template: handlebars.compile(require('../tpl/photo-update.tpl')),
+
+    initialize: function(option) {
+      this.photoModel = option.model;
+      var data =  option.model.toJSON();
+      data.keywords = data.keywords.join(' ');
+
+      this.$el.html(this.template(data));
+    },
+
+    valueSet: function(e) {
+      var $dom = $(e.target);
+      var str = $.trim($dom.val());
+      var name = $dom.attr('name');
+      var opt = {};
+      opt[name] = str;
+      this.photoModel.set(opt);
+    },
+
+    sureUpdate: function(e) {
+      var self = this;
+
+      self.photoModel.save(null, {
+        url: '/photo-update',
+        // success事件监听回调函数
+        success: function(model, str) {
+
+          self.$el.modal('hide');
+          self.photoModel = new PhotoModel;
+          // observer.trigger('po-photo:success', model);
         },
+        error: function(model, str) {
 
-        template: handlebars.compile(require('../tpl/photo-update.tpl')),
-
-        initialize: function(option) {
-            this.photoModel = option.model;
-            var data =  option.model.toJSON();
-            data.keywords = data.keywords.join(' ');
-
-            this.$el.html(this.template(data));
-        },
-
-        valueSet: function(e) {
-            var $dom = $(e.target);
-            var str = $.trim($dom.val());
-            var name = $dom.attr('name');
-            var opt = {};
-            opt[name] = str;
-            this.photoModel.set(opt);
-        },
-
-        sureUpdate: function(e) {
-            var self = this;
-
-            self.photoModel.save(null, {
-                url: '/photo-update',
-                // success事件监听回调函数
-                success: function(model, str) {
-
-                    self.$el.modal('hide');
-                    self.photoModel = new PhotoModel;
-                    // observer.trigger('po-photo:success', model);
-                },
-                error: function(model, str) {
-
-                    alert(str);
-                    console.log(model, str);
-                }
-            });
-        },
-
-        closeCancel: function(e) {
-            this.$el.modal('hide');
-        },
-
-        render: function() {
-
-            // bootstrap modal 插件
-            this.$el.modal();
-        },
-
-        dispose: function() {
-            this.$el.remove();
+          alert(str);
+          console.log(model, str);
         }
-    });
+      });
+    },
 
-    var UserPhotosView = backbone.View.extend({
-        el: 'body',
+    closeCancel: function(e) {
+      this.$el.modal('hide');
+    },
 
-        template: handlebars.compile(require('../tpl/user-photos.tpl')),
+    render: function() {
 
-        events: {
-            'click .edit': 'editPhoto',
-            'click .delete': 'deletePhoto'
-        },
+      // bootstrap modal 插件
+      this.$el.modal();
+    },
 
-        initialize: function(option) {
-            this.photoCollection = new PhotoCollection(null, { view: this });
-            this.photoCollection.on('sync', this.render, this);
-            observer.on('add', this.render, this);
+    dispose: function() {
+      this.$el.remove();
+    }
+  });
 
-            this.getPhotos();
-        },
+  var UserPhotosView = backbone.View.extend({
+    el: 'body',
 
-        getPhotos: function() {
-            var opt = {};
-            opt.author = $.cookie('username');
+    template: handlebars.compile(require('../tpl/user-photos.tpl')),
 
-            this.photoCollection.fetch({
-                url: '/photo',
-                data: opt
-            });
-        },
+    events: {
+      'click .edit': 'editPhoto',
+      'click .delete': 'deletePhoto'
+    },
 
-        render: function() {
+    initialize: function(option) {
+      this.photoCollection = new PhotoCollection(null, { view: this });
+      this.photoCollection.on('sync', this.render, this);
+      observer.on('add', this.render, this);
 
-            var photos = this.photoCollection.toJSON();
+      this.getPhotos();
+    },
 
-            var currDate = moment().dayOfYear();
+    getPhotos: function() {
+      var opt = {};
+      opt.author = $.cookie('username');
 
-            _.each(photos, function(photo) {
+      this.photoCollection.fetch({
+        url: '/photo',
+        data: opt
+      });
+    },
 
-                photo.created = timeFormat(currDate, photo.created);
-            });
+    render: function() {
 
-            var content = this.template({
-                photos: photos
-            });
+      var photos = this.photoCollection.toJSON();
 
-            this.$el.html(content);
-        },
+      var currDate = moment().dayOfYear();
 
-        editPhoto: function(e) {
-            var index = $(e.target).closest('.module-con').index();
-            var model = this.photoCollection.at(index);
-            observer.trigger('model:edit', model);
-            var photoUpdateView = new PhotoUpdateView({ el: '#photo-update', model: model });
-            photoUpdateView.render();
-        },
+      _.each(photos, function(photo) {
 
-        deletePhoto: function(e) {
-            var index = $(e.target).closest('.module-con').index();
-            var model = this.photoCollection.at(index);
-            var self = this;
-            model.destroy({
-                url: '/photo-delete?_id=' + model.get('_id'),
-                success: function(model, str) {
-                    alert(str);
-                    self.photoCollection.remove(model);
-                    self.render();
-                }
-            });
-        },
+        photo.created = timeFormat(currDate, photo.created);
+      });
 
-        // 注销用户视图
-        dispose: function() {
+      var content = this.template({
+        photos: photos
+      });
 
-            this.$el.remove();
+      this.$el.html(content);
+    },
+
+    editPhoto: function(e) {
+      var index = $(e.target).closest('.module-con').index();
+      var model = this.photoCollection.at(index);
+      observer.trigger('model:edit', model);
+      var photoUpdateView = new PhotoUpdateView({ el: '#photo-update', model: model });
+      photoUpdateView.render();
+    },
+
+    deletePhoto: function(e) {
+      var index = $(e.target).closest('.module-con').index();
+      var model = this.photoCollection.at(index);
+      var self = this;
+      model.destroy({
+        url: '/photo-delete?_id=' + model.get('_id'),
+        success: function(model, str) {
+          alert(str);
+          self.photoCollection.remove(model);
+          self.render();
         }
-    });
+      });
+    },
 
-    module.exports = UserPhotosView;
+    // 注销用户视图
+    dispose: function() {
+
+      this.$el.remove();
+    }
+  });
+
+  module.exports = UserPhotosView;
 });
