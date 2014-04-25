@@ -31,19 +31,11 @@ define(function (require, exports, module) {
             var str = $.trim($dom.val());
             var name = $dom.attr('name');
 
-            this[name + 'Set'](str);
-        },
-        emailSet: function(str) {
-            this.userModel.set({ email: str }, {validate: true});
-        },
-        passwordSet: function(str) {
-            this.userModel.set({ password: str }, {validate: true});
-        },
-        cpasswordSet: function(str) {
-            this.userModel.set({ cpassword: str }, {validate: true});
-        },
-        usernameSet: function(str) {
-            this.userModel.set({ username: str }, {validate: true});
+            var obj = {};
+            obj[name] = str;
+            this.userModel.set(obj, {
+                validate: true
+            });
         },
         //验证信息DOM显示
         tipMsg: function(data) {

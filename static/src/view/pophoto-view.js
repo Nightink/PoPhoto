@@ -48,11 +48,15 @@ define(function (require, exports, module) {
         },
 
         valueSet: function(e) {
-            var $dom = $(e.target)
-                , str = $.trim($dom.val())
-                , name = $dom.attr('name');
+            var $dom = $(e.target);
+            var str = $.trim($dom.val());
+            var name = $dom.attr('name');
 
-            this[name + 'Set'](str);
+            var obj = {};
+            obj[name] = str;
+            this.photoModel.set(obj, {
+                validate: true
+            });
         },
 
         imgInfo: function() {
@@ -65,7 +69,6 @@ define(function (require, exports, module) {
                 title: $linkImg.html()
             };
 
-            console.log(data);
             this.photoModel.set(data);
         },
 
@@ -75,14 +78,6 @@ define(function (require, exports, module) {
 
         keywordsTips: function(e) {
             $('#keywords-tips').html('多个标签用分号/逗号/空格隔开').attr('class', 'tips');
-        },
-
-        descriptionSet: function(str) {
-            this.photoModel.set({ description: str }, {validate: true});
-        },
-
-        keywordsSet: function(str) {
-            this.photoModel.set({ keywords: str }, {validate: true});
         },
 
         tipMsg: function(data) {                //验证信息DOM显示

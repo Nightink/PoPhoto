@@ -8,7 +8,7 @@ var config         = require('../conf/config.json');
 var userController = require('../controllers/user');
 
 // app.use中间件 function(req, res, next) {}
-module.exports = function(req, res, next) {
+module.exports = function filterRouterHandler(req, res, next) {
 
   // 获取当前url
   var path = req.path;

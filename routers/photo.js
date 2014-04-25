@@ -18,6 +18,6 @@ module.exports = function(app) {
   app.put('/photo-update', photoControllers.updatePhoto);
   app.put('/photo', photoControllers.addCommentsPhoto);
   // 用户删除图片路由注册
-  app.delete('/photo-delete', photoControllers.deletePhoto);
+  app.del('/photo-delete', photoControllers.deletePhoto);
 
 };

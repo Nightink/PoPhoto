@@ -3,7 +3,6 @@ var fs = require('fs');
 var path = require('path');
 
 var app = require('express')();
-var should = require('should');
 
 describe('app', function() {
   describe('.engine(\'html\', fn) middleware/engineHtmlHandler', function() {
