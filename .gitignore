@@ -19,3 +19,4 @@ results
 node_modules
 log.txt
 sea-config.js
+config.json

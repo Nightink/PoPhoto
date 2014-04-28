@@ -189,6 +189,43 @@ exports.throwError = function(err, errorString, res) {
   }
 };
 
+// 文件复制操作
+// basePath 文件原路径
+// srcPath 拷贝路径
+// fn 可选回调函数
+exports.copyFile = function(basePath, srcPath, fn) {
+
+  fn = fn || function(err) {
+
+    if(err) {
+
+      console.error(err);
+    } else {
+
+      console.log('copy file success');
+    }
+
+  }
+
+  fs.readFile(basePath, function(err, data) {
+
+    if(err) {
+
+      return fn('read file: ' + err.toString());
+    }
+
+    fs.writeFile(srcPath, data, function(er) {
+
+      if(er) {
+
+        return fn('write file: ' + err.toString());
+      }
+
+      fn();
+    });
+  })
+};
+
 // 格式化日志输出
 // getPos 获取文件信息
 // 参考cnodejs.org http://cnodejs.org/topic/4f16442ccae1f4aa27001125
