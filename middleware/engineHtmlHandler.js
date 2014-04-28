@@ -1,11 +1,11 @@
 
-// html模型解析引擎,使用handlebars模版引擎
+// tpl类型解析引擎,使用handlebars模版引擎
 
 var fs         = require('fs');
 
 var handlebars = require('handlebars');
 
-var htmlCache = {};
+var htmlCache  = {};
 
 // 读取模版文件
 function readHtml(path, option, fn) {

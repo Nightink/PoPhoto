@@ -166,11 +166,11 @@ require('./libs/' + config.dbEnv)(app, function(err) {
   // 配置服务器端口
   app.set('port', commander.port);
   // 设置页面渲染类型`*.html`
-  app.set('view engine', 'html');
+  app.set('view engine', 'tpl');
   // 设置视图模板路径
   app.set('views', path.join(__dirname, 'views'));
   // 设置视图渲染引擎
-  app.engine('html', require('./middleware/engineHtmlHandler'));
+  app.engine('tpl', require('./middleware/engineHtmlHandler'));
 
   // 路由调度加载
   require('./routers')(app);
