@@ -193,9 +193,9 @@ exports.throwError = function(err, errorString, res) {
 // basePath 文件原路径
 // srcPath 拷贝路径
 // fn 可选回调函数
-exports.copyFile = function(basePath, srcPath, fn) {
+exports.copyFile = function(basePath, srcPath, next) {
 
-  fn = fn || function(err) {
+  next = next || function(err) {
 
     if(err) {
 
@@ -211,17 +211,17 @@ exports.copyFile = function(basePath, srcPath, fn) {
 
     if(err) {
 
-      return fn('read file: ' + err.toString());
+      return next('read file: ' + err.toString());
     }
 
     fs.writeFile(srcPath, data, function(er) {
 
       if(er) {
 
-        return fn('write file: ' + err.toString());
+        return next('write file: ' + err.toString());
       }
 
-      fn();
+      next();
     });
   })
 };

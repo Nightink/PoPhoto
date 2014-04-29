@@ -11,13 +11,12 @@ var express   = require('express');
 var commander = require('commander');
 var debug     = require('debug')('app');
 
-var app       = express();
-// require 会进行缓存
-// 针对require 配置，将会导致配置被重写覆盖
-var config    = require('./conf/config.json');
-var debugging = require('./libs/debugging');
-
-debugging(debug, 'app start run');
+commander
+  .version(require('./package.json').version)
+  .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
+  .option('-p, --port [port]', '设置服务器端口', Number, 3000)
+  .option('-s, --static [path]', '设置服务器静态文件路径', String)
+  .parse(process.argv);
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
@@ -43,12 +42,13 @@ process.on('SIGINT', function() {
   process.exit();
 });
 
-commander
-  .version(require('./package.json').version)
-  .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
-  .option('-p, --port [port]', '设置服务器端口', Number, 3000)
-  .option('-s, --static [path]', '设置服务器静态文件路径', String)
-  .parse(process.argv);
+var app       = express();
+// require 会进行缓存
+// 针对require 配置，将会导致配置被重写覆盖
+var config    = require('./conf/config.json');
+var debugging = require('./libs/debugging');
+
+debugging(debug, 'app start run');
 
 var tempPath = path.join(__dirname, 'temp');
 // 判断文件夹路径是否存在
