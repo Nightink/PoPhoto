@@ -168,7 +168,7 @@ exports.encryptHelper = function(data) {
 exports.decipherHelper = function(data) {
 
   var decipher = crypto.createDecipher('aes-256-cbc', 'photo');
-  var dec = decipher.update(data,'hex', 'utf8');
+  var dec = decipher.update(data, 'hex', 'utf8');
 
   try {
     dec += decipher.final('utf8');

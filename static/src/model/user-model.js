@@ -62,14 +62,24 @@ define(function (require, exports, module) {
       var flag = false;
 
       for(var name in attrs) {
-        if(name === 'id') continue;
+
+        if(name === this.idAttribute) {
+          continue;
+        }
 
         tipData.tagName = name;
 
         var val = attrs[name];
 
-        tipData = this[name + 'Verify'](val, tipData);
-        observer.trigger('verify:user-msg', tipData);
+        try {
+
+          tipData = this[name + 'Verify'](val, tipData);
+          observer.trigger('verify:user-msg', tipData);
+        } catch(e) {
+
+          return false;
+        }
+
 
         if(!tipData.flag) flag = true;
       }
