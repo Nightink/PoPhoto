@@ -41,7 +41,7 @@ exports.addUser = function(req, res) {
 
   _.each(reqBody, function(val, key) {
 
-    if( (val == null) || (val == '') ) {
+    if( (val === null) || (val === '') ) {
 
       delete reqBody[key];
     }
@@ -54,7 +54,7 @@ exports.addUser = function(req, res) {
   user.save(function(err) {
     if(err) return res.json(400, '用户注册失败');
 
-    res.json(200, "添加用户成功");
+    res.json(200, '添加用户成功');
   });
 
 };
@@ -135,7 +135,7 @@ exports.userCorrect = function(req, res, next) {
 
   if(!result) {
 
-    User.findOne({ "_id": _id }, function(err, doc) {
+    User.findOne({ '_id': _id }, function(err, doc) {
 
       if(err) {
 

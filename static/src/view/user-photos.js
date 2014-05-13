@@ -15,7 +15,7 @@ define(function (require, exports, module) {
   var PhotoModel = require('../model/photo-model');
   var timeFormat = require('../util/time-format');
 
-  require("../util/cookie");
+  require('../util/cookie');
 
   var console = window.console || function() {};
 
@@ -58,7 +58,7 @@ define(function (require, exports, module) {
         success: function(model, str) {
 
           self.$el.modal('hide');
-          self.photoModel = new PhotoModel;
+          self.photoModel = new PhotoModel();
           // observer.trigger('po-photo:success', model);
         },
         error: function(model, str) {

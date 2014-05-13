@@ -2,11 +2,11 @@
 // 说明：通用工具集方法注释采用doc说明，便于后续项目开发使用
 
 var fs         = require('fs');
-var crypto     = require("crypto");
+var crypto     = require('crypto');
 
 var _          = require('underscore');
 var gm         = require('gm');
-var debug      = require('debug')('app:utils')
+var debug      = require('debug')('app:utils');
 var mongoose   = require('mongoose');
 
 var debugging  = require('./debugging');
@@ -42,7 +42,7 @@ exports.download = function (fileId, next) {
 
   var id = new ObjectID(fileId);
 
-  var gs = new GridStore(mongooseDb, id, "r");
+  var gs = new GridStore(mongooseDb, id, 'r');
 
   // 打开当前Mongo数据存储对象
   gs.open(function (err, docFile) {
@@ -114,7 +114,7 @@ exports.delete = function(fileId, next) {
 
     if (err) return next(err, null);
 
-    mongodb.GridStore.unlink(mongooseDb, docFile.filename, function(err) {
+    GridStore.unlink(mongooseDb, docFile.filename, function(err) {
 
       console.log(arguments);
       next();
@@ -123,7 +123,7 @@ exports.delete = function(fileId, next) {
 
   });
 
-}
+};
 
 exports.uploadFromBuffer = function(fileName, fileType, data, next) {
 
@@ -205,7 +205,7 @@ exports.copyFile = function(basePath, srcPath, next) {
       console.log('copy file success');
     }
 
-  }
+  };
 
   fs.readFile(basePath, function(err, data) {
 
@@ -223,7 +223,7 @@ exports.copyFile = function(basePath, srcPath, next) {
 
       next();
     });
-  })
+  });
 };
 
 // 格式化日志输出

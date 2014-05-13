@@ -38,9 +38,9 @@ define(function (require, exports, module) {
     },
 
     valueSet: function(e) {
-      var $dom = $(e.target)
-        , str = $.trim($dom.val())
-        , name = $dom.attr('name');
+      var $dom = $(e.target);
+      var str = $.trim($dom.val());
+      var name = $dom.attr('name');
 
       this[name + 'Set'](str);
     },
@@ -69,7 +69,7 @@ define(function (require, exports, module) {
         url: '/login',
         // success事件监听回调函数
         success: function(model, str) {
-          self.userModel = new UserModel;
+          self.userModel = new UserModel();
           self.data = { user: str };
           self.render();
           observer.trigger('login:success');

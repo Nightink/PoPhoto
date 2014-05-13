@@ -34,7 +34,7 @@ define(function (require, exports, module) {
 
     submitComment: function(e) {
       var content = $('.new_remark textarea').val();
-      var model = this.model
+      var model = this.model;
       model.get('reviews').push({ content: content });
       model.save(null, {
         url: '/photo',
@@ -73,13 +73,13 @@ define(function (require, exports, module) {
 
       this.$el.append(contents);
 
-      var windowHeight = $(window).height()
-        , remarkLayout = windowHeight - 60
-        , $remarkLayout = this.$el.find('#remarkLayout');
+      var windowHeight = $(window).height();
+      var remarkLayout = windowHeight - 60;
+      var $remarkLayout = this.$el.find('#remarkLayout');
 
-      $remarkLayout.css("height", remarkLayout+"px");
+      $remarkLayout.css('height', remarkLayout+'px');
 
-      $remarkLayout.css({ "top": "20px", "right": "20px" });
+      $remarkLayout.css({ 'top': '20px', 'right': '20px' });
     }
   });
 
@@ -107,7 +107,7 @@ define(function (require, exports, module) {
     render: function() {
       var content = this.template({ 'items': this.photoCollection.toJSON() });
       this.$el.append(content);
-      this.$el.attr("ontimeupdate", Date.now());
+      this.$el.attr('ontimeupdate', Date.now());
       observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
     },
 
@@ -116,7 +116,7 @@ define(function (require, exports, module) {
       var data = model.toJSON();
       var content = this.template({ 'items': data });
       this.$el.prepend(content);
-      this.$el.attr("ontimeupdate", Date.now());
+      this.$el.attr('ontimeupdate', Date.now());
       observer.trigger('photoLoad:end', (this.photoCollection.toJSON()).length);
     },
 
@@ -125,8 +125,8 @@ define(function (require, exports, module) {
       $('.fancybox').fancybox({
         margin     : [20,300,20,20],
         mouseWheel : false,
-        swf : {FlashVars:"flv=/videos/2013.flv"},
-        type       : "image",
+        swf : {FlashVars:'flv=/videos/2013.flv'},
+        type       : 'image',
         helpers : {
           title: {
             type: 'inside'
@@ -134,8 +134,8 @@ define(function (require, exports, module) {
         },
         preload:1,
         afterShow:function() {
-          if($("#remarkLayout").size()>0) {
-            $("#remarkLayout").remove();
+          if($('#remarkLayout').size()>0) {
+            $('#remarkLayout').remove();
           }
           self.imgId = $(this.element).find('img').attr('imgid');
           $('.fancybox-image').axzoomer({
@@ -150,7 +150,7 @@ define(function (require, exports, module) {
 
     requestComments: function() {
 
-      var photoModel = new PhotoModel;
+      var photoModel = new PhotoModel();
       photoModel.fetch({
         'url': '/photo/' + this.imgId,
         success: function(data) {

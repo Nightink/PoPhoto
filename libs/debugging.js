@@ -11,4 +11,4 @@ module.exports = function(debug, str) {
   }
 
   debug.apply(debug, arr);
-}
+};

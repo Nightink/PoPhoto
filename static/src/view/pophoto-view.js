@@ -16,7 +16,7 @@ define(function (require, exports, module) {
     el: '#new-pin',
     template: require('../tpl/pophoto-view.tpl'),   //载入模版文件
     initialize: function() {
-      this.photoModel = new PhotoModel;
+      this.photoModel = new PhotoModel();
 
       observer.on('verify:photo-msg', this.tipMsg, this);
       observer.on('upload:success', this.imgInfo, this);
@@ -30,8 +30,8 @@ define(function (require, exports, module) {
         url: '/upload',
         barProCss: {
           left: 290,
-          position: "absolute",
-          "z-index": 111111
+          position: 'absolute',
+          'z-index': 111111
         },
         callback: function() {
           observer.trigger('upload:success');
@@ -48,9 +48,9 @@ define(function (require, exports, module) {
     },
 
     valueSet: function(e) {
-      var $dom = $(e.target)
-        , str = $.trim($dom.val())
-        , name = $dom.attr('name');
+      var $dom = $(e.target);
+      var str = $.trim($dom.val());
+      var name = $dom.attr('name');
 
       this[name + 'Set'](str);
     },
@@ -70,7 +70,7 @@ define(function (require, exports, module) {
     },
 
     descriptionTips: function(e) {
-      $('#description-tips').html('說說圖中事。').attr('class', 'tips');
+      $('#description-tips').html('说说图中事。').attr('class', 'tips');
     },
 
     keywordsTips: function(e) {
@@ -94,7 +94,7 @@ define(function (require, exports, module) {
     },
 
     poPhoto: function(e) {
-      console.log(this.photoModel);
+
       var self = this;
       self.photoModel.save(null, {
 
@@ -102,7 +102,7 @@ define(function (require, exports, module) {
         success: function(model, doc) {     //success事件监听回调函数
 
           self.$el.modal('hide');
-          self.photoModel = new PhotoModel;
+          self.photoModel = new PhotoModel();
           observer.trigger('po-photo:success', new PhotoModel(doc));
         },
         error: function(model, str) {

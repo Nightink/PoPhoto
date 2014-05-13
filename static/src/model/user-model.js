@@ -50,15 +50,15 @@ define(function (require, exports, module) {
 
     // 统一验证方法
     __validate: function(attrs) {
-      //验证信息结果包
+      // 验证信息结果包
       var tipData = {
-        //验证的字段
+        // 验证的字段
         tagName: 'email',
-        //提醒消息
+        // 提醒消息
         tipStr: '正确',
         // true 验证成功 false 验证失败
         flag: false
-      }
+      };
       var flag = false;
 
       for(var name in attrs) {
@@ -68,13 +68,8 @@ define(function (require, exports, module) {
 
         var val = attrs[name];
 
-        try {
-          tipData = this[name + 'Verify'](val, tipData);
-          observer.trigger('verify:user-msg', tipData);
-        } catch(err) {
-          console.log('查无此法');
-          tipData.flag = true;
-        }
+        tipData = this[name + 'Verify'](val, tipData);
+        observer.trigger('verify:user-msg', tipData);
 
         if(!tipData.flag) flag = true;
       }

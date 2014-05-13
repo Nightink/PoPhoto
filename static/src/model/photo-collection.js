@@ -11,7 +11,8 @@ define(function (require, exports, module) {
   var PhotoModel = require('./photo-model');
 
   var PhotoCollection = backbone.Collection.extend({
-    model : PhotoModel,   //指定控制器的数据模型
+    // 指定控制器的数据模型
+    model : PhotoModel,
 
     initialize : function (models, options) {}
   });

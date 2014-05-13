@@ -3,6 +3,8 @@
  */
 define(function(require, exports, module) {
 
+  var moment = require('moment');
+
   module.exports = function(currDate, timeString) {
 
     var timeFormatString = null;

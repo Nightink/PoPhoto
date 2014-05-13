@@ -24,7 +24,7 @@ var PhotoSchema = new mongoose.Schema({
   author  : { type: String, ref: 'User' },
   created : { type: Date, default: Date.now },
   updated : { type: Date, default: Date.now },
-  type    : { type: String, default: "photo" },
+  type    : { type: String, default: 'photo' },
 
   reviews: [{
     author: { type: String, ref: 'User' },

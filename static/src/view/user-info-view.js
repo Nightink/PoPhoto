@@ -39,9 +39,9 @@ define(function(require, exports, module) {
     },
 
     valueSet: function(e) {
-      var $dom = $(e.target)
-        , str = $.trim($dom.val())
-        , name = $dom.attr('name');
+      var $dom = $(e.target);
+      var str = $.trim($dom.val());
+      var name = $dom.attr('name');
 
       this[name + 'Set'](str);
     },
@@ -62,12 +62,12 @@ define(function(require, exports, module) {
 
     // 设置性别
     genderSet: function(e) {
-      var gender = this.$("input[name=gender]:checked").val();
+      var gender = this.$('input[name=gender]:checked').val();
       this.userModel.set({gender: gender});
     },
 
     updateUser: function(e) {
-      console.log(this.userModel.toJSON());
+
       var model = this.userModel;
       model.save(null, {
         url: '/user-update',
@@ -82,7 +82,7 @@ define(function(require, exports, module) {
       var contents = this.template(data);
       this.$el.html(contents);
       // 渲染站点类型
-      this.$("input[name=gender][value='"+ data.gender +"']").attr("checked", true);
+      this.$('input[name=gender][value="' + data.gender +'"]').attr('checked', true);
     }
   });
 

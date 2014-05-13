@@ -32,8 +32,8 @@ describe('app', function() {
         url: 'https://github.com/Nightink/node-Pophoto'
       };
 
-      var _str = '<p>repo name is node-Pophoto</p> '
-        + '<p>repo url is https://github.com/Nightink/node-Pophoto</p>';
+      var _str = '<p>repo name is node-Pophoto</p> ' + 
+        '<p>repo url is https://github.com/Nightink/node-Pophoto</p>';
 
       app.render('test.html', function(err, str) {
 

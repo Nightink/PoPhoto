@@ -13,7 +13,7 @@ var debug     = require('debug')('app');
 
 commander
   .version(require('./package.json').version)
-  .option('-d, --debug', '是否开启前端js debug文件输出', Boolean, false)
+  .option('-d, --debug', '是否开启前端js debug文件输出', true)
   .option('-p, --port [port]', '设置服务器端口', Number, 3000)
   .option('-s, --static [path]', '设置服务器静态文件路径', String)
   .parse(process.argv);

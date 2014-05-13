@@ -14,7 +14,7 @@ define(function (require, exports, module) {
     // 载入模版文件
     template: require('../tpl/user-view.tpl'),
     initialize: function() {
-      this.userModel = new UserModel;
+      this.userModel = new UserModel();
 
       observer.on('verify:user-msg', this.tipMsg, this);
     },
@@ -57,7 +57,7 @@ define(function (require, exports, module) {
     success: function(model, str) {
       //observer.trigger('add');
       alert(str);
-      this.userModel = new UserModel;
+      this.userModel = new UserModel();
       this.userModel.on('sync', this.success, this);
       this.render();
       this.$el.modal('hide');
@@ -72,12 +72,12 @@ define(function (require, exports, module) {
         success: function(model, str) {
           alert(str);
           self.$el.modal('hide');
-          self.userModel = new UserModel;
+          self.userModel = new UserModel();
         },
         error: function(model, str) {
           alert(str);
           self.$el.model('hide');
-          self.userModel = new UserModel;
+          self.userModel = new UserModel();
         }
       });
     },
