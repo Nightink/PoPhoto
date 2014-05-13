@@ -70,4 +70,4 @@ module.exports = function(app) {
   debugging(debug, 'loaded router files');
 
   //return app.router;
-}
+};

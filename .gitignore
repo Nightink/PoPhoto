@@ -8,6 +8,7 @@
 *.out
 *.pid
 *.gz
+*.diff
 .DS_Store
 Thumbs.db
 pids
@@ -18,3 +19,4 @@ results
 node_modules
 log.txt
 sea-config.js
+config.json

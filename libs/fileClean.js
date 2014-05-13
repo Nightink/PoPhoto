@@ -47,4 +47,4 @@ function fileClean() {
 
 fileClean();
 // 定期执行文件清除
-setInterval(fileClean, INVALID_TIME);
+global.setInterval(fileClean, INVALID_TIME);

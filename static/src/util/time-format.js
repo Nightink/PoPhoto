@@ -3,29 +3,31 @@
  */
 define(function(require, exports, module) {
 
-    module.exports = function(currDate, timeString) {
+  var moment = require('moment');
 
-        var timeFormatString = null;
-        var timeMoment = moment(timeString);
-        var diffDate = currDate - timeMoment.dayOfYear();
+  module.exports = function(currDate, timeString) {
 
-        switch(diffDate) {
+    var timeFormatString = null;
+    var timeMoment = moment(timeString);
+    var diffDate = currDate - timeMoment.dayOfYear();
 
-            case 0:
-                timeFormatString = timeMoment.format('今天 HH:mm:ss');
-            break;
-            case 1:
-                timeFormatString = timeMoment.format('昨天 HH:mm:ss');
-            break;
-            case 2:
-                timeFormatString = timeMoment.format('前天 HH:mm:ss');
-            break;
-            default:
-                timeFormatString = timeMoment.format('YYYY-MM-DD HH:mm:ss');
-            break;
-        }
+    switch(diffDate) {
 
-        return timeFormatString;
-    };
+      case 0:
+        timeFormatString = timeMoment.format('今天 HH:mm:ss');
+      break;
+      case 1:
+        timeFormatString = timeMoment.format('昨天 HH:mm:ss');
+      break;
+      case 2:
+        timeFormatString = timeMoment.format('前天 HH:mm:ss');
+      break;
+      default:
+        timeFormatString = timeMoment.format('YYYY-MM-DD HH:mm:ss');
+      break;
+    }
+
+    return timeFormatString;
+  };
 
 });

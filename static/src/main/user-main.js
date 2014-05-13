@@ -20,7 +20,7 @@ seajs.use([
 
     el: '#photo-list'
   });
-  var topView = new TopView;
+  var topView = new TopView();
 
   var $lis = $('#nav-con-list li');
   $lis.on('click', function(e) {
@@ -39,20 +39,13 @@ seajs.use([
 
     userHash: function() {
       $.get('/user', function(data) {
-
-        var userInfoView = new UserInfoView({
-          el: '#photo-list',
-          model: data
-        });
-
+        var userInfoView = new UserInfoView({ el: '#photo-list', model: data });
         userInfoView.render();
       }, 'json');
     },
 
     photosHash: function() {
-      var userPhotoView = new UserPhotoView({
-        el: '#photo-list'
-      });
+      var userPhotoView = new UserPhotoView({ el: '#photo-list' });
     }
   });
 

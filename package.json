@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "node app",
-    "test": "./node_modules/.bin/mocha --require should --reporter spec --check-leaks"
+    "test": "./node_modules/.bin/mocha --require should --reporter spec --check-leaks",
+    "postinstall": "node scripts/postinstall.js"
   },
   "dependencies": {
     "gm": "~1.9",
@@ -18,13 +19,16 @@
     "async": "~0.2",
     "moment": "~2.0",
     "express": "~3.0",
-    "commander": "~2.0",
+    "commander": "*",
     "mongoose": "3.5.6",
     "underscore": "~1.4",
     "handlebars": "~1.0"
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "*"
+    "should": "*",
+    "grunt": "~0.4",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-watch":"*"
   }
 }
