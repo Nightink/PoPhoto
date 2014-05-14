@@ -20,8 +20,7 @@
 * `conf/config.js` staticPath 用于配置前端文件路径
 
 ## 后期规划
-* 后端采用纯RESTFul api接口
-* 前端组件化构建开发
+* 前端组件化构建开发[进行中]
 * 移动端开发
 
 ## LICENSE

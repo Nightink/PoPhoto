@@ -141,9 +141,9 @@ exports.addCommentsPhoto = function(req, res) {
 // POST --> /po-photo 处理用户提交图片信息入库操作
 exports.poPhoto  = function(req, res) {
 
-  var reqPost = req.body
-    , author = req.session.user.username || req.cookies.username
-    , title = reqPost.title;
+  var reqPost = req.body;
+  var author = req.session.user.username || req.cookies.username;
+  var title = reqPost.title;
 
   if(!author) {
 
@@ -243,4 +243,4 @@ exports.getPhotosByUser = function(query, opt, next) {
   Photo.find(query, null, opt, function(err, docs) {
     next(err, docs);
   });
-}
+};

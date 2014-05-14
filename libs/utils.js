@@ -2,11 +2,11 @@
 // 说明：通用工具集方法注释采用doc说明，便于后续项目开发使用
 
 var fs         = require('fs');
-var crypto     = require("crypto");
+var crypto     = require('crypto');
 
 var _          = require('underscore');
 var gm         = require('gm');
-var debug      = require('debug')('app:utils')
+var debug      = require('debug')('app:utils');
 var mongoose   = require('mongoose');
 
 var debugging  = require('./debugging');
@@ -42,7 +42,7 @@ exports.download = function (fileId, next) {
 
   var id = new ObjectID(fileId);
 
-  var gs = new GridStore(mongooseDb, id, "r");
+  var gs = new GridStore(mongooseDb, id, 'r');
 
   // 打开当前Mongo数据存储对象
   gs.open(function (err, docFile) {
@@ -114,7 +114,7 @@ exports.delete = function(fileId, next) {
 
     if (err) return next(err, null);
 
-    mongodb.GridStore.unlink(mongooseDb, docFile.filename, function(err) {
+    GridStore.unlink(mongooseDb, docFile.filename, function(err) {
 
       console.log(arguments);
       next();
@@ -123,7 +123,7 @@ exports.delete = function(fileId, next) {
 
   });
 
-}
+};
 
 exports.uploadFromBuffer = function(fileName, fileType, data, next) {
 
@@ -168,7 +168,7 @@ exports.encryptHelper = function(data) {
 exports.decipherHelper = function(data) {
 
   var decipher = crypto.createDecipher('aes-256-cbc', 'photo');
-  var dec = decipher.update(data,'hex', 'utf8');
+  var dec = decipher.update(data, 'hex', 'utf8');
 
   try {
     dec += decipher.final('utf8');
@@ -187,6 +187,43 @@ exports.throwError = function(err, errorString, res) {
     res.json(500, errorString);
     throw err;
   }
+};
+
+// 文件复制操作
+// basePath 文件原路径
+// srcPath 拷贝路径
+// fn 可选回调函数
+exports.copyFile = function(basePath, srcPath, next) {
+
+  next = next || function(err) {
+
+    if(err) {
+
+      console.error(err);
+    } else {
+
+      console.log('copy file success');
+    }
+
+  };
+
+  fs.readFile(basePath, function(err, data) {
+
+    if(err) {
+
+      return next('read file: ' + err.toString());
+    }
+
+    fs.writeFile(srcPath, data, function(er) {
+
+      if(er) {
+
+        return next('write file: ' + err.toString());
+      }
+
+      next();
+    });
+  });
 };
 
 // 格式化日志输出
