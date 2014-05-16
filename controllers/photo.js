@@ -155,12 +155,14 @@ exports.poPhoto  = function(req, res) {
     return res.send(400, '关键字不能为空');
   }
 
+  // 需要进行xss攻击屏蔽 start
   reqPost.author = author;
   // 过滤文件后缀名
   reqPost.title = title.substring(0, title.lastIndexOf('.'));
   reqPost.created = reqPost.updated = Date.now();
-  //关键字处理
+  // 关键字处理
   reqPost.keywords = reqPost.keywords.split(/;|；|\s|,|，/);
+  // end
 
   var photo = new Photo(reqPost);
 
@@ -212,15 +214,12 @@ exports.updatePhoto = function(req, res) {
 // DELETE -> /photo-delete 图片删除操作
 exports.deletePhoto = function(req, res) {
 
-  // console.log(req.cookies, req.session.user);
   var userId = utils.decipherHelper(req.cookies._id);
 
   if(userId !== req.session.user._id) {
 
     return res.json(403, '无权限删除此照片');
   }
-
-  console.log(userId);
 
   var params = {
     '_id': req.query._id
