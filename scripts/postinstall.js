@@ -1,8 +1,12 @@
 
 var fs = require('fs');
 
-var copyFile = require('../libs/utils').copyFile;
+var utils = require('../libs/utils');
 
 var basePath = __dirname + '/../conf/';
+var confPath = basePath + 'config.json';
 
-copyFile(basePath + 'config.json.default', basePath + 'config.json');
+if(!fs.existsSync(confPath)) {
+
+  utils.copyFile(basePath + 'config.json.default', confPath);
+}

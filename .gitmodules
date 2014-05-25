@@ -1,0 +1,3 @@
+[submodule "static"]
+	path = static
+	url = https://github.com/Nightink/pophoto-web-front.git

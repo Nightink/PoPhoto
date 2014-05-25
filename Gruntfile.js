@@ -21,27 +21,21 @@ module.exports = function(grunt) {
         globals: {
           window: true,
           seajs: true,
-          console: true,
-          module: true,
           document: true,
           location: true,
+          alert: true,
           define: true,
           describe: true,
           before: true,
           it: true,
-          after: true,
-          __dirname: true,
-          require: true,
-          exports: true,
-          global: true,
-          alert: true,
-          process: true,
-          Buffer: true
+          after: true
         },
         quotmark: 'single',
         undef: true,
         asi: false,
-        maxlen: 120
+        maxlen: 120,
+        mocha: true,
+        node: true
       }
     },
 
