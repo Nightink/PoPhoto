@@ -17,26 +17,7 @@ module.exports = function(grunt) {
         'scripts/**/*.js',
         'test/**/*.js'
       ],
-      options: {
-        globals: {
-          window: true,
-          seajs: true,
-          document: true,
-          location: true,
-          alert: true,
-          define: true,
-          describe: true,
-          before: true,
-          it: true,
-          after: true
-        },
-        quotmark: 'single',
-        undef: true,
-        asi: false,
-        maxlen: 120,
-        mocha: true,
-        node: true
-      }
+      options: grunt.file.readJSON('.jshintrc')
     },
 
     watch: {

@@ -1,6 +1,10 @@
 
-MOCHA_OPTS= --check-leaks
+MOCHA_OPTS = --check-leaks
 REPORTER = spec
+REGISTRY = --registry=http://registry.npm.taobao.org
+
+install:
+	@npm install $(REGISTRY) --disturl=http://npm.taobao.org/dist
 
 check: test
 
@@ -18,4 +22,7 @@ debug:
 run:
 	@NODE_ENV=release node app.js
 
-.PHONY: test test-unit debug run
+watch:
+	@grunt watch
+
+.PHONY: install test test-unit debug run
