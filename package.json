@@ -6,7 +6,7 @@
   "main": "app.js",
   "private": true,
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.11"
   },
   "scripts": {
     "start": "node app",
@@ -18,7 +18,10 @@
     "debug": "*",
     "async": "~0.2",
     "moment": "~2.0",
-    "express": "~3.0",
+    "koa": "~0.7.0",
+    "koa-bodyparser": "~1.0.1",
+    "koa-router": "~3.1.4",
+    "koa-static": "~1.4.5",
     "commander": "*",
     "mongoose": "3.5.6",
     "underscore": "~1.4",
