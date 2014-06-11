@@ -5,39 +5,41 @@
 var _         = require('underscore');
 var debug     = require('debug')('app:router');
 var mongoose  = require('mongoose');
+var thunkify = require('thunkify');
 
 var debugging = require('../libs/debugging');
 
 var Photo     = mongoose.model('Photo');
 
+Photo.find = thunkify(Photo.find);
+
 module.exports = function(app) {
 
-  app.get('/index.html', function(req, res) {
+  app.get('/index.html', function *() {
 
-    return res.redirect('/');
+    return this.redirect('/');
   });
 
-  app.get('/', function(req, res) {
+  app.get('/', function *() {
 
-    var user = req.session.user || req.cookies;
+    var user = this.session.user || this.cookies.get('username');
 
     if(_.isNull(user)) {
 
-      return res.json('用户请登陆');
+      return this.json('用户请登陆');
     }
 
     var _params = {
       limit: 15,
       skip: 0,
-      sort: { updated: -1 }
+      sort: {
+        updated: -1
+      }
     };
 
-    Photo.find(null, null, _params, function(err, docs) {
+    try {
+      var docs = yield Photo.find(null, null, _params);
 
-      if(err) {
-
-        return res.send(500);
-      }
       var backDoc = [];
       _.each(docs, function(doc){
 
@@ -57,8 +59,16 @@ module.exports = function(app) {
         indexRenderObj.user = user;
       }
 
-      res.render('index', indexRenderObj);
-    });
+      this.body = yield app.render('index', indexRenderObj);
+
+    } catch(e) {
+
+      console.log(e.stack);
+      this.status = 500;
+      return this.body = 'server error';
+    }
+
+    // this.body = indexRenderObj;
 
   });
 

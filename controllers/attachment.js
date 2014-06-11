@@ -63,23 +63,29 @@ exports.upload = function(req, res) {
   });
 };
 
+utils.download = require('thunkify')(utils.download);
+
 // GET --> attachment/:id
 // 图片下载操作
-exports.download = function(req, res) {
+exports.download = function *() {
 
-  var attachmentID = req.params.id;
+  var id = this.params.id;
 
-  utils.download(attachmentID, function(err, contentType, file) {
+  try{
+    var file = yield utils.download(id);
+
+    // 设置响应头 文件格式
+    this.set('Content-Type', file[0]);
+    this.body = file[1];
+  } catch(err) {
 
     if(err) {
 
-      return res.json(400, '找不到该文件');
+      console.log(err.stack)
+      this.status = 404;
+      return this.body = '找不到该文件';
     }
-
-    // 设置响应头 文件格式
-    res.set('Content-Type', contentType);
-    res.send(file);
-  });
+  }
 };
 
 // GET --> /delete/:id

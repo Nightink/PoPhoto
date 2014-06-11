@@ -8,8 +8,11 @@ var fs = require('fs');
 var path = require('path');
 
 var koa = require('koa');
+var serve = require('koa-static');
 var router = require('koa-router');
+var session = require('koa-session');
 var bodyParser = require('koa-bodyparser');
+var views = require('co-views');
 var program = require('commander');
 var debug = require('debug')('app');
 
@@ -36,6 +39,7 @@ process.on('SIGINT', function() {
 
 debug('init')
 var app = koa();
+var conf = require('./conf/config.json');
 
 app.use(function *(next){
   var start = new Date;
@@ -44,15 +48,28 @@ app.use(function *(next){
   debug('%s %s - %s', this.method, this.url, ms);
 });
 
+app.render = views('views', {
+  ext: 'tpl',
+  map: { tpl: 'handlebars' }
+});
+
+app.keys = [conf.sessionSecret];
 app.use(bodyParser());
+app.use(session());
 app.use(router(app));
+app.use(serve(conf.staticPath));
 
-app.get('/', function *index() {
+require('./libs/mongoConnect')(function(err) {
 
-  this.body = 'hello world';
+  if(err) {
+    return console.log(err);
+  }
+
+  require('./libs/registerTemplate');
+  require('./models');
+  require('./routers')(app);
+  app.listen(program.port);
 })
-
-app.listen(program.port);
 
 // `exports test app`
 module.exports = app;
