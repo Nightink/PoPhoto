@@ -5,13 +5,10 @@
 var _         = require('underscore');
 var debug     = require('debug')('app:router');
 var mongoose  = require('mongoose');
-var thunkify = require('thunkify');
 
 var debugging = require('../libs/debugging');
 
 var Photo     = mongoose.model('Photo');
-
-Photo.find = thunkify(Photo.find);
 
 module.exports = function(app) {
 
@@ -67,8 +64,6 @@ module.exports = function(app) {
       this.status = 500;
       return this.body = 'server error';
     }
-
-    // this.body = indexRenderObj;
 
   });
 

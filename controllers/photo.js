@@ -12,15 +12,17 @@ var utils    = require('../libs/utils');
 var Photo    = mongoose.model('Photo');
 
 // GET --> /photo
-exports.photo = function(req, res) {
+exports.photo = function *() {
+
+  console.log(this.query)
 
   var query = {};
   var fields = '';
-  var q = req.query.q || null;
+  var q = this.query.q || null;
   // 用户查询图片关键字
-  var keywords = req.query.keywords && req.query.keywords.split(',');
-  var time = req.query.time ? req.query.time : Date.now();
-  var author = req.query.author;
+  var keywords = this.query.keywords && this.query.keywords.split(',');
+  var time = this.query.time ? this.query.time : Date.now();
+  var author = this.query.author;
 
   if(author) {
 
@@ -45,21 +47,16 @@ exports.photo = function(req, res) {
   }
 
   var _params = {
-    limit: (req.query.limit ? req.query.limit : 15),
-    skip: (req.query.skip ? req.query.skip : 0),
+    limit: (this.query.limit ? this.query.limit : 15),
+    skip: (this.query.skip ? this.query.skip : 0),
     sort: {
       updated: -1
     }
   };
 
-  Photo.find(query, null, _params, function(err, docs) {
+  try {
 
-    if(err) {
-
-      utils.log(err);
-      return res.send(500);
-    }
-
+    var docs = yield Photo.find(query, null, _params);
     var backDoc = [];
     _.each(docs, function(doc) {
 
@@ -77,29 +74,34 @@ exports.photo = function(req, res) {
       backDoc.push(doc._doc);
     });
 
-    res.json(backDoc);
-  });
+    this.status = 200;
+    this.body = backDoc;
+
+  } catch(err) {
+
+    utils.log(err);
+    this.status = 500;
+    this.body = 'server error';
+  }
 };
 
 // GET --> /photo/:id
-exports.getPhotoById = function(req, res) {
+exports.getPhotoById = function *() {
 
-  // var review = req.query.review;
   var params = {
-    '_id': req.params.id
+    '_id': this.params.id
   };
 
-  Photo.findOne(params, function(err, doc) {
+  try {
 
-    if(err) {
+    var doc = yield Photo.findOne(params);
+    this.status = 200;
+    this.body = doc;
+  } catch(e) {
 
-      return res.json(500, '获取图片信息错误');
-    }
-
-    res.json(doc);
-
-  });
-
+    this.status = 500;
+    this.body = '获取图片信息错误'
+  }
 };
 
 // PUT --> /photo
@@ -222,7 +224,7 @@ exports.deletePhoto = function(req, res) {
   }
 
   var params = {
-    '_id': req.query._id
+    '_id': this.query._id
   };
 
   Photo.remove(params, function(err) {
