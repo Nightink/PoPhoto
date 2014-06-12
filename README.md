@@ -1,6 +1,7 @@
 # 基于node.js 图片展示web应用 [![Build Status](https://travis-ci.org/Nightink/node-Pophoto.png?branch=develop)](https://travis-ci.org/Nightink/node-Pophoto)
 
 ## node app
+`node >= 0.11.12`
 
 ### mac osx
 * `$ brew install node.js`

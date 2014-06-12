@@ -12,30 +12,31 @@ var utils    = require('../libs/utils');
 module.exports = function(app) {
 
   //用户登出操作
-  app.get('/login-out', function(req, res) {
+  app.get('/login-out', function *() {
 
-    var redirect = req.query.redirect ?  req.query.redirect : '/';
-    if(req.session && req.session.user) {
+    var redirect = this.query.redirect ?  this.query.redirect : '/';
+    if(this.session && this.session.user) {
 
-      var userId = req.session.user.username;
-      console.log('用户"' + userId + '"登出');
+      var userId = this.session.user.username;
+      console.log('用户"%s"登出', userId);
     }
 
-    res.clearCookie('_id', { path:'/' });
-    res.clearCookie('username', { path:'/' });
+    this.cookies.set('_id', null);
+    this.cookies.set('username', null);
     // 移除session存储信息
-    req.session.destroy();
-    return res.redirect(redirect);
+    this.session = null;
+    this.redirect(redirect);
   });
 
   //用户登陆操作
-  app.post('/login', function(req, res) {
+  app.post('/login', function *() {
 
-    var email = req.body.email;
-    var password = req.body.password;
+    var email = this.request.body.email;
+    var password = this.request.body.password;
 
     if(_.isEmpty(email) || _.isEmpty(password)) {
-      return res.json(400, '请填写正确信息');
+      this.status = 400;
+      return this.body = '请填写正确信息';
     }
 
     var params = {
@@ -43,14 +44,13 @@ module.exports = function(app) {
       password: utils.encryptHelper(password)
     };
 
-    User.findOne(params, function(err, doc) {
+    try {
 
-      if(err) {
-        return res.json(500, err);
-      }
-
+      var doc = yield User.findOne(params);
       if(_.isNull(doc)) {
-        return res.json(400, '登陆失败');
+
+        this.status = 400;
+        return this.body = '登陆失败';
       }
 
       var result = {
@@ -58,15 +58,21 @@ module.exports = function(app) {
         _id: doc._id.toString()
       };
 
-      req.session.user = result;
-      req.session.save(function(err){
+      var cookieParams = {
+        path:'/',
+        maxage: config.cookieMaxage
+      };
 
-        res.cookie('_id', utils.encryptHelper(result._id), { path:'/', maxAge: config.cookieMaxage });
-        res.cookie('username', result.username, { path:'/', maxAge: config.cookieMaxage });
+      this.session.user = result;
+      this.cookies.set('_id', utils.encryptHelper(result._id), cookieParams);
+      this.cookies.set('username', result.username, cookieParams);
+      this.status = 200;
+      this.body = result;
+    } catch(err) {
 
-        res.json(200, result);   //登陆成功，返回用户信息
-      });
-
-    });
+      console.log(err.stack);
+      this.status = 500
+      this.body = 'server error';
+    }
   });
 };

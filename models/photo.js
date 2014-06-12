@@ -3,7 +3,7 @@
  */
 
 var mongoose = require('mongoose');
-var thunkify = require('thunkify')
+var thunkify = require('thunkify');
 
 /**
  * author: 上传者
@@ -38,6 +38,7 @@ var PhotoSchema = new mongoose.Schema({
 // 创建Photo模型
 mongoose.model('Photo', PhotoSchema);
 
+// co wrap
 var Photo  = mongoose.model('Photo');
 Photo.find = thunkify(Photo.find);
 Photo.findOne = thunkify(Photo.findOne);

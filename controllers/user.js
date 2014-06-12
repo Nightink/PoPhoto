@@ -10,27 +10,27 @@ var config   = require('../conf/config.json');
 var utils    = require('../libs/utils');
 
 //  GET --> /user/:id  个人用户管理界面
-exports.userInfo = function(req, res){
+exports.userInfo = function *(){
 
-  var _id = req.params.id;
+  var params = {
+    '_id': this.params.id
+  }
 
-  User.findOne({ '_id': _id }, function(err, doc) {
-
-    if(err) {
-
-      console.log(err);
-      return res.json(500, '服务器错误');
-    }
-
+  try {
+    var doc = yield User.findOne(params);
     delete doc.password;
-
-    res.render('user', {
+    this.status = 200;
+    this.body = yield this.app.render('user', {
 
       title: 'PoPhoto',
       user: doc
     });
+  } catch(err) {
 
-  });
+    console.log(err.stack);
+    this.stack = 500;
+    this.body = 'server error';
+  }
 };
 
 // POST --> /add-user  添加用户控制器处理方法

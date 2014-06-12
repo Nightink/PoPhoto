@@ -14,7 +14,7 @@ var Photo    = mongoose.model('Photo');
 // GET --> /photo
 exports.photo = function *() {
 
-  console.log(this.query)
+  console.log(this.query, this.cookies.get('username'))
 
   var query = {};
   var fields = '';
@@ -40,6 +40,7 @@ exports.photo = function *() {
       author: new RegExp(q)
     }];
   }
+
   if (keywords) {
     query.keywords = {
       '$in': keywords

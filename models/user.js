@@ -3,6 +3,7 @@
  */
 
 var mongoose = require('mongoose');
+var thunkify = require('thunkify');
 
 /**
  * username: 登陆名称
@@ -25,3 +26,8 @@ var UserSchema = new mongoose.Schema({
 
 // 创建User用户文档模型
 mongoose.model('User', UserSchema);
+
+// co wrap
+var User  = mongoose.model('User');
+User.findOne = thunkify(User.findOne);
+User.update = thunkify(User.update);
