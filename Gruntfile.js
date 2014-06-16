@@ -17,7 +17,9 @@ module.exports = function(grunt) {
         'scripts/**/*.js',
         'test/**/*.js'
       ],
-      options: grunt.file.readJSON('.jshintrc')
+      options: {
+       jshintrc: '.jshintrc'
+      }
     },
 
     watch: {

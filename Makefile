@@ -25,4 +25,7 @@ run:
 watch:
 	@grunt watch
 
-.PHONY: install test test-unit debug run
+jshint:
+	@grunt jshint
+
+.PHONY: install test test-unit debug run watch jshint
