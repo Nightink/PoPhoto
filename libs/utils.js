@@ -9,8 +9,6 @@ var gm         = require('gm');
 var debug      = require('debug')('app:utils');
 var mongoose   = require('mongoose');
 
-var debugging  = require('./debugging');
-
 // mongoose.connection.db 必须确保已经连接mongo数据
 // 否则 mongooseDb 将为空
 var mongooseDb = mongoose.connection.db;
@@ -21,15 +19,18 @@ var ObjectID   = mongoose.mongo.BSONPure.ObjectID;
 // 生成缩略图
 exports.thumb = function(readPath, writePath, width, height, next) {
 
+  debug('image gm thumb path %s out path %s', readPath, writePath);
+
   gm(readPath).resize(width, height).write(writePath, function(err) {
 
     next(err);
   });
-
 };
 
 // 获取图片的宽高
 exports.imageSize = function(readPath, next) {
+
+  debug('image gm size');
 
   gm(readPath).size(function(err, size) {
 

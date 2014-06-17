@@ -9,7 +9,16 @@ var path      = require('path');
 
 var express   = require('express');
 var commander = require('commander');
-var debug     = require('debug')('app');
+var methodOverride = require('method-override');
+var logger = require('morgan');
+var compression = require('compression');
+var directory = require('serve-index');
+var favicon = require('serve-favicon');
+var multer = require('multer');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var errorhandler = require('errorhandler');
+var debug = require('debug')('app');
 
 commander
   .version(require('./package.json').version)
@@ -24,7 +33,7 @@ process.on('uncaughtException', function(err) {
   // 捕获启动端口被占用，异常
   if (err.code === 'EADDRINUSE') {
 
-    debugging(debug, 'Port %d in use', app.get('port'));
+    debug('Port %d in use', app.get('port'));
     app.set('port', randomPort());
     startServer();
 
@@ -46,9 +55,8 @@ var app       = express();
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
 var config    = require('./conf/config.json');
-var debugging = require('./libs/debugging');
 
-debugging(debug, 'app start run');
+debug('app start run');
 
 var tempPath = path.join(__dirname, 'temp');
 // 判断文件夹路径是否存在
@@ -58,7 +66,7 @@ var isDir    = fs.existsSync || path.existsSync;
 if(!isDir(tempPath)) {
 
   fs.mkdirSync(tempPath);
-  debugging(debug, 'create image temp dir %s.', tempPath);
+  debug('create image temp dir %s.', tempPath);
 }
 
 // 调整系统congfig  静态文件夹路径
@@ -81,10 +89,10 @@ function startServer() {
       return;
     }
 
-    debugging(debug, 'Express app server start success http://localhost:%s/', app.get('port'));
+    debug('Express app server start success http://localhost:%s/', app.get('port'));
   });
 
-  debugging(debug, 'Express app server listening on port %s', app.get('port'));
+  debug('Express app server listening on port %s', app.get('port'));
 }
 
 // 随机端口轮询
@@ -107,20 +115,23 @@ require('./libs/' + config.dbEnv)(app, function(err) {
     flags: 'a'
   });
   // app.use 内置中间件队列  依次执行队列的中间件
-  app.use(express.logger({stream: stream}));
+  app.use(logger({stream: stream}));
   // 添加gzip 输出压缩中间件
-  app.use(express.compress());
+  app.use(compression());
 
   // 配置客户端表单数据提交，必须在app.router之前，否者 res.body 为空
-  app.use(express.methodOverride());
+  app.use(methodOverride());
+
   // 设置文件上传缓存路径
-  app.use(express.bodyParser({
-    uploadDir: tempPath
+  app.use(multer({
+    dest: tempPath
   }));
+  // 设置post文件解析
+  app.use(require('./middleware/bodyParserHandler')());
 
   // 配置session，必须在cookie之后，依赖cookie
-  app.use(express.cookieParser(config.sessionSecret));
-  app.use(express.session());
+  app.use(cookieParser());
+  app.use(session({ secret: config.sessionSecret }));
 
   // url为 `*.json` 进行响应头处理
   app.use(require('./middleware/requestJSONHandler'));
@@ -131,32 +142,40 @@ require('./libs/' + config.dbEnv)(app, function(err) {
   // 配置路由异常处理
   // 路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用
   // 必须配置视图模版路径之前，否则请求index时服务器会直接调用静态路径下index.html
-  app.use(app.router);
-  // app.use(require('./routes')(app));
+  debug('load router');
   // 设置500服务器处理
-  app.configure('development', function() {
+  if (app.get('env') === 'development') {
 
     // 开发环境
-    app.use(express.errorHandler({
+    app.use(errorhandler({
       dumpExceptions: true,
       showStack: true
     }));
 
-    debugging(debug, 'development');
-  });
+    debug('lode development error handler');
+  }
 
-  app.configure('release', function() {
+  if (app.get('env') === 'release') {
 
+    // 生产环境
     app.use(require('./middleware/serverErrorHandler'));
-  });
+
+    debug('lode release error handler');
+  }
+
+  // 路由调度加载
+  require('./routers')(app);
 
   // 支持字典列表形式显示静态文件目录
-  app.use(express.directory(config.staticPath, { hidden: true }));
+  app.use(directory(config.staticPath, {
+    icons: true,
+    hidden: true
+  }));
   // 设置静态文件路径
   app.use(express.static(path.join(config.staticPath)));
 
   // 设置站点图标
-  app.use(express.favicon(path.join(config.staticPath, 'favicon.ico')));
+  app.use(favicon(path.join(config.staticPath, 'favicon.ico')));
 
   // 显示请求错误路由
   app.use(require('./middleware/routerErrorHandler'));
@@ -172,8 +191,6 @@ require('./libs/' + config.dbEnv)(app, function(err) {
   // 设置视图渲染引擎
   app.engine('tpl', require('./middleware/engineHtmlHandler'));
 
-  // 路由调度加载
-  require('./routers')(app);
   // 进行`sea-config.js`配置输出
   require('./libs/fileDebug')(commander.debug);
   // 启动服务器

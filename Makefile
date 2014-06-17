@@ -17,10 +17,10 @@ test-unit:
 		$(MOCHA_OPTS)
 
 debug:
-	@DEBUG=app,app:* NODE_ENV=development node app.js -d -p 3000
+	@DEBUG=* NODE_ENV=development node --debug app.js -d -p 3000
 
 run:
-	@NODE_ENV=release node app.js
+	@DEBUG=app,app:* NODE_ENV=release node app.js
 
 watch:
 	@grunt watch

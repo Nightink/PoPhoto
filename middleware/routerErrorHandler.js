@@ -3,10 +3,9 @@
  */
 
 var debug     = require('debug')('app:router');
-var debugging = require('../libs/debugging');
 
 module.exports = function requestJSONHandler(req, res, next) {
 
-  debugging(debug, 'Error routes %s --> %s', req.method, req.url);
+  debug('Error routes %s --> %s', req.method, req.url);
   next();
 };

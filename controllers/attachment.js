@@ -5,6 +5,8 @@
 var path   = require('path');
 var async  = require('async');
 
+var debug = require('debug')('app:controller:attachment');
+
 var utils  = require('../libs/utils');
 var config = require('../conf/config.json');
 
@@ -13,6 +15,8 @@ exports.upload = function(req, res) {
 
   var file = req.files.file;
   var tempImagePath = file.path;
+
+  debug('upload file name %s', file.name);
 
   // 缩略图缓存
   var thumbImagePath = tempImagePath + '_t';

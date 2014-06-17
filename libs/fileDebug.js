@@ -8,7 +8,6 @@ var format    = require('util').format;
 
 var _         = require('underscore');
 var debug     = require('debug')('app:webfront');
-var debugging = require('./debugging');
 
 var seaPath   = require('../conf/config.json').staticPath;
 
@@ -36,6 +35,6 @@ module.exports = function(isDebug) {
 
   fs.writeFileSync((baseSeaPath + '.js'), string);
 
-  debugging(debug, 'create web front sea.js config javascript file');
+  debug('create web front sea.js config javascript file');
 
 };
