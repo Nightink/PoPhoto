@@ -1,0 +1,18 @@
+{
+  "globals": {
+    "window": true,
+    "seajs": true,
+    "document": true,
+    "location": true,
+    "alert": true,
+    "define": true
+  },
+  "quotmark": "single",
+  "undef": true,
+  "asi": false,
+  "maxlen": 120,
+  "esnext": true,
+  "noyield": true,
+  "mocha": true,
+  "node": true
+}

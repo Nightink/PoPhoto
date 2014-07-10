@@ -12,9 +12,9 @@ var Photo     = mongoose.model('Photo');
 
 module.exports = function(app) {
 
-  app.get('/index.html', function *() {
+  app.get('/index.html', function* indexHtml() {
 
-    return this.redirect('/');
+    this.redirect('/');
   });
 
   app.get('/', function *() {
@@ -26,6 +26,11 @@ module.exports = function(app) {
       return this.json('用户请登陆');
     }
 
+    if(this.fresh) {
+      this.status = 304;
+      return;
+    }
+
     var _params = {
       limit: 15,
       skip: 0,
@@ -34,37 +39,28 @@ module.exports = function(app) {
       }
     };
 
-    try {
-      var docs = yield Photo.find(null, null, _params);
+    var docs = yield Photo.find(null, null, _params);
 
-      var backDoc = [];
-      _.each(docs, function(doc){
+    var backDoc = [];
+    _.each(docs, function(doc){
 
-        var reviews = doc.reviews;
-        doc._doc.reviews = (Array.isArray(reviews) ? reviews.length : 0);
-        backDoc.push(doc._doc);
-      });
+      var reviews = doc.reviews;
+      doc._doc.reviews = (Array.isArray(reviews) ? reviews.length : 0);
+      backDoc.push(doc._doc);
+    });
 
-      var indexRenderObj = {
-        title: 'PoPhoto',
-        time: Date.now(),
-        items: backDoc
-      };
+    var indexRenderObj = {
+      title: 'PoPhoto',
+      time: Date.now(),
+      items: backDoc
+    };
 
-      if(user && user.username) {
+    if(user && user.username) {
 
-        indexRenderObj.user = user;
-      }
-
-      this.body = yield app.render('index', indexRenderObj);
-
-    } catch(e) {
-
-      console.log(e.stack);
-      this.status = 500;
-      return this.body = 'server error';
+      indexRenderObj.user = user;
     }
 
+    this.body = yield app.render('index', indexRenderObj);
   });
 
   require('./attachment')(app);

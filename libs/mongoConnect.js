@@ -8,7 +8,7 @@ var mongoose  = require('mongoose');
 var config    = require('../conf/config.json');
 var debugging = require('./debugging');
 
-module.exports = function(next) {      //连接数据库操作
+module.exports = function(next) {
 
   debugging(debug, 'loader db config file');
 
@@ -17,9 +17,9 @@ module.exports = function(next) {      //连接数据库操作
     server: {
       auto_reconnect: true
     }
-
   }, config.authParams || {});
 
+  // 连接数据库操作
   mongoose.connect(config.dbAdd, params, function(err, data) {
 
     var status = err ? 'fialuer' : 'success';
@@ -27,7 +27,5 @@ module.exports = function(next) {      //连接数据库操作
     debugging(debug, 'connect to %s %s', config.dbAdd, status);
 
     next(err);
-
   });
-
 };

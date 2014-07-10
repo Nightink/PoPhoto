@@ -14,7 +14,7 @@ exports.userInfo = function *(){
 
   var params = {
     '_id': this.params.id
-  }
+  };
 
   try {
     var doc = yield User.findOne(params);
@@ -65,27 +65,22 @@ exports.updateUser = function(req, res) {
   var userModel = req.body;
   var userId = userModel._id;
 
-    utils.log(userModel);
+  utils.log(userModel);
 
   if(_.isNull(userModel.username)) {
 
     res.json(400, '用户昵称不能为空');
   }
 
-  var opt = {
-    username   : userModel.username,
-    password   : utils.encryptHelper(userModel.password),
-    gender     : userModel.gender,
-    discipline : userModel.discipline || '',
-    update     : Date.now
-  };
-
   var update =  {
 
-    $set: opt
-    //$addToSet: {
-    //  update: Date.now
-    // }
+    $set: {
+      username   : userModel.username,
+      password   : utils.encryptHelper(userModel.password),
+      gender     : userModel.gender,
+      discipline : userModel.discipline || '',
+      update     : Date.now
+    }
   };
 
   User.update({_id: userId}, update, function(err, num) {
