@@ -65,6 +65,7 @@ require('./libs/mongoConnect')(function(err) {
     return console.log(err);
   }
 
+  require('./libs/fileDebug')(program.debug);
   require('./libs/registerTemplate');
   require('./models');
   require('./routers')(app);
