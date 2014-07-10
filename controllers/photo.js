@@ -12,9 +12,7 @@ var utils    = require('../libs/utils');
 var Photo    = mongoose.model('Photo');
 
 // GET --> /photo
-exports.photo = function *() {
-
-  console.log(this.query, this.cookies.get('username'))
+exports.photo = function *getPhotoData() {
 
   var query = {};
   var fields = '';
@@ -81,8 +79,7 @@ exports.photo = function *() {
   } catch(err) {
 
     utils.log(err);
-    this.status = 500;
-    this.body = 'server error';
+    this.throw('server error');
   }
 };
 
@@ -93,16 +90,9 @@ exports.getPhotoById = function *() {
     '_id': this.params.id
   };
 
-  try {
-
-    var doc = yield Photo.findOne(params);
-    this.status = 200;
-    this.body = doc;
-  } catch(e) {
-
-    this.status = 500;
-    this.body = '获取图片信息错误'
-  }
+  var doc = yield Photo.findOne(params);
+  this.status = 200;
+  this.body = doc;
 };
 
 // PUT --> /photo

@@ -4,5 +4,3 @@ node_js:
 branches:
   only:
     - koa-develop
-notifications:
-  email: false

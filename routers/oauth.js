@@ -12,7 +12,7 @@ var utils    = require('../libs/utils');
 module.exports = function(app) {
 
   //用户登出操作
-  app.get('/login-out', function *() {
+  app.get('/login-out', function* loginOut() {
 
     var redirect = this.query.redirect ?  this.query.redirect : '/';
     if(this.session && this.session.user) {
@@ -29,50 +29,44 @@ module.exports = function(app) {
   });
 
   //用户登陆操作
-  app.post('/login', function *() {
+  app.post('/login', function* login() {
 
     var email = this.request.body.email;
     var password = this.request.body.password;
 
     if(_.isEmpty(email) || _.isEmpty(password)) {
       this.status = 400;
-      return this.body = '请填写正确信息';
+      this.body = '请填写正确信息';
+      return;
     }
 
     var params = {
       email: email,
       password: utils.encryptHelper(password)
     };
+    var doc = yield User.findOne(params);
 
-    try {
+    if(_.isNull(doc)) {
 
-      var doc = yield User.findOne(params);
-      if(_.isNull(doc)) {
-
-        this.status = 400;
-        return this.body = '登陆失败';
-      }
-
-      var result = {
-        username: doc.username,
-        _id: doc._id.toString()
-      };
-
-      var cookieParams = {
-        path:'/',
-        maxage: config.cookieMaxage
-      };
-
-      this.session.user = result;
-      this.cookies.set('_id', utils.encryptHelper(result._id), cookieParams);
-      this.cookies.set('username', result.username, cookieParams);
-      this.status = 200;
-      this.body = result;
-    } catch(err) {
-
-      console.log(err.stack);
-      this.status = 500
-      this.body = 'server error';
+      this.status = 400;
+      this.body = '登陆失败';
+      return;
     }
+
+    var result = {
+      username: doc.username,
+      _id: doc._id.toString()
+    };
+
+    var cookieParams = {
+      path:'/',
+      maxage: config.cookieMaxage
+    };
+
+    this.session.user = result;
+    this.cookies.set('_id', utils.encryptHelper(result._id), cookieParams);
+    this.cookies.set('username', result.username, cookieParams);
+    this.status = 200;
+    this.body = result;
   });
 };

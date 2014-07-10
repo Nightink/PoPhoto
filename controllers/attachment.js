@@ -81,9 +81,10 @@ exports.download = function *() {
 
     if(err) {
 
-      console.log(err.stack)
+      console.log(err.stack);
       this.status = 404;
-      return this.body = '找不到该文件';
+      this.body = '找不到该文件';
+      return;
     }
   }
 };
