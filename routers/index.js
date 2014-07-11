@@ -60,7 +60,7 @@ module.exports = function(app) {
       indexRenderObj.user = user;
     }
 
-    this.body = yield app.render('index', indexRenderObj);
+    this.body = yield this.render('index', indexRenderObj);
   });
 
   require('./attachment')(app);

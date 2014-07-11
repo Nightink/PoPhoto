@@ -10,34 +10,28 @@ var config   = require('../conf/config.json');
 var utils    = require('../libs/utils');
 
 //  GET --> /user/:id  个人用户管理界面
-exports.userInfo = function *(){
+exports.userInfo = function *userInfo(){
 
   var params = {
     '_id': this.params.id
   };
 
-  try {
-    var doc = yield User.findOne(params);
-    delete doc.password;
-    this.status = 200;
-    this.body = yield this.app.render('user', {
+  var doc = yield User.findOne(params);
+  delete doc.password;
+  var renderParams = {
+    title: 'PoPhoto',
+    user: doc
+  };
 
-      title: 'PoPhoto',
-      user: doc
-    });
-  } catch(err) {
-
-    console.log(err.stack);
-    this.stack = 500;
-    this.body = 'server error';
-  }
+  this.status = 200;
+  this.body = yield this.render('user', renderParams);
 };
 
 // POST --> /add-user  添加用户控制器处理方法
-exports.addUser = function(req, res) {
+exports.addUser = function *addUser() {
 
   // 获取用户提交数据
-  var reqBody = req.body;
+  var reqBody = this.request.body;
 
   _.each(reqBody, function(val, key) {
 
@@ -51,29 +45,33 @@ exports.addUser = function(req, res) {
   reqBody.updated = new Date();
 
   var user = new User(reqBody);
-  user.save(function(err) {
-    if(err) return res.json(400, '用户注册失败');
+  try {
+    yield user.save();
+    this.status = 200;
+    this.body = '添加用户成功';
+  } catch(e) {
 
-    res.json(200, '添加用户成功');
-  });
-
+    this.status = 400;
+    this.body = '用户注册失败';
+  }
 };
 
 //PUT --> /user-update   用户更新数据
-exports.updateUser = function(req, res) {
+exports.updateUser = function *updateUser() {
 
-  var userModel = req.body;
+  var userModel = this.request.body;
   var userId = userModel._id;
 
-  utils.log(userModel);
+  // utils.log(userModel);
 
   if(_.isNull(userModel.username)) {
 
-    res.json(400, '用户昵称不能为空');
+    this.status = 400;
+    this.body = '用户注册失败';
+    return;
   }
 
   var update =  {
-
     $set: {
       username   : userModel.username,
       password   : utils.encryptHelper(userModel.password),
@@ -83,20 +81,17 @@ exports.updateUser = function(req, res) {
     }
   };
 
-  User.update({_id: userId}, update, function(err, num) {
+  var num = yield User.update({_id: userId}, update)
 
-    if(err) {
+  if(num === 0) {
 
-      return res.json(500, '用户信息更新错误');
-    }
+    this.status = 400;
+    this.body = '用户信息错误';
+  } else {
 
-    if(num === 0) {
-
-      return res.json(400, '用户信息错误');
-    }
-
-    return res.json(200, '用户更新成功');
-  });
+    this.status = 200;
+    this.body = '用户更新成功';
+  }
 };
 
 // 判断用户是否登录，或者登录有效，进行url过滤中间件

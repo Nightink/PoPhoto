@@ -31,3 +31,4 @@ mongoose.model('User', UserSchema);
 var User  = mongoose.model('User');
 User.findOne = thunkify(User.findOne);
 User.update = thunkify(User.update);
+User.prototype.save = thunkify(User.prototype.save);

@@ -37,7 +37,7 @@ module.exports = function(program) {
     debug('%s %s - %sms', this.method, this.url, ms);
   });
 
-  app.render = views('views', {
+  app.context.render = views('views', {
     ext: 'tpl',
     map: { tpl: 'handlebars' }
   });
