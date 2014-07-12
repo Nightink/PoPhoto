@@ -8,7 +8,8 @@ install:
 		--cache=$HOME/.npm/.cache/cnpm
 
 test:
-	@NODE_ENV=test ./node_modules/.bin/mocha --harmony \
+	@NODE_ENV=test ./node_modules/.bin/mocha \
+		--harmony \
 		--require should \
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS)
@@ -22,4 +23,4 @@ run:
 jshint:
 	@./node_modules/.bin/jshint ./
 
-.PHONY: install test test-unit debug run
+.PHONY: install test debug run
