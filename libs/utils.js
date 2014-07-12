@@ -8,6 +8,7 @@ var _          = require('underscore');
 var gm         = require('gm');
 var debug      = require('debug')('app:utils');
 var mongoose   = require('mongoose');
+var thunkify   = require('thunkify');
 
 var debugging  = require('./debugging');
 
@@ -38,17 +39,15 @@ exports.imageSize = function(readPath, next) {
 };
 
 // 下载文件
-exports.download = function (fileId, next) {
+exports.download = thunkify(function(fileId, next) {
 
   var id = new ObjectID(fileId);
-
   var gs = new GridStore(mongooseDb, id, 'r');
 
   // 打开当前Mongo数据存储对象
   gs.open(function (err, docFile) {
 
     if (err) {
-
       return next(err, null);
     }
 
@@ -58,17 +57,14 @@ exports.download = function (fileId, next) {
 
         var buffer = new Buffer(docChunk.toString('binary'), 'binary');
         next(err, docFile.contentType, buffer);
-
       });
-
     });
-
   });
 
-};
+});
 
 // 上传文件入库
-exports.upload = function (fileName, fileType, filePath, next) {
+exports.upload = function(fileName, fileType, filePath, next) {
 
   var gs = new GridStore(mongooseDb, fileName, 'w', {
 
@@ -78,7 +74,7 @@ exports.upload = function (fileName, fileType, filePath, next) {
   });
 
   // open the file
-  gs.open(function (err, gridStore) {
+  gs.open(function(err, gridStore) {
 
     if (err) {
 

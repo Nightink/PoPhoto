@@ -1,10 +1,11 @@
 
 MOCHA_OPTS = --check-leaks
 REPORTER = spec
-REGISTRY = --registry=http://registry.npm.taobao.org
 
 install:
-	@npm install $(REGISTRY) --disturl=http://npm.taobao.org/dist
+	@npm install --registry=http://registry.npm.taobao.org \
+		--disturl=http://npm.taobao.org/dist \
+		--cache=$HOME/.npm/.cache/cnpm
 
 test:
 	@NODE_ENV=test ./node_modules/.bin/mocha --harmony \

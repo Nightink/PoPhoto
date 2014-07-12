@@ -20,7 +20,7 @@ exports.userInfo = function *(){
     var doc = yield User.findOne(params);
     delete doc.password;
     this.status = 200;
-    this.body = yield this.app.render('user', {
+    this.body = yield this.render('user', {
 
       title: 'PoPhoto',
       user: doc

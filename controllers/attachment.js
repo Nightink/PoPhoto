@@ -63,11 +63,9 @@ exports.upload = function(req, res) {
   });
 };
 
-utils.download = require('thunkify')(utils.download);
-
 // GET --> attachment/:id
 // 图片下载操作
-exports.download = function *() {
+exports.download = function *downloadImage() {
 
   var id = this.params.id;
 
