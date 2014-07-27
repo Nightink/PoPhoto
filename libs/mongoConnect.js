@@ -2,15 +2,14 @@
 // 数据库配置文件
 
 var _         = require('underscore');
-var debug     = require('debug')('app:config');
+var debug     = require('debug')('app:libs:mongoConnect');
 var mongoose  = require('mongoose');
 
 var config    = require('../conf/config.json');
-var debugging = require('./debugging');
 
 module.exports = function(app, next) {      //连接数据库操作
 
-  debugging(debug, 'loader db config file');
+  debug('loader db config file');
 
   var params = _.extend({
 
@@ -24,7 +23,7 @@ module.exports = function(app, next) {      //连接数据库操作
 
     var status = err ? 'fialuer' : 'success';
 
-    debugging(debug, 'connect to %s %s', config.dbAdd, status);
+    debug('connect to %s %s', config.dbAdd, status);
 
     next(err);
 

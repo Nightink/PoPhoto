@@ -6,9 +6,8 @@ var fs           = require('fs');
 var path         = require('path');
 
 var _            = require('underscore');
-var debug        = require('debug')('app:fileClean');
+var debug        = require('debug')('app:libs:fileClean');
 
-var debugging    = require('./debugging');
 var config       = require('../conf/config.json');
 var INVALID_TIME = config.fileClearTime;
 
@@ -34,7 +33,7 @@ function fileClean() {
           if(err) {
             console.log(err);
           } else {
-            debugging(debug, 'Debug: file clean is %s', filePath);
+            debug('Debug: file clean is %s', filePath);
           }
         });
       }

@@ -5,6 +5,8 @@
 var handlebars = require('handlebars');
 var readString = require('fs').readFileSync;
 
+require('debug')('app:libs:registerPartial')('loaded registerPartial');
+
 // 注册top模版
 handlebars.registerPartial('top',
   readString(__dirname + '/../views/partial/top.tpl', 'utf8'));
