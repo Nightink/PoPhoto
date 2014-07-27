@@ -4,8 +4,8 @@ var path = require('path');
 
 var app = require('express')();
 
-describe('app', function() {
-  describe('.engine(\'html\', fn) middleware/engineHtmlHandler', function() {
+describe('app.middleware', function() {
+  describe('.engine(\'html\', fn) engineHtmlHandler', function() {
 
     var tplPath = path.join(__dirname, '../views/test.html');
 
@@ -32,7 +32,7 @@ describe('app', function() {
         url: 'https://github.com/Nightink/node-Pophoto'
       };
 
-      var _str = '<p>repo name is node-Pophoto</p> ' + 
+      var _str = '<p>repo name is node-Pophoto</p> ' +
         '<p>repo url is https://github.com/Nightink/node-Pophoto</p>';
 
       app.render('test.html', function(err, str) {
