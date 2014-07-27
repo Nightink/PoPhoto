@@ -16,6 +16,7 @@
   "dependencies": {
     "gm": "~1.9",
     "debug": "*",
+    "log": "~1.4.0",
     "async": "~0.2",
     "moment": "~2.0",
     "express": "~3.0",

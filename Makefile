@@ -12,11 +12,11 @@ test:
 		--reporter $(REPORTER) \
 		$(MOCHA_OPTS)
 
-debug:
+development:
 	@DEBUG=app,app:* NODE_ENV=development node app.js -d -p 3000
 
-run:
-	@NODE_ENV=release node app.js
+production:
+	@NODE_ENV=production node app.js
 
 jshint:
 	@./node_modules/.bin/jshint ./

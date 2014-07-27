@@ -6,8 +6,6 @@ var _         = require('underscore');
 var debug     = require('debug')('app:router');
 var mongoose  = require('mongoose');
 
-var debugging = require('../libs/debugging');
-
 var Photo     = mongoose.model('Photo');
 
 module.exports = function(app) {
@@ -67,7 +65,5 @@ module.exports = function(app) {
   require('./photo')(app);
   require('./oauth')(app);
 
-  debugging(debug, 'loaded router files');
-
-  //return app.router;
+  debug('loaded router files');
 };

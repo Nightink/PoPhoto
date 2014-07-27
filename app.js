@@ -9,6 +9,7 @@ var path      = require('path');
 
 var express   = require('express');
 var commander = require('commander');
+var Log       = require('log');
 var debug     = require('debug')('app');
 
 commander
@@ -24,7 +25,7 @@ process.on('uncaughtException', function(err) {
   // 捕获启动端口被占用，异常
   if (err.code === 'EADDRINUSE') {
 
-    debugging(debug, 'Port %d in use', app.get('port'));
+    debug('Port %d in use', app.get('port'));
     app.set('port', randomPort());
     startServer();
 
@@ -42,13 +43,14 @@ process.on('SIGINT', function() {
   process.exit();
 });
 
-var app       = express();
+var app    = express();
+var log    = new Log('info');
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
-var config    = require('./conf/config.json');
-var debugging = require('./libs/debugging');
+var config = require('./conf/config.json');
 
-debugging(debug, 'app start run');
+
+debug('app start run');
 
 var tempPath = path.join(__dirname, 'temp');
 // 判断文件夹路径是否存在
@@ -58,7 +60,7 @@ var isDir    = fs.existsSync || path.existsSync;
 if(!isDir(tempPath)) {
 
   fs.mkdirSync(tempPath);
-  debugging(debug, 'create image temp dir %s.', tempPath);
+  debug('create image temp dir %s.', tempPath);
 }
 
 // 调整系统congfig  静态文件夹路径
@@ -67,7 +69,7 @@ config.staticPath = commander.static || config.staticPath || '';
 // 缓存文件定期处理
 require('./libs/fileClean');
 // 加载视图注册模版
-require('./libs/registerTemplate');
+require('./libs/registerPartial');
 // 加载实体对象
 require('./models');
 
@@ -81,10 +83,10 @@ function startServer() {
       return;
     }
 
-    debugging(debug, 'Express app server start success http://localhost:%s/', app.get('port'));
+    debug('Express app server start success http://localhost:%s/', app.get('port'));
   });
 
-  debugging(debug, 'Express app server listening on port %s', app.get('port'));
+  debug('Express app server listening on port %s', app.get('port'));
 }
 
 // 随机端口轮询
@@ -142,7 +144,7 @@ require('./libs/' + config.dbEnv)(app, function(err) {
       showStack: true
     }));
 
-    debugging(debug, 'development');
+    debug('development');
   });
 
   app.configure('release', function() {
@@ -175,7 +177,7 @@ require('./libs/' + config.dbEnv)(app, function(err) {
   // 路由调度加载
   require('./routers')(app);
   // 进行`sea-config.js`配置输出
-  require('./libs/fileDebug')(commander.debug);
+  require('./libs/seajsDebug')(commander.debug);
   // 启动服务器
   startServer();
 });

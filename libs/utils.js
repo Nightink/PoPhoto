@@ -6,10 +6,8 @@ var crypto     = require('crypto');
 
 var _          = require('underscore');
 var gm         = require('gm');
-var debug      = require('debug')('app:utils');
+var debug      = require('debug')('app:libs:utils');
 var mongoose   = require('mongoose');
-
-var debugging  = require('./debugging');
 
 // mongoose.connection.db 必须确保已经连接mongo数据
 // 否则 mongooseDb 将为空
