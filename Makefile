@@ -6,11 +6,7 @@ REGISTRY = --registry=http://registry.npm.taobao.org
 install:
 	@npm install $(REGISTRY) --disturl=http://npm.taobao.org/dist
 
-check: test
-
-test: test-unit
-
-test-unit:
+test:
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--require should \
 		--reporter $(REPORTER) \
@@ -22,10 +18,7 @@ debug:
 run:
 	@NODE_ENV=release node app.js
 
-watch:
-	@grunt watch
-
 jshint:
-	@grunt jshint
+	@./node_modules/.bin/jshint ./
 
-.PHONY: install test test-unit debug run watch jshint
+.PHONY: test
