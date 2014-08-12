@@ -1,6 +1,6 @@
 {
   "dbEnv": "mongoConnect",
-  "dbAdd": "mongodb://127.0.0.1:27017/Pophoto",
+  "dbAdd": "mongodb://127.0.0.1:27017/pophoto_test",
   "sessionSecret": "pophoto",
   "session_key": "pophoto-strong",
   "cookieMaxage": 259200000,

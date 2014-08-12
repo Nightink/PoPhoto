@@ -4,47 +4,44 @@ var path = require('path');
 
 var app = require('express')();
 
-describe('app.middleware', function() {
-  describe('.engine(\'html\', fn) engineHtmlHandler', function() {
+describe('libs/engineHtmlHandler.js', function() {
 
-    var tplPath = path.join(__dirname, '../../views/test.html');
+  var tplPath = path.join(__dirname, '../../views/test.html');
 
-    before(function() {
+  before(function() {
 
-      fs.writeFileSync(tplPath,
-        '<p>repo name is {{repo.name}}</p> <p>repo url is {{repo.url}}</p>');
-    });
+    fs.writeFileSync(tplPath,
+      '<p>repo name is {{repo.name}}</p> <p>repo url is {{repo.url}}</p>');
+  });
 
-    after(function() {
+  after(function() {
 
-      fs.unlink(tplPath);
-    });
+    fs.unlink(tplPath);
+  });
 
-    it('should map a hbs template engine test ok', function(done) {
+  it('should map a hbs template engine test ok', function(done) {
 
-      app.set('view engine', 'html');
-      app.set('views', path.join(__dirname, '../../views'));
-      app.engine('html',
-        require(path.join(__dirname, '../../middleware/engineHtmlHandler')));
+    app.set('view engine', 'html');
+    app.set('views', path.join(__dirname, '../../views'));
+    app.engine('html',
+      require(path.join(__dirname, '../../middleware/engineHtmlHandler')));
 
-      app.locals.repo = {
-        name: 'node-Pophoto',
-        url: 'https://github.com/Nightink/node-Pophoto'
-      };
+    app.locals.repo = {
+      name: 'node-Pophoto',
+      url: 'https://github.com/Nightink/node-Pophoto'
+    };
 
-      var _str = '<p>repo name is node-Pophoto</p> ' +
-        '<p>repo url is https://github.com/Nightink/node-Pophoto</p>';
+    var _str = '<p>repo name is node-Pophoto</p> ' +
+      '<p>repo url is https://github.com/Nightink/node-Pophoto</p>';
 
-      app.render('test.html', function(err, str) {
+    app.render('test.html', function(err, str) {
 
-        if(err) {
-          return done(err);
-        }
+      if(err) {
+        return done(err);
+      }
 
-        str.should.equal(_str);
-        done();
-      });
-
+      str.should.equal(_str);
+      done();
     });
 
   });

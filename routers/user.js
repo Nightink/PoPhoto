@@ -9,5 +9,4 @@ module.exports = function(app) {
   app.get('/user', userControllers.getUserById);
   app.post('/add-user', userControllers.addUser);
   app.put('/user-update', userControllers.updateUser);
-
 };
