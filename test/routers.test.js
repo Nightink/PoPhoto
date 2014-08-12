@@ -14,6 +14,7 @@ describe('routers/index.js', function () {
 
       res.status.should.equal(200);
       res.type.should.equal('text/html');
+      res.text.should.containEql('返回顶部');
       done();
     });
   });
