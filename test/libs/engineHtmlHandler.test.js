@@ -7,7 +7,7 @@ var app = require('express')();
 describe('app.middleware', function() {
   describe('.engine(\'html\', fn) engineHtmlHandler', function() {
 
-    var tplPath = path.join(__dirname, '../views/test.html');
+    var tplPath = path.join(__dirname, '../../views/test.html');
 
     before(function() {
 
@@ -23,9 +23,9 @@ describe('app.middleware', function() {
     it('should map a hbs template engine test ok', function(done) {
 
       app.set('view engine', 'html');
-      app.set('views', path.join(__dirname, '../views'));
+      app.set('views', path.join(__dirname, '../../views'));
       app.engine('html',
-        require(path.join(__dirname, '../middleware/engineHtmlHandler')));
+        require(path.join(__dirname, '../../middleware/engineHtmlHandler')));
 
       app.locals.repo = {
         name: 'node-Pophoto',

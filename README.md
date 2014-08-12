@@ -1,11 +1,15 @@
-# 基于node.js 图片展示web应用 [![Build Status](https://travis-ci.org/Nightink/node-Pophoto.png?branch=develop)](https://travis-ci.org/Nightink/node-Pophoto)
+# 基于node.js 图片展示web应用 [![Build Status](https://travis-ci.org/Nightink/node-Pophoto.png?branch=master)](https://travis-ci.org/Nightink/node-Pophoto)
 
 ## node app
 
 ### mac osx
-* `$ brew install node.js`
-* `$ brew install GraphicsMagick`
-* `$ brew install mongodb`
+
+``` shell
+
+brew install node.js
+brew install GraphicsMagick
+brew install mongodb
+```
 
 ### windows
 * [node.js官网](http://www.nodejs.org/)

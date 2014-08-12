@@ -3,6 +3,8 @@ MOCHA_OPTS = --check-leaks
 REPORTER = spec
 REGISTRY = --registry=http://registry.npm.taobao.org
 
+TESTS = test/*
+
 init:
 	@if ! test -f config.json; then \
 		cp config.json.default config.json; \
@@ -16,6 +18,7 @@ test: install
 	@NODE_ENV=test ./node_modules/.bin/mocha \
 		--require should \
 		--reporter $(REPORTER) \
+		$(TESTS) \
 		$(MOCHA_OPTS)
 
 development:

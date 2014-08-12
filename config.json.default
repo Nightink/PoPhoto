@@ -9,5 +9,7 @@
   "thumb": {
     "width": 200
   },
-  "staticPath": "static"
+  "staticPath": "static",
+  "debug": true,
+  "port": 3000
 }
