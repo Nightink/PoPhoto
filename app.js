@@ -44,7 +44,9 @@ module.exports = function(program) {
 
   app.keys = [conf.sessionSecret];
   app.use(bodyParser());
-  app.use(session());
+  app.use(session({
+    'httpOnly': false
+  }));
   app.use(router(app));
   app.use(serve(conf.staticPath));
 

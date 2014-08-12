@@ -81,7 +81,7 @@ exports.updateUser = function *updateUser() {
     }
   };
 
-  var num = yield User.update({_id: userId}, update)
+  var num = yield User.update({_id: userId}, update);
 
   if(num === 0) {
 

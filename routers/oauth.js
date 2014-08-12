@@ -60,7 +60,8 @@ module.exports = function(app) {
 
     var cookieParams = {
       path:'/',
-      maxage: config.cookieMaxage
+      maxage: config.cookieMaxage,
+      httpOnly: false
     };
 
     this.session.user = result;
