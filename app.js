@@ -47,7 +47,7 @@ var app    = express();
 var log    = new Log('info');
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
-var config = require('./conf/config.json');
+var config = require('./config.json');
 
 
 debug('app start run');

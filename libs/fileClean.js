@@ -8,7 +8,7 @@ var path         = require('path');
 var _            = require('underscore');
 var debug        = require('debug')('app:libs:fileClean');
 
-var config       = require('../conf/config.json');
+var config       = require('../config.json');
 var INVALID_TIME = config.fileClearTime;
 
 function fileClean() {

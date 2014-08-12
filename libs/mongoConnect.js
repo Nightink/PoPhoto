@@ -5,7 +5,7 @@ var _         = require('underscore');
 var debug     = require('debug')('app:libs:mongoConnect');
 var mongoose  = require('mongoose');
 
-var config    = require('../conf/config.json');
+var config    = require('../config.json');
 
 module.exports = function(app, next) {      //连接数据库操作
 

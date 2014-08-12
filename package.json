@@ -1,6 +1,6 @@
 {
   "name": "PoPhoto",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "NodeJS图片瀑布流",
   "keywords": ["NodeJS", "BackboneJS", "SeaJS", "图片"],
   "main": "app.js",
@@ -9,9 +9,8 @@
     "node": ">=0.8"
   },
   "scripts": {
-    "start": "node app",
-    "test": "./node_modules/.bin/mocha --require should --reporter spec --check-leaks",
-    "postinstall": "node scripts/postinstall.js"
+    "start": "make production",
+    "test": "make test"
   },
   "dependencies": {
     "gm": "~1.9",

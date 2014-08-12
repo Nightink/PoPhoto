@@ -6,7 +6,7 @@ var path   = require('path');
 var async  = require('async');
 
 var utils  = require('../libs/utils');
-var config = require('../conf/config.json');
+var config = require('../config.json');
 
 // POST --> /upload 上传图片
 exports.upload = function(req, res) {

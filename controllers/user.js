@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var _        = require('underscore');
 
 var User     = mongoose.model('User');
-var config   = require('../conf/config.json');
+var config   = require('../config.json');
 var utils    = require('../libs/utils');
 
 //  GET --> /user/:id  个人用户管理界面

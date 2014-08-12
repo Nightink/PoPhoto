@@ -9,7 +9,7 @@ var format    = require('util').format;
 var _         = require('underscore');
 var debug     = require('debug')('app:libs:seajsDebug');
 
-var seaPath   = require('../conf/config.json').staticPath;
+var seaPath   = require('../config.json').staticPath;
 
 /**
  * 生成sea.js config 配置文件，用于前端是否js debug 文件输出
