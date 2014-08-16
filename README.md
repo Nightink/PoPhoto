@@ -7,7 +7,7 @@
 ``` shell
 
 brew install node.js
-brew install GraphicsMagick
+brew install graphicsmagick
 brew install mongodb
 ```
 

@@ -8,24 +8,14 @@ var fs        = require('fs');
 var path      = require('path');
 
 var express   = require('express');
-var debug     = require('debug')('app');
+var debug     = require('debug')('pophoto');
 
 // 捕获所有未处理异常
 process.on('uncaughtException', function(err) {
 
-  // 捕获启动端口被占用，异常
-  if (err.code === 'EADDRINUSE') {
-
-    debug('Port %d in use', app.get('port'));
-    app.set('port', randomPort());
-    startServer();
-
-  } else {
-
-    console.log(err.message);
-    console.log(err.stack);
-    process.exit(1);
-  }
+  console.log(err.message);
+  console.log(err.stack);
+  process.exit(1);
 });
 
 // 捕获node 进程结束事件
@@ -81,12 +71,6 @@ function startServer() {
   });
 
   debug('Express app server listening on port %s', app.get('port'));
-}
-
-// 随机端口轮询
-function randomPort() {
-
-  return Math.floor(Math.random() * 1000) + 7000;
 }
 
 require('./libs/' + config.dbEnv)(app, function(err) {
@@ -172,8 +156,11 @@ require('./libs/' + config.dbEnv)(app, function(err) {
   require('./routers')(app);
   // 进行`sea-config.js`配置输出
   require('./libs/seajsDebug')(config.debug);
-  // 启动服务器
-  startServer();
+
+  if(!module.parent) {
+    // 启动服务器
+    startServer();
+  }
 });
 
 // `exports test app`

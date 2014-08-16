@@ -2,7 +2,7 @@
 // 数据库配置文件
 
 var _         = require('underscore');
-var debug     = require('debug')('app:libs:mongoConnect');
+var debug     = require('debug')('pophoto:libs:mongoConnect');
 var mongoose  = require('mongoose');
 
 var config    = require('../config.json');

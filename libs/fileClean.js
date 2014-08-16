@@ -6,7 +6,7 @@ var fs           = require('fs');
 var path         = require('path');
 
 var _            = require('underscore');
-var debug        = require('debug')('app:libs:fileClean');
+var debug        = require('debug')('pophoto:libs:fileClean');
 
 var config       = require('../config.json');
 var INVALID_TIME = config.fileClearTime;

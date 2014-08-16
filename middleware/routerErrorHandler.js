@@ -2,7 +2,7 @@
  * 简单路由错误处理
  */
 
-var debug     = require('debug')('app:middleware:routerErrorHandler');
+var debug     = require('debug')('pophoto:middleware:routerErrorHandler');
 
 module.exports = function routerErrorHandler(req, res, next) {
 

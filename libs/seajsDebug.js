@@ -7,7 +7,7 @@ var path      = require('path');
 var format    = require('util').format;
 
 var _         = require('underscore');
-var debug     = require('debug')('app:libs:seajsDebug');
+var debug     = require('debug')('pophoto:libs:seajsDebug');
 
 var seaPath   = require('../config.json').staticPath;
 

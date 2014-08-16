@@ -5,6 +5,6 @@
 require('./photo');
 require('./user');
 
-var debug     = require('debug')('app:models');
+var debug     = require('debug')('pophoto:models');
 
 debug('loaded model files');

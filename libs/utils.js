@@ -6,7 +6,7 @@ var crypto     = require('crypto');
 
 var _          = require('underscore');
 var gm         = require('gm');
-var debug      = require('debug')('app:libs:utils');
+var debug      = require('debug')('pophoto:libs:utils');
 var mongoose   = require('mongoose');
 
 // mongoose.connection.db 必须确保已经连接mongo数据

@@ -22,7 +22,7 @@ test: install
 		$(MOCHA_OPTS)
 
 development:
-	@DEBUG=app,app:* NODE_ENV=development node app.js -d -p 3000
+	@DEBUG=pophoto,pophoto:* NODE_ENV=development node app.js
 
 production:
 	@NODE_ENV=production node app.js
