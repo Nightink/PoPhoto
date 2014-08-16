@@ -153,7 +153,7 @@ require('./libs/' + config.dbEnv)(app, function(err) {
   app.engine('tpl', require('./middleware/engineHtmlHandler'));
 
   // 路由调度加载
-  require('./routers')(app);
+  require('./router')(app);
   // 进行`sea-config.js`配置输出
   require('./libs/seajsDebug')(config.debug);
 

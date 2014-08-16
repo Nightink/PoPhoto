@@ -13,8 +13,8 @@
     "test": "make test"
   },
   "dependencies": {
-    "gm": "~1.9",
     "debug": "*",
+    "gm": "~1.9.0",
     "async": "~0.2.10",
     "moment": "~2.7.0",
     "express": "~3.0.0",
