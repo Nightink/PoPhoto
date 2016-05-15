@@ -3,9 +3,12 @@
  */
 'use strict';
 
-require('./photo');
-require('./user');
-
 const debug = require('debug')('pophoto:models');
 
-debug('loaded model files');
+module.exports = function(app) {
+  app.ready(() => {
+    require('./photo');
+    require('./user');
+    debug('loaded model files');
+  });
+};

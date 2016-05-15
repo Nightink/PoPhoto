@@ -5,6 +5,7 @@
 'use strict';
 
 module.exports = function(app) {
+  // app.role.can('user',)
   app.get('/', app.controller.index.index);
 
   // 用户登出操作

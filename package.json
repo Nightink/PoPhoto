@@ -14,8 +14,8 @@
     "node": ">=4.4.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
-    "dev": "DEBUG=pophoto,pophoto:*,koa-static NODE_ENV=development node app.js",
+    "start": "NODE_ENV=production node worker.js",
+    "dev": "DEBUG=po,po:*,koa-static NODE_ENV=development node worker.js",
     "test": "mocha --require should --reporter spec test/**/*.test.js --check-leaks",
     "lint": "eslint .",
     "cnpm:install": "npm install --registry=http://registry.npm.taobao.org"
@@ -25,9 +25,12 @@
     "debug": "*",
     "delegates": "^1.0.0",
     "gm": "~1.22.0",
+    "graceful": "^1.0.0",
     "koa": "^1.2.0",
     "koa-bodyparser": "^2.1.0",
+    "koa-favicon": "^1.2.1",
     "koa-resourcer": "^1.0.2",
+    "koa-roles": "^1.0.2",
     "koa-router": "^4.3.2",
     "koa-serve-index": "^1.1.1",
     "koa-session": "^3.3.1",

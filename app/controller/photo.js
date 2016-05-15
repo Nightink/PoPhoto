@@ -13,17 +13,15 @@ const utils = require('../../lib/utils');
 const Photo = mongoose.model('Photo');
 
 // GET --> /photo
-exports.photo = function(req, res) {
-
+exports.photo = function* () {
   const query = {};
-  const q = req.query.q || null;
+  const q = this.query.q || null;
   // 用户查询图片关键字
-  const keywords = req.query.keywords && req.query.keywords.split(',');
-  const time = req.query.time ? req.query.time : Date.now();
-  const author = req.query.author;
+  const keywords = this.query.keywords && this.query.keywords.split(',');
+  const time = this.query.time ? this.query.time : Date.now();
+  const author = this.query.author;
 
   if (author) {
-
     query.author = author;
   }
 
@@ -45,23 +43,16 @@ exports.photo = function(req, res) {
   }
 
   const _params = {
-    limit: req.query.limit ? req.query.limit : 15,
-    skip: req.query.skip ? req.query.skip : 0,
+    limit: this.query.limit ? this.query.limit : 15,
+    skip: this.query.skip ? this.query.skip : 0,
     sort: {
       updated: -1,
     },
   };
 
-  Photo.find(query, null, _params, function(err, docs) {
-
-    if (err) {
-
-      utils.log(err);
-      return res.send(500);
-    }
-
+  try {
+    const docs = yield this.app.service.photo.query(query, null, _params);
     const backDoc = docs.map(doc => {
-
       const reviews = doc.reviews;
 
       doc._doc.reviews = Array.isArray(reviews) ? reviews.length : 0;
@@ -76,8 +67,14 @@ exports.photo = function(req, res) {
       return doc._doc;
     });
 
-    res.json(backDoc);
-  });
+    return this.body = backDoc;
+  } catch(err) {
+    console.log(err);
+    return this.body = {
+      stat: 'fail',
+      message: 'system error',
+    };
+  }
 };
 
 // GET --> /photo/:id

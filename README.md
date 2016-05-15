@@ -1,9 +1,14 @@
 # 基于node.js 图片展示web应用 [![Build Status](https://travis-ci.org/Nightink/node-Pophoto.png?branch=master)](https://travis-ci.org/Nightink/node-Pophoto)
 
 ## node app
+使用 koa.js 和 node@>=4 进行重构，目前 app 下面的具体业务还么重构完成，但项目结构基本稳定。
+当然实际生产环境还需做很多事情
+
+### TODO
+- [ ] cluster 运用
+- [ ] logger 添加
 
 ### mac osx
-
 ``` shell
 
 brew install node.js
