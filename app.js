@@ -1,166 +1,80 @@
-#!/usr/bin/env node
-
-/**
+/**!
  * 服务器运行
  */
 
-var fs        = require('fs');
-var path      = require('path');
+'use strict';
 
-var express   = require('express');
-var debug     = require('debug')('pophoto');
+const debug = require('debug')('po');
+const koa = require('koa');
+const favicon = require('koa-favicon');
+const serve = require('koa-static');
+const serveIndex = require('koa-serve-index');
+const session = require('koa-session');
+const bodyParser = require('koa-bodyparser');
+const router = require('koa-router');
+const Roles = require('koa-roles');
+const loading = require('loading');
+const nunjucks = require('nunjucks');
+const ready = require('ready-callback')();
 
-// 捕获所有未处理异常
-process.on('uncaughtException', function(err) {
-
-  console.log(err.message);
-  console.log(err.stack);
-  process.exit(1);
-});
-
-// 捕获node 进程结束事件
-process.on('SIGINT', function() {
-
-  process.exit();
-});
-
-var app    = express();
+const app = koa();
+ready.mixin(app);
 // require 会进行缓存
 // 针对require 配置，将会导致配置被重写覆盖
-var config = require('./config.json');
-
+const config = app.config = require('./config/config.js');
+// 调整系统congfig  静态文件夹路径
+config.staticPath = config.staticPath || '';
+// 读取环境变量
+app.env = app.config.env;
 
 debug('app start run');
 
-var tempPath = path.join(__dirname, 'temp');
-// 判断文件夹路径是否存在
-var isDir    = fs.existsSync || path.existsSync;
+const role = app.role = new Roles(app.config.userrole);
 
-// 判断是否存在缓存目录，没有则创建缓存目录
-if(!isDir(tempPath)) {
+app.use(role.middleware());
+app.use(bodyParser());
 
-  fs.mkdirSync(tempPath);
-  debug('create image temp dir %s.', tempPath);
-}
+app.keys = app.config.session.key;
+app.use(session(app));
 
-// 调整系统congfig  静态文件夹路径
-config.staticPath = config.staticPath || '';
+app.use(router(app));
 
-// 缓存文件定期处理
-require('./libs/fileClean');
-// 加载视图注册模版
-require('./libs/registerPartial');
+// 设置站点图标
+app.use(favicon(`${config.staticPath}/favicon.ico`));
+app.use(serve(config.staticPath));
+// 支持字典列表形式显示静态文件目录
+app.use(serveIndex(config.staticPath));
+
+app.viewEngine = new nunjucks.Environment(
+  new nunjucks.FileSystemLoader(`${__dirname}/app/view`),
+  { noCache: app.env !== 'production' }
+);
+
+// 进行`sea-config.js`配置输出
+require('./lib/seajs_debug')(config.debug);
+
+require('./lib/mongo_connect')(app);
+
 // 加载实体对象
-require('./models');
+require('./app/model')(app);
+// 加载权限
+require('./config/role')(app);
 
-function startServer() {
+app.ready(() => {
+  // 载入项目目录结构
+  loading(`${__dirname}/app/controller`).into(app, 'controller');
+  loading(`${__dirname}/app/service`).into(app, 'service');
+  loading(`${__dirname}/app/extend/context`).into(app, 'extContext');
+  const extContext = require('./app/extend/context');
 
-  if(process.env.NODE_ENV === 'test') {
-    return;
+  const names = Object.getOwnPropertyNames(extContext);
+  for (let name of names) {
+    const descriptor = Object.getOwnPropertyDescriptor(extContext, name);
+    Object.defineProperty(app.context, name, descriptor);
   }
-
-  // 启动服务器,监听端口
-  app.listen(app.get('port'), function(err) {
-
-    if(err) {
-      console.log(err.message);
-      return;
-    }
-
-    debug('Express app server start success http://localhost:%s/', app.get('port'));
-  });
-
-  debug('Express app server listening on port %s', app.get('port'));
-}
-
-require('./libs/' + config.dbEnv)(app, function(err) {
-
-  if(err) {
-
-    return;
-  }
-
-  // start 全环境下配置
-  // 配置日志记录
-  var stream = fs.createWriteStream(path.join(__dirname, 'info.log'), {
-
-    flags: 'a'
-  });
-  // app.use 内置中间件队列  依次执行队列的中间件
-  app.use(express.logger({stream: stream}));
-  // 添加gzip 输出压缩中间件
-  app.use(express.compress());
-
-  // 配置客户端表单数据提交，必须在app.router之前，否者 res.body 为空
-  app.use(express.methodOverride());
-  // 设置文件上传缓存路径
-  app.use(express.bodyParser({
-    uploadDir: tempPath
-  }));
-
-  // 配置session，必须在cookie之后，依赖cookie
-  app.use(express.cookieParser(config.sessionSecret));
-  app.use(express.session());
-
-  // url为 `*.json` 进行响应头处理
-  app.use(require('./middleware/requestJSONHandler'));
-
-  // 设置过滤器
-  app.use(require('./middleware/filterRouterHandler'));
-
-  // 配置路由异常处理
-  // 路由配置和异常处理必须结合使用，同时必须在表单配置后设置，否则导致表单无法正常使用
-  // 必须配置视图模版路径之前，否则请求index时服务器会直接调用静态路径下index.html
-  app.use(app.router);
-  // app.use(require('./routes')(app));
-  // 设置500服务器处理
-  app.configure('development', function() {
-
-    // 开发环境
-    app.use(express.errorHandler({
-      dumpExceptions: true,
-      showStack: true
-    }));
-
-    debug('development');
-  });
-
-  app.configure('release', function() {
-
-    app.use(require('./middleware/serverErrorHandler'));
-  });
-
-  // 支持字典列表形式显示静态文件目录
-  app.use(express.directory(config.staticPath, { hidden: true }));
-  // 设置静态文件路径
-  app.use(express.static(path.join(config.staticPath)));
-
-  // 设置站点图标
-  app.use(express.favicon(path.join(config.staticPath, 'favicon.ico')));
-
-  // 显示请求错误路由
-  app.use(require('./middleware/routerErrorHandler'));
-
-  // 隐藏响应头`x-powered-by`备注
-  app.disable('x-powered-by');
-  // 配置服务器端口
-  app.set('port', config.port);
-  // 设置页面渲染类型`*.html`
-  app.set('view engine', 'tpl');
-  // 设置视图模板路径
-  app.set('views', path.join(__dirname, 'views'));
-  // 设置视图渲染引擎
-  app.engine('tpl', require('./middleware/engineHtmlHandler'));
 
   // 路由调度加载
-  require('./router')(app);
-  // 进行`sea-config.js`配置输出
-  require('./libs/seajsDebug')(config.debug);
-
-  if(!module.parent) {
-    // 启动服务器
-    startServer();
-  }
+  require('./app/router')(app);
 });
 
 // `exports test app`

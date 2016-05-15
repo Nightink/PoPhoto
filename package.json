@@ -1,31 +1,51 @@
 {
   "name": "PoPhoto",
   "version": "0.4.0",
-  "description": "NodeJS图片瀑布流",
-  "keywords": ["NodeJS", "BackboneJS", "SeaJS", "图片"],
+  "description": "node.js 图片瀑布流",
+  "keywords": [
+    "node.js",
+    "backbone.js",
+    "sea.js",
+    "图片"
+  ],
   "main": "app.js",
   "private": true,
   "engines": {
-    "node": ">=0.10"
+    "node": ">=4.4.0"
   },
   "scripts": {
-    "start": "make production",
-    "test": "make test"
+    "start": "NODE_ENV=production node worker.js",
+    "dev": "DEBUG=po,po:*,koa-static NODE_ENV=development node worker.js",
+    "test": "mocha --require should --reporter spec test/**/*.test.js --check-leaks",
+    "lint": "eslint .",
+    "cnpm:install": "npm install --registry=http://registry.npm.taobao.org"
   },
   "dependencies": {
+    "co-busboy": "^1.3.1",
     "debug": "*",
-    "gm": "~1.9.0",
-    "async": "~0.2.10",
+    "delegates": "^1.0.0",
+    "gm": "~1.22.0",
+    "graceful": "^1.0.0",
+    "koa": "^1.2.0",
+    "koa-bodyparser": "^2.1.0",
+    "koa-favicon": "^1.2.1",
+    "koa-resourcer": "^1.0.2",
+    "koa-roles": "^1.0.2",
+    "koa-router": "^4.3.2",
+    "koa-serve-index": "^1.1.1",
+    "koa-session": "^3.3.1",
+    "koa-static": "^2.0.0",
+    "loading": "^1.12.0",
     "moment": "~2.7.0",
-    "express": "~3.0.0",
-    "mongoose": "3.5.6",
-    "underscore": "~1.6.0",
-    "handlebars": "~1.0"
+    "mongoose": "~4.4.17",
+    "nunjucks": "^2.4.2",
+    "ready-callback": "^1.0.0"
   },
   "devDependencies": {
+    "eslint": "^2.10.0",
+    "eslint-config-egg": "^2.0.0",
     "mocha": "*",
     "should": "*",
-    "supertest": "*",
-    "jshint": "*"
+    "supertest": "*"
   }
 }
